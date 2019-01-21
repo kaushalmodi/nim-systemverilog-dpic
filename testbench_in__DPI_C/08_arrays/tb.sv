@@ -1,4 +1,4 @@
-// Time-stamp: <2019-01-21 12:38:49 kmodi>
+// Time-stamp: <2019-01-21 13:55:33 kmodi>
 // http://www.testbench.in/DP_08_ARRAYS.html
 
 program main;
@@ -12,6 +12,7 @@ program main;
 
   int fxd_arr_1 [3:8];
   int fxd_arr_2 [12:1];
+  int fxd_arr_3 [9:9];
 
   logic [15:0] nums [10];
   logic [15:0] nums2 [10];
@@ -24,7 +25,6 @@ program main;
         fxd_arr_1[i] = $random();
         $display("SV: fxd_arr_1[%0d]: %d",i, fxd_arr_1[i]);
       end
-
     $display("\n Passing fxd_arr_1 to C \n");
     pass_int_array(fxd_arr_1);
 
@@ -33,9 +33,16 @@ program main;
         fxd_arr_2[i] = $random();
         $display("SV: fxd_arr_2[%0d]: %d",i, fxd_arr_2[i]);
       end
-
     $display("\n Passing fxd_arr_2 to C \n");
     pass_int_array(fxd_arr_2);
+
+    for (int i=9; i<=9; i++)
+      begin
+        fxd_arr_3[i] = $random();
+        $display("SV: fxd_arr_3[%0d]: %d",i, fxd_arr_3[i]);
+      end
+    $display("\n Passing fxd_arr_3 to C \n");
+    pass_int_array(fxd_arr_3);
 
     // Packed vectors example
     begin

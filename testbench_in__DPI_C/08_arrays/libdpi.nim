@@ -3,17 +3,27 @@ import strformat
 
 # Open array example
 proc pass_int_array(dyn_arr: svOpenArrayHandle) {.exportc.} =
-  echo fmt"  Array: Left index = {svLeft(dyn_arr, 1)}, Right index = {svRight(dyn_arr, 1)}"
+  echo fmt" Array:"
+  echo fmt"  Dimensions = {svDimensions(dyn_arr)}"
+  echo fmt"  Size in bytes = {svSizeOfArray(dyn_arr)}"
+  echo fmt"  Pointer = {cast[int](svGetArrayPtr(dyn_arr)):#x}"
+  echo fmt"  Length = {svLength(dyn_arr, 1)}"
+  echo fmt"  Left index = {svLeft(dyn_arr, 1)}, Right index = {svRight(dyn_arr, 1)}, Incremental step = {svIncrement(dyn_arr, 1)}"
   # Note that using svLeft / svRight doesn't always work as expected
   # because the arrays could be declared as "int fxd_arr_1 [3:8];" or
   # "int fxd_arr_1 [8:3];". But svLow / svHigh will always work as
   # expected.
-  echo fmt"  Array: High index = {svHigh(dyn_arr, 1)}, Low index = {svLow(dyn_arr, 1)}"
+  # Based on the seen output, this is what svIncrement returns:
+  #   - Return 1 if svLeft > svHigh
+  #   - Return 1 if svLeft == svHigh
+  #   - Return 0 if svLeft < svHigh
+  echo fmt"  High index = {svHigh(dyn_arr, 1)}, Low index = {svLow(dyn_arr, 1)}"
+  echo fmt"  "
   echo ""
   let
-    lowerIndex = svLow(dyn_arr, 1)
-    upperIndex = svHigh(dyn_arr, 1)
-  for i in lowerIndex .. upperIndex:
+    lowerIndex1 = svLow(dyn_arr, 1)
+    upperIndex1 = svHigh(dyn_arr, 1)
+  for i in lowerIndex1 .. upperIndex1:
     let
       # The SV arrays are declared to be of int type:
       #   int fxd_arr_1 [3:8];
