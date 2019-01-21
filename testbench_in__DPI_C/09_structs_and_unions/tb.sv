@@ -1,28 +1,20 @@
-// Time-stamp: <2019-01-21 15:59:16 kmodi>
+// Time-stamp: <2019-01-21 16:02:39 kmodi>
 // http://www.testbench.in/DP_09_PASSING_STRUCTS_AND_UNIONS.html
 
 program main;
-
-  // Using arrays to populate packed struct
-  typedef struct packed {
-    int a;
-    int b;
-    byte c;
-  } SV_struct;
 
   // Array of packed structs
   typedef struct packed {
     int p;
     int q;
-    // byte r;
-    int r;
+    byte r;
   } PkdStruct;
   PkdStruct arr_data [0:4];
 
   typedef struct {
     int p;
     int q;
-    int r;
+    byte r;
   } UnPkdStruct;
   UnPkdStruct arr_data2 [0:4];
 
@@ -42,12 +34,12 @@ program main;
   import "DPI-C" function void send_arr_struct_unpkd (input UnPkdStruct arr []);
 
   function void export_func (input int arr[3]);
-    SV_struct s_data;
+    PkdStruct s_data;
 
     $display("  SV: arr = %p", arr);
-    s_data.a = arr[0];
-    s_data.b = arr[1];
-    s_data.c = arr[2];
+    s_data.p = arr[0];
+    s_data.q = arr[1];
+    s_data.r = arr[2];
     $display("  SV: s_data = %p", s_data);
   endfunction
 
@@ -56,7 +48,8 @@ program main;
     $display("");
 
     foreach (arr_data[i]) begin
-      automatic int p_elem, q_elem, r_elem;
+      automatic int p_elem, q_elem;
+      automatic byte r_elem;
       p_elem = $random;
       q_elem = $random;
       r_elem = $random;
