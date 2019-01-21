@@ -21,7 +21,7 @@ program main;
 
   export "DPI-C" function export_func;
   import "DPI-C" context function void import_func();
-  import "DPI-C" function void send_arr_packed_struct (input PkdStruct arr []);
+  import "DPI-C" function void send_arr_struct (input PkdStruct arr []);
 
   function void export_func (input int arr[3]);
     SV_struct s_data;
@@ -35,14 +35,14 @@ program main;
 
   initial begin
     import_func();
-
     $display("");
+
     foreach (arr_data[i]) begin
       arr_data[i] = { $random, $random, $random };
       $display("SV: arr_data[%0d] = '{p = %0d, q = %0d, r = %0d}",
                i, arr_data[i].p, arr_data[i].q, arr_data[i].r);
     end
-    send_arr_packed_struct(arr_data);
+    send_arr_struct(arr_data);
 
     $finish;
   end

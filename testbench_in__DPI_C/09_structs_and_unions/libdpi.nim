@@ -30,7 +30,7 @@ proc import_func() {.exportc.} =
 # FIXME: Cadence Xcelium
 # The order of elements in reversed in the packaged struct sent via
 # DPI-C.
-proc send_arr_packed_struct(dyn_arr: svOpenArrayHandle) {.exportc.} =
+proc send_arr_struct(dyn_arr: svOpenArrayHandle) {.exportc.} =
   let
     lowerIndex1 = svLow(dyn_arr, 1)
     upperIndex1 = svHigh(dyn_arr, 1)
@@ -40,3 +40,4 @@ proc send_arr_packed_struct(dyn_arr: svOpenArrayHandle) {.exportc.} =
       elemPtr = cast[ptr nimObj2](svGetArrElemPtr1(dyn_arr, i))
       nimObj2Elem = elemPtr[]
     echo fmt"  Nim: Packed struct element at index {i} = {nimObj2Elem}"
+  echo ""
