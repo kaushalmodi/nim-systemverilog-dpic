@@ -26,11 +26,7 @@ proc import_func() {.exportc.} =
   echo fmt"Nim: arr = {arr}"
   export_func(arr)
 
-# Mon Jan 21 15:24:16 EST 2019 - kmodi
-# FIXME: Cadence Xcelium
-# The order of elements in reversed in the packaged struct sent via
-# DPI-C.
-proc send_arr_struct(dyn_arr: svOpenArrayHandle) {.exportc.} =
+proc send_arr_struct_pkd(dyn_arr: svOpenArrayHandle) {.exportc.} =
   let
     lowerIndex1 = svLow(dyn_arr, 1)
     upperIndex1 = svHigh(dyn_arr, 1)
@@ -39,5 +35,15 @@ proc send_arr_struct(dyn_arr: svOpenArrayHandle) {.exportc.} =
     let
       elemPtr = cast[ptr nimObj2](svGetArrElemPtr1(dyn_arr, i))
       nimObj2Elem = elemPtr[]
-    echo fmt"  Nim: Packed struct element at index {i} = {nimObj2Elem}"
+    echo fmt"  Nim: Element at index {i} = {nimObj2Elem}"
   echo ""
+
+# Mon Jan 21 15:48:18 EST 2019 - kmodi
+# On the SV side, I cannot do:
+#  import "DPI-C" send_arr_struct_pkd = function void send_arr_struct_pkd (input PkdStruct arr []);
+#  import "DPI-C" send_arr_struct_pkd = function void send_arr_struct_unpkd (input UnPkdStruct arr []);
+# and map the SV function "send_arr_struct_unpkd" to the same "send_arr_struct_pkd" proc above.
+#
+# But the below will work instead. Interesting ..
+proc send_arr_struct_unpkd(dyn_arr: svOpenArrayHandle) {.exportc.} =
+  send_arr_struct_pkd(dyn_arr)
