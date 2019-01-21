@@ -1,4 +1,4 @@
-// Time-stamp: <2019-01-21 16:02:39 kmodi>
+// Time-stamp: <2019-01-21 16:07:16 kmodi>
 // http://www.testbench.in/DP_09_PASSING_STRUCTS_AND_UNIONS.html
 
 program main;
@@ -39,7 +39,7 @@ program main;
     $display("  SV: arr = %p", arr);
     s_data.p = arr[0];
     s_data.q = arr[1];
-    s_data.r = arr[2];
+    s_data.r = arr[2]; // This works because r of size byte is the last element
     $display("  SV: s_data = %p", s_data);
   endfunction
 
@@ -58,6 +58,27 @@ program main;
       // FIXME: Cadence Xcelium
       // The order of elements is reversed in the packaged struct sent via
       // DPI-C.
+      //   SV: array element 0: p = 303379748, q = -1064739199, r = 9
+      //   SV: array element 1: p = -1309649309, q = 112818957, r = -115
+      //   SV: array element 2: p = -1295874971, q = -1992863214, r = 1
+      //   SV: array element 3: p = 114806029, q = 992211318, r = 61
+      //   SV: array element 4: p = 1993627629, q = 1177417612, r = -7
+      //
+      //     lower index = 0, upper index = 4
+      //     Nim: Element at index 0 = (p: -1990295287, q: 355804352, r: 18)
+      //     Nim: Element at index 1 = (p: -1183117939, q: -262774010, r: -79)
+      //     Nim: Element at index 2 = (p: 928125441, q: -1031510647, r: -78)
+      //     Nim: Element at index 3 = (p: 603027005, q: -674427589, r: 6)
+      //     Nim: Element at index 4 = (p: 771198201, q: -732435130, r: 118)
+      //
+      //   ** Unpacked struct **
+      //     lower index = 0, upper index = 4
+      //     Nim: Element at index 0 = (p: 303379748, q: -1064739199, r: 9)
+      //     Nim: Element at index 1 = (p: -1309649309, q: 112818957, r: -115)
+      //     Nim: Element at index 2 = (p: -1295874971, q: -1992863214, r: 1)
+      //     Nim: Element at index 3 = (p: 114806029, q: 992211318, r: 61)
+      //     Nim: Element at index 4 = (p: 1993627629, q: 1177417612, r: -7)
+      //
       // arr_data[i] = { p_elem, q_elem, r_elem }; // This is the correct way, but DPI-C flips the order
       arr_data[i] = { r_elem, q_elem, p_elem }; // Workaround: Pack the data in the array in incorrect order so that DPI-C corrects it by flipping the order again.
 
