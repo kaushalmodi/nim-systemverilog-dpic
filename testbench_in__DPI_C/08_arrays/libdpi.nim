@@ -41,14 +41,20 @@ proc add_lpv(aRef, bRef, cRef: ref svLogicVecVal) {.exportc.} =
 # An array of packed logic is passed as a reference to an array of
 # svLogicVecVal from the SV side.
 proc get_nums(numsRef: ref array[10, svLogicVecVal]) {.exportc.} =
+  # https://irclogs.nim-lang.org/21-01-2019.html#17:52:51
+  GC_disable()
   echo fmt"packed logic array length = {numsRef[].len}"
   for i in 0 .. numsRef[].high:
     numsRef[][i].aval = uint32(i+10)
     numsRef[][i].bval = 0
+    # The echoing of the array elements causes crash if nim
+    # compilation is done without --gc:none *or* without the above
+    # GC_disable() call.
     echo fmt"Nim: numsRef[][{i}] = {numsRef[][i]}"
 
 # Above can be alternatively written as below too.
 proc get_nums2(numsRef: ref array[10, svLogicVecVal]) {.exportc.} =
+  GC_disable()
   var
     nums = numsRef[]
   echo fmt"packed logic array length = {nums.len}"
@@ -62,6 +68,7 @@ proc get_nums2(numsRef: ref array[10, svLogicVecVal]) {.exportc.} =
 # using "var" too i.e. not by reference. So, surprisingly, below works
 # too.
 proc get_nums3(nums: var array[10, svLogicVecVal]) {.exportc.} =
+  GC_disable()
   echo fmt"packed logic array length = {nums.len}"
   for i in 0 .. nums.high:
     nums[i].aval = uint32(i+10)
