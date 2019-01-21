@@ -1,6 +1,7 @@
 import nimterop/cimport
 import os
 
+# cDisableCaching()
 # cDebug()
 
 # Below manual definition of s_vpi_vecval is a workaround for
@@ -16,11 +17,5 @@ static:
   doAssert fileExists(xlmIncludePath / "svdpi.h")
   doAssert fileExists(xlmIncludePath / "svdpi_compatibility.h")
 
-# Below works
 cAddSearchDir(xlmIncludePath)
 cImport(cSearchPath("svdpi.h"))
-
-# https://github.com/genotrance/nimterop/issues/48
-# Below doesn't work
-# cIncludeDir(xlmIncludePath)
-# cImport("svdpi.h")
