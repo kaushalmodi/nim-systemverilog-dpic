@@ -39,21 +39,33 @@ proc add_lpv(aRef, bRef, cRef: ref svLogicVecVal) {.exportc.} =
 
 # Packed logic array example
 # An array of packed logic is passed as a reference to an array of
-# svLogicVecVal from the SV side.
-proc get_nums(numsRef: ref array[10, svLogicVecVal]) {.exportc.} =
+# svLogicVecVal from the SV side. But as per Araq, using "var array"
+# is the correct approach, and not "ref array".
+# - https://irclogs.nim-lang.org/21-01-2019.html#18:20:35
+proc get_nums(nums: var array[10, svLogicVecVal]) {.exportc.} =
   # https://irclogs.nim-lang.org/21-01-2019.html#18:04:11
+  withScratchRegion:
+    echo fmt"packed logic array length = {nums.len}"
+    for i in 0 .. nums.high:
+      nums[i].aval = uint32(i+10)
+      nums[i].bval = 0
+      # The echoing of the array elements causes crash if nim
+      # compilation is done without --gc:none *or* without
+      # --gc:regions and this wrapping in withScratchRegion.
+      echo fmt"Nim: nums[{i}] = {nums[i]}"
+
+# Even though not recommended, the "ref array" approach works:
+proc get_nums2(numsRef: ref array[10, svLogicVecVal]) {.exportc.} =
   withScratchRegion:
     echo fmt"packed logic array length = {numsRef[].len}"
     for i in 0 .. numsRef[].high:
       numsRef[][i].aval = uint32(i+10)
       numsRef[][i].bval = 0
-      # The echoing of the array elements causes crash if nim
-      # compilation is done without --gc:none *or* without
-      # --gc:regions and this wrapping in withScratchRegion.
       echo fmt"Nim: numsRef[][{i}] = {numsRef[][i]}"
 
-# Above can be alternatively written as below too.
-proc get_nums2(numsRef: ref array[10, svLogicVecVal]) {.exportc.} =
+# Above can be alternatively written as below too; again: not
+# recommended.
+proc get_nums3(numsRef: ref array[10, svLogicVecVal]) {.exportc.} =
   withScratchRegion:
     var
       nums = numsRef[]
@@ -63,14 +75,3 @@ proc get_nums2(numsRef: ref array[10, svLogicVecVal]) {.exportc.} =
       nums[i].bval = 0
       echo fmt"Nim: nums[{i}] = {nums[i]}"
     numsRef[] = nums
-
-# Also, it looks like that array of svLogicVecVal can be accessed
-# using "var" too i.e. not by reference. So, surprisingly, below works
-# too.
-proc get_nums3(nums: var array[10, svLogicVecVal]) {.exportc.} =
-  withScratchRegion:
-    echo fmt"packed logic array length = {nums.len}"
-    for i in 0 .. nums.high:
-      nums[i].aval = uint32(i+10)
-      nums[i].bval = 0
-      echo fmt"Nim: nums[{i}] = {nums[i]}"
