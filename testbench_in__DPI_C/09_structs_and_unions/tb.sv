@@ -1,4 +1,4 @@
-// Time-stamp: <2019-01-21 17:09:40 kmodi>
+// Time-stamp: <2019-01-21 17:14:29 kmodi>
 // http://www.testbench.in/DP_09_PASSING_STRUCTS_AND_UNIONS.html
 
 program main;
@@ -108,16 +108,25 @@ program main;
     send_arr_struct_unpkd(arr_data2);
 
     // Mon Jan 21 16:22:13 EST 2019 - kmodi
-    // FIXME: The values printed on Nim side don't match that on the SV side.
+    // Question: The values printed on Nim side don't match that on the SV side. Why?
     // Example:
     //   SV: a = a, u = 5
     //     Nim: fa = fffffffa, fu = 5
+    //
+    // Mon Jan 21 17:11:54 EST 2019 - kmodi
+    // Answer: The values are the same, the Nim echo is showing the sign extension!
+    //         As A is 4-bits, and with value 4'ha, the MSB is 1 (negative), which
+    //         gets sign-extended.
+    //
+    // See the below output where there is no sign extension:
+    //   SV: a = 4, u = 7
+    //     Nim: fa = 4, fu = 7
     begin
       A a;
       PkdUnion u;
 
-      a = 4'ha;
-      u.x = 4'h5;
+      a = 4'h4;
+      u.x = 4'h7;
       $display("SV: a = %x, u = %x", a, u);
       send_union(a, u);
     end
