@@ -1,4 +1,4 @@
-// Time-stamp: <2019-01-21 16:07:16 kmodi>
+// Time-stamp: <2019-01-21 17:09:40 kmodi>
 // http://www.testbench.in/DP_09_PASSING_STRUCTS_AND_UNIONS.html
 
 program main;
@@ -18,6 +18,11 @@ program main;
   } UnPkdStruct;
   UnPkdStruct arr_data2 [0:4];
 
+  typedef bit [3:0] A;
+  typedef union packed {
+    A x;
+  } PkdUnion;
+
   export "DPI-C" function export_func;
   import "DPI-C" context function void import_func();
   import "DPI-C" function void send_arr_struct_pkd (input PkdStruct arr []);
@@ -33,6 +38,9 @@ program main;
   // work!
   import "DPI-C" function void send_arr_struct_unpkd (input UnPkdStruct arr []);
 
+  import "DPI-C" function void send_union(input A fa, input PkdUnion fu);
+
+
   function void export_func (input int arr[3]);
     PkdStruct s_data;
 
@@ -47,7 +55,7 @@ program main;
     import_func();
     $display("");
 
-    foreach (arr_data[i]) begin
+    foreach (arr_data[i]) begin // Assume arr_data2 to be of the same length as arr_data.
       automatic int p_elem, q_elem;
       automatic byte r_elem;
       p_elem = $random;
@@ -98,6 +106,21 @@ program main;
     // *unpacked* struct, and this time the order of the struct
     // elements is correct!
     send_arr_struct_unpkd(arr_data2);
+
+    // Mon Jan 21 16:22:13 EST 2019 - kmodi
+    // FIXME: The values printed on Nim side don't match that on the SV side.
+    // Example:
+    //   SV: a = a, u = 5
+    //     Nim: fa = fffffffa, fu = 5
+    begin
+      A a;
+      PkdUnion u;
+
+      a = 4'ha;
+      u.x = 4'h5;
+      $display("SV: a = %x, u = %x", a, u);
+      send_union(a, u);
+    end
 
     $finish;
   end
