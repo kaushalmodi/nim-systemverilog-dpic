@@ -1,0 +1,72 @@
+* Step 1: Nim to libdpi.so
+#+begin_example
+nim c --out:libdpi.so --app:lib libdpi.nim
+#+end_example
+* Step 2: Compile SystemVerilog as usual
+#+begin_example
+xrun -sv -64bit tb.sv
+#+end_example
+* Files
+** ~tb.sv~
+#+begin_src systemverilog
+program top;
+
+  import "DPI-C" hello=task hello();
+
+  initial begin
+    hello();
+  end
+
+endprogram
+#+end_src
+** ~libdpi.nim~
+#+begin_src nim
+proc hello() {.exportc.} =
+  echo "Hello from Nim!"
+#+end_src
+* Datatype Translation
+|-----------+---------------|
+| Nim       | SystemVerilog |
+|-----------+---------------|
+| byte      | byte          |
+| int       | int           |
+| long long | longint       |
+| short int | shortint      |
+| double    | real          |
+| float     | shortreal     |
+| void*     | chandle       |
+| char*     | string        |
+|-----------+---------------|
+* Imports
+** Tasks
+- A Nim proc mapped to a SV *task* needs to have an ~int32~ return
+  type, and it should return a value of 0 (default) or 1.
+
+  Failure to do so will give this error:
+  #+begin_example
+  xmsim: *F,INVDIS: The import task import_task returned a value other than 1 or 0.
+  #+end_example
+** Context
+If an imported function/task is calling an exported function/task,
+that ~import~ declaration must contain the ~context~ keyword.
+
+Example:
+#+begin_src systemverilog
+export "DPI-C" function export_func;
+import "DPI-C" context function void import_func_calling_export_func();
+// ..
+#+end_src
+
+If that ~context~ keyword is left you, you get an error like:
+#+begin_example
+xmsim: *E,NONCONI: The C identifier "export_func" representing an
+export task/function cannot be executed from a non-context import
+task/function.
+#+end_example
+
+* Exports
+If a function or task name /foo/ is exported from SystemVerilog to a C
+function (Nim /proc/), it needs to be declared in the Nim code as:
+#+begin_src nim
+proc foo() {.importc.} # Assuming that foo has no arguments and has void return type
+#+end_src
