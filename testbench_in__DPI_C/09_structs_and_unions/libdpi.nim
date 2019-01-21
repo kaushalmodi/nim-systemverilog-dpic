@@ -6,7 +6,7 @@ type
     a: int32 # int in SV
     b: int32 # int in SV
     c: int8  # byte in SV
-  packedStruct = object
+  nimObj2 = object
     p: int32
     q: int32
     # r: int8
@@ -37,6 +37,6 @@ proc send_arr_packed_struct(dyn_arr: svOpenArrayHandle) {.exportc.} =
   echo fmt"  lower index = {lowerIndex1}, upper index = {upperIndex1}"
   for i in lowerIndex1 .. upperIndex1:
     let
-      elemPtr = cast[ptr packedStruct](svGetArrElemPtr1(dyn_arr, i))
-      packedStructElem = elemPtr[]
-    echo fmt"  Nim: Packed struct element at index {i} = {packedStructElem}"
+      elemPtr = cast[ptr nimObj2](svGetArrElemPtr1(dyn_arr, i))
+      nimObj2Elem = elemPtr[]
+    echo fmt"  Nim: Packed struct element at index {i} = {nimObj2Elem}"
