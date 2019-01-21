@@ -38,11 +38,30 @@ proc add_lpv(aRef, bRef, cRef: ref svLogicVecVal) {.exportc.} =
   echo fmt"c = {cRef[]}"
 
 # Packed logic array example
-# An array of packed logic is passed as an array of svLogicVecVal from
-# the SV side.
-# Looks like in this case, they are not passed by reference. So the
-# array argument needs to be made a "var".
-proc get_nums(nums: var array[10, svLogicVecVal]) {.exportc.} =
+# An array of packed logic is passed as a reference to an array of
+# svLogicVecVal from the SV side.
+proc get_nums(numsRef: ref array[10, svLogicVecVal]) {.exportc.} =
+  echo fmt"packed logic array length = {numsRef[].len}"
+  for i in 0 .. numsRef[].high:
+    numsRef[][i].aval = uint32(i+10)
+    numsRef[][i].bval = 0
+    echo fmt"Nim: numsRef[][{i}] = {numsRef[][i]}"
+
+# Above can be alternatively written as below too.
+proc get_nums2(numsRef: ref array[10, svLogicVecVal]) {.exportc.} =
+  var
+    nums = numsRef[]
+  echo fmt"packed logic array length = {nums.len}"
+  for i in 0 .. nums.high:
+    nums[i].aval = uint32(i+10)
+    nums[i].bval = 0
+    echo fmt"Nim: nums[{i}] = {nums[i]}"
+  numsRef[] = nums
+
+# Also, it looks like that array of svLogicVecVal can be accessed
+# using "var" too i.e. not by reference. So, surprisingly, below works
+# too.
+proc get_nums3(nums: var array[10, svLogicVecVal]) {.exportc.} =
   echo fmt"packed logic array length = {nums.len}"
   for i in 0 .. nums.high:
     nums[i].aval = uint32(i+10)
