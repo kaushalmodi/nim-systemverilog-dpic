@@ -2,3 +2,4 @@ xcelium.d/
 *.log
 *.so
 *.history
+.nimcache/
