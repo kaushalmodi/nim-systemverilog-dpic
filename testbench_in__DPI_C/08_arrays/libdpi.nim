@@ -1,6 +1,7 @@
 import svdpi
 import strformat
 
+# Open array example
 proc pass_int_array(dyn_arr: svOpenArrayHandle) {.exportc.} =
   echo fmt"  Array: Left index = {svLeft(dyn_arr, 1)}, Right index = {svRight(dyn_arr, 1)}"
   # Note that using svLeft / svRight doesn't always work as expected
@@ -22,3 +23,16 @@ proc pass_int_array(dyn_arr: svOpenArrayHandle) {.exportc.} =
       val = valPtr[]
     echo fmt"  Nim: array[{i:>2}]: {val:>11}"
   echo "\n"
+
+# Packed vectors example
+# The packed vectors are always passed by reference from the SV side.
+# http://geekwentfreak.com/posts/eda/SystemVerilog_C_pass_datatypes/
+proc add_lpv(aRef, bRef, cRef: ref svLogicVecVal) {.exportc.} =
+  let
+    a = aRef[].aval
+    b = bRef[].aval
+  echo fmt"a = {aRef[]}"
+  echo fmt"b = {bRef[]}"
+  cRef[].aval = a + b
+  cRef[].bval = 0   # Assume that neither a nor b are X or Z.
+  echo fmt"c = {cRef[]}"
