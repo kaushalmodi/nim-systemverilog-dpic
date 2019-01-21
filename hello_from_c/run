@@ -1,0 +1,3 @@
+#!/bin/tcsh
+
+make libdpi nc_nouvm
