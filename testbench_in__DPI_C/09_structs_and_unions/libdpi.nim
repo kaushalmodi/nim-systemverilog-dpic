@@ -46,4 +46,5 @@ proc send_arr_struct_pkd(dyn_arr: svOpenArrayHandle) {.exportc.} =
 #
 # But the below will work instead. Interesting ..
 proc send_arr_struct_unpkd(dyn_arr: svOpenArrayHandle) {.exportc.} =
+  echo "** Unpacked struct **"
   send_arr_struct_pkd(dyn_arr)

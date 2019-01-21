@@ -1,4 +1,4 @@
-// Time-stamp: <2019-01-21 15:50:37 kmodi>
+// Time-stamp: <2019-01-21 15:59:16 kmodi>
 // http://www.testbench.in/DP_09_PASSING_STRUCTS_AND_UNIONS.html
 
 program main;
@@ -55,28 +55,34 @@ program main;
     import_func();
     $display("");
 
-    // Mon Jan 21 15:24:16 EST 2019 - kmodi
-    // FIXME: Cadence Xcelium
-    // The order of elements in reversed in the packaged struct sent via
-    // DPI-C.
     foreach (arr_data[i]) begin
-      arr_data[i] = { $random, $random, $random };
-      $display("SV: arr_data[%0d] = '{p = %0d, q = %0d, r = %0d}",
-               i, arr_data[i].p, arr_data[i].q, arr_data[i].r);
-    end
+      automatic int p_elem, q_elem, r_elem;
+      p_elem = $random;
+      q_elem = $random;
+      r_elem = $random;
+
+      // Mon Jan 21 15:24:16 EST 2019 - kmodi
+      // FIXME: Cadence Xcelium
+      // The order of elements is reversed in the packaged struct sent via
+      // DPI-C.
+      // arr_data[i] = { p_elem, q_elem, r_elem }; // This is the correct way, but DPI-C flips the order
+      arr_data[i] = { r_elem, q_elem, p_elem }; // Workaround: Pack the data in the array in incorrect order so that DPI-C corrects it by flipping the order again.
+
+      arr_data2[i].p = p_elem;
+      arr_data2[i].q = q_elem;
+      arr_data2[i].r = r_elem;
+
+      $display("SV: array element %0d: p = %0d, q = %0d, r = %0d",
+               i, p_elem, q_elem, r_elem);
+    end // foreach (arr_data[i])
+    $display("");
+
     send_arr_struct_pkd(arr_data);
 
     // But then I run the same function (it's the same function call
     // if you look in the Nim code) but this time passing an
     // *unpacked* struct, and this time the order of the struct
     // elements is correct!
-    foreach (arr_data2[i]) begin
-      arr_data2[i].p = $random;
-      arr_data2[i].q = $random;
-      arr_data2[i].r = $random;
-      $display("SV: arr_data2[%0d] = '{p = %0d, q = %0d, r = %0d}",
-               i, arr_data2[i].p, arr_data2[i].q, arr_data2[i].r);
-    end
     send_arr_struct_unpkd(arr_data2);
 
     $finish;
