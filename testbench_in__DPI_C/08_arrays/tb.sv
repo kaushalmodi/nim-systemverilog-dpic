@@ -1,4 +1,4 @@
-// Time-stamp: <2019-01-21 10:43:22 kmodi>
+// Time-stamp: <2019-01-21 11:23:21 kmodi>
 // http://www.testbench.in/DP_08_ARRAYS.html
 
 program main;
@@ -6,9 +6,12 @@ program main;
   import "DPI-C" context function void pass_int_array (input int dyn_arr[]); // passing open array dyn_arr[]
   // http://geekwentfreak.com/posts/eda/SystemVerilog_C_pass_datatypes/
   import "DPI-C" function void add_lpv (input logic [3:0] a, b, output logic [3:0] c); // passing logic packed vectors
+  import "DPI-C" function void get_nums (output logic [15:0] nums [10]); // passing packed logic array [15:0] nums [10]
 
   int fxd_arr_1 [3:8];
   int fxd_arr_2 [12:1];
+
+  logic [15:0] nums [10];
 
   initial begin
     // Open array example
@@ -37,6 +40,12 @@ program main;
       b = 4'd3;
       add_lpv(a, b, c);
       $display("after add_lpv: %0d + %0d = %0d", a, b, c);
+    end
+
+    // Packed array example
+    get_nums(nums);
+    foreach (nums[i]) begin
+      $display("  SV: nums[%0d] = %0d", i, nums[i]);
     end
 
     $finish;

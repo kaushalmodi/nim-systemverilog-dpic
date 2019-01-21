@@ -36,3 +36,15 @@ proc add_lpv(aRef, bRef, cRef: ref svLogicVecVal) {.exportc.} =
   cRef[].aval = a + b
   cRef[].bval = 0   # Assume that neither a nor b are X or Z.
   echo fmt"c = {cRef[]}"
+
+# Packed logic array example
+# An array of packed logic is passed as an array of svLogicVecVal from
+# the SV side.
+# Looks like in this case, they are not passed by reference. So the
+# array argument needs to be made a "var".
+proc get_nums(nums: var array[10, svLogicVecVal]) {.exportc.} =
+  echo fmt"packed logic array length = {nums.len}"
+  for i in 0 .. nums.high:
+    nums[i].aval = uint32(i+10)
+    nums[i].bval = 0
+    echo fmt"Nim: nums[{i}] = {nums[i]}"
