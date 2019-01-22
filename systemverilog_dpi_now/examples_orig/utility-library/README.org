@@ -1,0 +1,6 @@
+This example cannot be run as it depends on running the sim using
+Modelsim.
+
+The required mti.h file is in
+/cad/adi/apps/mentor/questa/10.6c/questasim/include/mti.h, and it
+contains ModelSim specific headers.
