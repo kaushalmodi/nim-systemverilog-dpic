@@ -1,3 +1,7 @@
-# Time-stamp: <2019-01-20 22:28:04 kmodi>
+# Time-stamp: <2019-01-22 13:26:10 kmodi>
 
-include $(SV_MAKEFILE)
+.DEFAULT_GOAL := default
+
+include ../../Makefile
+
+default: libdpi nc
