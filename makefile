@@ -1,4 +1,4 @@
-# Time-stamp: <2019-01-22 14:18:45 kmodi>
+# Time-stamp: <2019-01-22 14:27:36 kmodi>
 # Author    : Kaushal Modi
 
 FILES                   = tb.sv
@@ -9,11 +9,8 @@ DEFINES			= DEFINE_PLACEHOLDER
 NOWARNS                 = -nowarn DSEM2009 -nowarn DSEMEL -nowarn SPDUSD
 OPTIONS                 =
 
-# Subdirs contains a list of all directories containing a
-# Makefile. Though, that also includes this current Makefile, which is
-# listed at the end of that list. So "sed '$d'" removes this current
-# Makefile.
-SUBDIRS = $(shell find . -name "Makefile" | sed 's|/Makefile||' | sed '$d')
+# Subdirs contains a list of all directories containing a "Makefile".
+SUBDIRS = $(shell find . -name "Makefile" | sed 's|/Makefile||')
 
 .PHONY: clean libdpi nc clibdpi $(SUBDIRS) all
 
