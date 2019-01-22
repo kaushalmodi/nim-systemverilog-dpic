@@ -1,4 +1,4 @@
-# Time-stamp: <2019-01-22 13:48:27 kmodi>
+# Time-stamp: <2019-01-22 14:18:45 kmodi>
 # Author    : Kaushal Modi
 
 FILES                   = tb.sv
@@ -9,7 +9,13 @@ DEFINES			= DEFINE_PLACEHOLDER
 NOWARNS                 = -nowarn DSEM2009 -nowarn DSEMEL -nowarn SPDUSD
 OPTIONS                 =
 
-.PHONY: clean libdpi nc clibdpi
+# Subdirs contains a list of all directories containing a
+# Makefile. Though, that also includes this current Makefile, which is
+# listed at the end of that list. So "sed '$d'" removes this current
+# Makefile.
+SUBDIRS = $(shell find . -name "Makefile" | sed 's|/Makefile||' | sed '$d')
+
+.PHONY: clean libdpi nc clibdpi $(SUBDIRS) all
 
 clean:
 	rm -rf *~ core simv* urg* *.log *.history \#*.* *.dump .simvision/ waves.shm/ \
@@ -40,3 +46,8 @@ clibdpi:
 	gcc -c -fPIC -I$(XCELIUM_ROOT)/../include libdpi.c -m64 -o libdpi.o
 	gcc -shared -Wl,-soname,libdpi.so -m64 -o libdpi.so libdpi.o
 	@rm -f libdpi.o
+
+$(SUBDIRS):
+	$(MAKE) -C $@
+
+all: $(SUBDIRS)
