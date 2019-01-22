@@ -1,4 +1,4 @@
-# Time-stamp: <2019-01-22 13:31:55 kmodi>
+# Time-stamp: <2019-01-22 13:48:27 kmodi>
 # Author    : Kaushal Modi
 
 FILES                   = tb.sv
@@ -9,6 +9,7 @@ DEFINES			= DEFINE_PLACEHOLDER
 NOWARNS                 = -nowarn DSEM2009 -nowarn DSEMEL -nowarn SPDUSD
 OPTIONS                 =
 
+.PHONY: clean libdpi nc clibdpi
 
 clean:
 	rm -rf *~ core simv* urg* *.log *.history \#*.* *.dump .simvision/ waves.shm/ \
