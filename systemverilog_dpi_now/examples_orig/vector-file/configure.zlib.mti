@@ -1,0 +1,16 @@
+#!/bin/csh -f
+
+# Run from wihtin the ZLIB source code tree
+#  ie.
+#	cd zlib-1.2.1
+#   ./configure.zlib.mti
+#
+
+# Note: vco is a built-in shell script from Modelsim that returns things like
+#       'linux' or 'sunos5'. 
+#       See $MTI_HOME/vco
+
+set prefix = `pwd`
+set vco = `vco`
+./configure --shared --prefix=$prefix --exec_prefix=$prefix/$vco
+
