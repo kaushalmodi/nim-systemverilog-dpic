@@ -1,7 +1,7 @@
-# Time-stamp: <2019-01-22 13:27:08 kmodi>
+# Time-stamp: <2019-01-22 13:31:55 kmodi>
 # Author    : Kaushal Modi
 
-FILES                   = ./tb.sv
+FILES                   = tb.sv
 DEFINES			= DEFINE_PLACEHOLDER
 # DSEM2009, DSEMEL: Don't keep on bugging by telling that SV 2009 is
 #     being used. I know it already.
