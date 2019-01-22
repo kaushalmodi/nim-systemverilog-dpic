@@ -1,7 +1,8 @@
-# Time-stamp: <2019-01-22 13:26:10 kmodi>
+# Time-stamp: <2019-01-22 13:37:04 kmodi>
 
 .DEFAULT_GOAL := default
 
-include ../../Makefile
+GIT_ROOT = $(shell git rev-parse --show-toplevel)
+include $(GIT_ROOT)/Makefile
 
 default: libdpi nc

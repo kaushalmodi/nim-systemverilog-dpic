@@ -1,8 +1,9 @@
-# Time-stamp: <2019-01-22 13:31:24 kmodi>
+# Time-stamp: <2019-01-22 13:36:55 kmodi>
 
 .DEFAULT_GOAL := default
 
-include ../../Makefile
+GIT_ROOT = $(shell git rev-parse --show-toplevel)
+include $(GIT_ROOT)/Makefile
 
 default:
 	@$(MAKE) libdpi nc FILES="module_1.sv module_2.sv"
