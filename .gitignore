@@ -6,3 +6,7 @@ xcelium.d/
 sigusrdump.out
 work/
 xrun.key
+EGGX080/
+EGGX080.tar.gz
+*.o
+EGGX
