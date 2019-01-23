@@ -1,4 +1,4 @@
-# Time-stamp: <2019-01-22 21:53:22 kmodi>
+# Time-stamp: <2019-01-23 00:10:18 kmodi>
 # Author    : Kaushal Modi
 
 FILES   = tb.sv
@@ -12,7 +12,8 @@ OPTIONS =
 # Subdirs contains a list of all directories containing a "Makefile".
 SUBDIRS = $(shell find . -name "Makefile" | sed 's|/Makefile||')
 
-NIM_GC  = regions
+NIM_GC      = regions
+NIM_DEFINES =
 
 .PHONY: clean libdpi nc clibdpi $(SUBDIRS) all
 
@@ -27,7 +28,7 @@ clean:
 # https://irclogs.nim-lang.org/21-01-2019.html#17:16:39
 libdpi:
 	@find . \( -name libdpi.o -o -name libdpi.so \) -delete
-	nim c --out:libdpi.so --app:lib --nimcache:./.nimcache --gc:$(NIM_GC) libdpi.nim
+	nim c --out:libdpi.so --app:lib --nimcache:./.nimcache --gc:$(NIM_GC) $(NIM_DEFINES) libdpi.nim
 
 nc:
 	xrun -sv -64bit -timescale 1ns/10ps \
