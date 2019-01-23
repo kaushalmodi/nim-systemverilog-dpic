@@ -3,3 +3,6 @@ xcelium.d/
 *.so
 *.history
 .nimcache/
+sigusrdump.out
+work/
+xrun.key
