@@ -7,13 +7,18 @@ proc vl_task(inp1, inp2: cint; result: var cint) {.importc.}
 
 proc c_test(): cint {.exportc.} =
   const
-    # lineMax: int32 = 1024
+    lineMax: int32 = 1024
     fileName = "compressed.txt.gz"
   var
     tries, matches: int
     vl_answer: cint
     expected_answer, inp1, inp2: int
-    line: string
+    # https://irclogs.nim-lang.org/23-01-2019.html#04:56:22
+    lineArr: array[lineMax, char]  # Initialize a char array ..
+    line: Pbytef = addr lineArr[0] # and point `line' to that char
+    # array.  Pbytef is a type alias to cstring and cstrings are not
+    # auto-initialized; they remain nil! So if `line' is not init like
+    # above, it will always stay nil.
 
   echo fmt"zlib version: {zlibVersion()}"
   echo "Running .."
@@ -26,29 +31,18 @@ proc c_test(): cint {.exportc.} =
     quit 1
 
   while (f.gzeof() == 0):
-    # Tue Jan 22 22:27:46 EST 2019 - kmodi
-    # Below does not work, the file pointer never increments and line
-    # value always remains blank.
-    # discard f.gzgets(line, lineMax)
-    # line[strlen(line)-1] = 0 # what does this do? why set the last char to 0? maybe null?
-    line = ""
-    while true:
-      var
-        c = chr(f.gzgetc())
-      if (f.gzeof() != 0 or
-             ord(c) == 10):         # new line
-        break
-      line.add($c)
+    var
+      gzgetsRet = f.gzgets(line, lineMax)
     when defined(debug):
-      echo fmt"line = `{$line}'"
+      echo fmt"line = `{$line}', `{$gzgetsRet}'"
 
-    discard scanf(line, "$i $i $i", inp1, inp2, expected_answer)
+    discard scanf($line, "$i $i $i", inp1, inp2, expected_answer)
     vl_task(inp1.cint, inp2.cint, vl_answer)
 
+    tries += 1
     when defined(debug):
       echo fmt"try {tries} gzeof {f.gzeof()}"
 
-    tries += 1
     if expected_answer.cint != vl_answer:
       echo fmt"Error: MISMATCH ({inp1}, {inp2}) vl<{vl_answer}> != c<{expected_answer}>"
     else:
