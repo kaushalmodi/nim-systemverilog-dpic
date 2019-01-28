@@ -1,4 +1,4 @@
-import EGGX/eggx
+import eggx
 from math import ln
 
 const

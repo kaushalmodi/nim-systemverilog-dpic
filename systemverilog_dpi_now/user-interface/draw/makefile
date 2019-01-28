@@ -41,9 +41,9 @@ tools:
 
 clean::
 	rm -f draw.exe draw.o draw.so
-	rm -f mandel.exe mandel.o
-	rm -f mandel
+	rm -f *.o
 	rm -f ld.exe.stackdump
+	rm -f mandel draw nim_mandel
 
 cleanall:: clean
 	rm -rf EGGX080
