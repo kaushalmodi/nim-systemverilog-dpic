@@ -28,8 +28,8 @@ proc get_mandel(c_real, c_imaginary: float): int32 =
       return 0
   return i
 
-proc mandel*(winWidth: cint  = 800,
-             winHeight: cint = 800,
+proc mandel*(winWidth: cint  = 600,
+             winHeight: cint = 600,
              xScale          = 1.0,
              yScale          = 1.0,
              realBegin       = 0.075,
