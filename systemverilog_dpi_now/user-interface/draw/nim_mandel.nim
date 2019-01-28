@@ -2,10 +2,7 @@ import draw
 import strformat
 from os import sleep
 
-when defined(svdpi):
-  proc hw_sync(count1: int) {.importc.}
-else:
-  proc hw_sync(count1: int) = discard
+proc hw_sync_placeholder(cnt: int) = discard
 
 const
   thres = 4.0
@@ -44,7 +41,8 @@ proc mandel*(winWidth  = 200,
              realEnd   = 0.175,
              imagBegin = 0.59,
              imagEnd   = 0.69,
-             repeat    = 1) =
+             repeat    = 1,
+             hw_sync   = hw_sync_placeholder) =
   let
     modn = winWidth div 20
     xstep = xScale * (realEnd - realBegin) / winWidth.float

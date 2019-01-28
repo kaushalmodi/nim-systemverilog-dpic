@@ -1,4 +1,4 @@
-# Time-stamp: <2019-01-28 14:08:57 kmodi>
+# Time-stamp: <2019-01-28 14:28:52 kmodi>
 # Author    : Kaushal Modi
 
 FILES   = tb.sv
@@ -13,7 +13,7 @@ OPTIONS =
 SUBDIRS = $(shell find . -name "Makefile" | sed 's|/Makefile||')
 
 NIM_GC      = regions
-NIM_DEFINES = -d:svdpi # used in the user-interface example
+NIM_DEFINES =
 
 .PHONY: clean libdpi nc clibdpi $(SUBDIRS) all
 
