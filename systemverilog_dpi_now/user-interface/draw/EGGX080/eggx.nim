@@ -14,6 +14,8 @@ const
 
 # {.passL: "-leggx".}
 {.compile: hDir / "eggx_base.c".}
+{.compile: hDir / "eggx_color.c".}
+
 {.passL: "-lX11".}
 {.passL: "-lm".}
 
@@ -86,6 +88,9 @@ proc msleep*(a1: culong) {.importc: "eggx_$1", header: headereggx_base.}
 proc depthinfo*(): cint {.importc: "eggx_$1", header: headereggx_base.}
 proc drawnum*(a1: cint; a2: cfloat; a3: cfloat; a4: cint; a5: cfloat; a6: cfloat; a7: cint) {.importc: "eggx_$1", header: headereggx_base.}
 
+
+# eggx_color.h bindings
+
 # #define color_prms eggx_color_prms
 # #define generatecolor eggx_generatecolor
 # #define makecolor eggx_makecolor
@@ -97,3 +102,84 @@ proc drawnum*(a1: cint; a2: cfloat; a3: cfloat; a4: cint; a5: cfloat; a6: cfloat
 # #define clsx(wn) eggx_gclr((wn))
 # #define plot(wn,xg,yg,mode) eggx_line((wn),(xg),(yg),(mode))
 # #define arohd(wn,xs,ys,xt,yt,s,w,shape) eggx_drawarrow((wn),(xs),(ys),(xt),(yt),(s),(w),(shape))
+
+const
+  headereggx_color = hDir / "eggx_color.h"
+  CP_NONE* = 0
+  DS9_GREY* = 0
+  DS9_GRAY* = 0
+  DS9_RED* = 1
+  DS9_GREEN* = 2
+  DS9_BLUE* = 3
+  DS9_A* = 4
+  DS9_B* = 5
+  DS9_BB* = 6
+  DS9_HE* = 7
+  DS9_I8* = 8
+  DS9_AIPS0* = 9
+  DS9_SLS* = 10
+  DS9_HEAT* = 11
+  DS9_COOL* = 12
+  DS9_RAINBOW* = 13
+  DS9_STANDARD* = 14
+  DS9_STAIRCASE* = 15
+  DS9_COLOR* = 16
+  DS9_BEGIN* = 0
+  DS9_NUM* = 17
+  IDL1_B_W_LINEAR* = 17
+  IDL1_BLUE_WHITE* = 18
+  IDL1_GRN_RED_BLU_WHT* = 19
+  IDL1_RED_TEMPERATURE* = 20
+  IDL1_BLUE_GREEN_RED_YELLOW* = 21
+  IDL1_STD_GAMMA_II* = 22
+  IDL1_PRISM* = 23
+  IDL1_RED_PURPLE* = 24
+  IDL1_GREEN_WHITE_LINEAR* = 25
+  IDL1_RGN_WHT_EXPONENTIAL* = 26
+  IDL1_GREEN_PINK* = 27
+  IDL1_BLUE_RED* = 28
+  IDL1_16_LEVEL* = 29
+  IDL1_RAINBOW* = 30
+  IDL1_STEPS* = 31
+  IDL1_STERN_SPECIAL* = 32
+  IDL1_BEGIN* = 17
+  IDL1_NUM* = 16
+  IDL2_HAZE* = 33
+  IDL2_BLUE_PASTEL_RED* = 34
+  IDL2_PASTELS* = 35
+  IDL2_HUE_SAT_LIGHTNESS_1* = 36
+  IDL2_HUE_SAT_LIGHTNESS_2* = 37
+  IDL2_HUE_SAT_VALUE_1* = 38
+  IDL2_HUE_SAT_VALUE_2* = 39
+  IDL2_PURPLE_RED_WITH_STRIPES* = 40
+  IDL2_BEACH* = 41
+  IDL2_MAC_STYLE* = 42
+  IDL2_EOS_A* = 43
+  IDL2_EOS_B* = 44
+  IDL2_HARDCANDY* = 45
+  IDL2_NATURE* = 46
+  IDL2_OCEAN* = 47
+  IDL2_PEPPERMINT* = 48
+  IDL2_PLASMA* = 49
+  IDL2_BLUE_RED* = 50
+  IDL2_RAINBOW* = 51
+  IDL2_BLUE_WAVES* = 52
+  IDL2_VALCANO* = 53
+  IDL2_WAVES* = 54
+  IDL2_RAINBOW18* = 55
+  IDL2_ORBIT_VIEWER_COLOR* = 57
+  IDL2_ORBIT_VIEWER_GREY* = 58
+  EGGX_COLOR_BEGIN* = 0
+type
+  color_prms* {.importc: "struct eggx_color_prms", header: headereggx_color, bycopy.} = object
+    colormode*: cint
+    flags*: cint
+    contrast*: cfloat
+    brightness*: cfloat
+    gamma*: cfloat
+    seplevel*: cint
+    `ptr`*: pointer
+    function*: proc (a1: cfloat; a2: pointer; a3: cfloat; a4: cfloat; a5: cfloat; a6: ptr cfloat; a7: ptr cfloat; a8: ptr cfloat) {.nimcall.}
+
+proc generatecolor*(a1: ptr color_prms; a2: cfloat; a3: cfloat; a4: cfloat; a5: ptr cint; a6: ptr cint; a7: ptr cint): cint {.importc: "eggx_$1", header: headereggx_color.}
+proc makecolor*(a1: cint; a2: cfloat; a3: cfloat; a4: cfloat; a5: ptr cint; a6: ptr cint; a7: ptr cint): cint {.importc: "eggx_$1", header: headereggx_color.}
