@@ -13,3 +13,4 @@ mandel
 sample/
 /systemverilog_dpi_now/user-interface/draw/draw
 *.a
+/systemverilog_dpi_now/user-interface/libdpi
