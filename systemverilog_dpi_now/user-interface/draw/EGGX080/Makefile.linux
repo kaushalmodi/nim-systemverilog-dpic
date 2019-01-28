@@ -1,0 +1,94 @@
+#EGGX/ProCALL をビルドする時の C コンパイラ
+CC    = gcc
+
+CFLAGS = -O2 -Wall
+
+#ユーザが利用する C コンパイラ，フラグ
+USERCC   = gcc
+USERCCFLAGS = -O2 -Wall
+#USERCC   = icc
+
+#ユーザが利用する FORTRAN コンパイラ，フラグ
+USERFC   = g77
+USERFCFLAGS = -O2 -Wall
+#USERFC   = ifc
+
+#X11/Xlib.h のあるディレクトリ
+IINC  = -I/usr/X11R6/include
+#IINC  = -I/usr/openwin/include
+#IINC  = -I/usr/local/X11R6/include
+#IINC  = -I/usr/include
+
+#libX11.a libX11.so のあるディレクトリ
+LLIB  = -L/usr/X11R6/lib
+#LLIB  = -L/usr/openwin/lib
+#LLIB  = -L/usr/local/X11R6/lib
+#LLIB  = -L/usr/lib
+
+#root になれない場合は以下の 2 行は # でコメントにする
+LOCALINC = -I/usr/local/include
+LOCALLIB = -L/usr/local/lib
+
+#root になれない場合の設定
+#(eggx*.h, libeggx.a, egg を同一ディレクトリに入れる場合は
+# LOCALINC LOCALLIB は空でもよい)
+#LOCALINC =
+#LOCALLIB =
+#LOCALINC = -I${HOME}/EGGX
+#LOCALLIB = -L${HOME}/EGGX
+#LOCALINC = -I${HOME}/include
+#LOCALLIB = -L${HOME}/lib
+
+LLINKS = -leggx -lX11 -lm
+
+#for Solaris,IRIX
+#VDEFS = -DNO_ISINF
+
+#for the system without mkstemp
+#TDEFS = -DNO_MKSTEMP
+
+#for the system without usleep
+#UDEFS = -DNO_USLEEP
+
+##CFLAGS = -O2 -Wreturn-type -Wswitch -Wformat -Wuninitialized -Wparentheses
+
+DEFS = $(VDEFS) $(TDEFS) $(UDEFS)
+
+all: _proslave_ mkexheader lib egg
+
+.c.o:   ; $(CC) $(CFLAGS) $(IINC) $(DEFS) -c $*.c
+
+_proslave_: _proslave_.o
+	$(CC) $(CFLAGS) _proslave_.o -o _proslave_ $(LLIB) -lX11
+
+mkexheader: mkexheader.o
+	$(CC) $(CFLAGS) mkexheader.o -o mkexheader
+	./mkexheader _proslave_ > exec_proslave.h
+
+lib: eggx_base.o eggx_color.o
+	ar cruv libeggx.a eggx_base.o eggx_color.o
+	ranlib libeggx.a
+
+egg: egg.sh
+	cat egg.sh > egg
+	rm -f egg.sh.t
+	for i in USERCC "x@@$(USERCC)" USERFC "x@@$(USERFC)" \
+	  USERCCFLAGS "x@@$(USERCCFLAGS)" USERFCFLAGS "x@@$(USERFCFLAGS)" \
+	  IINC "x@@$(IINC)" LLIB "x@@$(LLIB)" LOCALINC "x@@$(LOCALINC)" \
+	  LOCALLIB "x@@$(LOCALLIB)" LLINKS "x@@$(LLINKS)" ; do { \
+	  if [ -f egg.sh.t ] ; then \
+	    if [ "$$i" = "x@@" ] ; then \
+	      cat egg.sh.t | sed -e "s|@@@TARGET@@@||" > egg ; \
+	    else \
+	      cat egg.sh.t | sed -e "s|@@@TARGET@@@|$$i|" | sed -e 's|x@@||' > egg ; \
+	    fi ; \
+	    rm -f egg.sh.t ; \
+	  else \
+	    cat egg | sed -e "s|@$$i@|@@@TARGET@@@|" > egg.sh.t ; \
+	  fi ; \
+	} done
+	chmod 755 egg
+
+clean:
+	rm -f *.o egg egg.sh.t _proslave_ libeggx.a mkexheader exec_proslave.h
+

@@ -1,0 +1,73 @@
+	-- ChangeLog --
+	ピックスマップを使ってアイコン化しても大丈夫なように．
+	ついでに layer 機能を追加
+	画像の save に対応
+	atexit できちんとXサーバと断線するようにした．
+	msleep を追加
+	snprintf がない場合でも使えるようにした．
+	24bit イメージのクライアントからの一括転送をできるようにした．(0.51)
+	Expose イベントのチェックをタイマー割り込みではなく子プロセスで
+	XNextEvent で受けるようにした．(0.52)
+	XFlush() の回数を減らした．
+	_proslave_ を libpro.a に取り込んだ．(0.53)
+	コーディングの見直し．(0.54)
+	16bpp な X サーバでも putimg24 が使えるように修正．
+	キー入力関数 inkeydollar を追加．
+	WMNormalHints を追加．
+	gopen の後すぐに layer を呼ぶと子プロセスが死ぬバグを修正．
+	C の winname 関数を可変長引数に．(0.55)
+	C の drawstr 関数を可変長引数に．
+	C の imgsave 関数を可変長引数に．(0.60)
+	割り込み(Ctrl+C 等)時の不具合を修正．(0.61)
+	親子関係のバグを修正．(0.62)
+	関数名を整理．
+	  - line(…,PSET) → マクロ pset(…) 追加
+	  - plot 関数  → line に名称変更
+	  - arohd 関数 → drawarrow に名称変更
+	  - imgsave 関数/サブルーチン → saveimg に名称変更
+	  - clsx 関数 → gclr に名称変更
+	  - clsc 関数 → tclr に名称変更
+	以前のテンポラリファイルが残っている場合削除するようにした．(0.65)
+	コーディングの見直し．
+	drawarc,fillarc 関数,サブルーチンの引数の変更．
+	xcirc1 サブルーチン削除．
+	xarc サブルーチン削除．
+	drawarc サブルーチン新設．
+	drawcirc サブルーチン新設．
+	circle 関数を新設．
+	orgeometry 関数を削除．
+	テンポラリファイル処理まわりの修正．
+	copylayer 関数新設．
+	gsetborder 関数，gsetbgcolor 関数を新設．
+	gsetinitialXXX 関数群を新設．
+	ドックアプリ用設定を可能にした．(0.70)
+	カラー生成用の makecolor 関数を新設．(0.71)
+	XCopyArea を使わないようにした．
+	マウス入力関数 ggetxpress 関数を新設．(0.72)
+	フォントセットの描画に対応．(0.73)
+	FORTRAN のサブルーチン名の整理．
+	ggetdisplayinfo 関数を新設．
+	saveimg 関数が ImageMagick の convert に対応．(0.74)
+	複数の Visual を持つ X サーバに対応
+	(デフォルトが PseudoColor でも TrueColor で窓を開くように)．
+	16bpp の場合に saveimg() で保存した画像がズレる不具合を修正．(0.75)
+	Linux/Alpha に対応．(0.76)
+	細かなバグ修正とエラーチェックの追加．(0.77)
+	コンパイルコマンド egg をシェルスクリプトにした．
+	長いプログラム名の時に，Window のタイトル表示が一部省略されないように
+	した．(0.78)
+	スクリプト egg を若干修正 & sample ディレクトリの Makefile を作成．
+	# thanks > 薮＠大阪府立大学さま
+	(0.78r1)
+	スクリプト egg を若干修正．(0.78r2)
+	NetBSD に対応．(0.78r3)
+	# thanks > Yasuhide Yokoyama さま
+	HP-UX,HP64,Sun64 用 Makefile,解説を追加
+	# thanks > 渡辺 さま
+	Mac OS X の場合の Makefile の解説ミスを修正
+	# thanks > 小川和律 さま
+	drawstr() での Seg.Fault を修正
+	# thanks > 小渡 さま
+	cygwin, X on Windows への対応．(0.79)
+	rtoc_() のバグを修正
+	実際の関数名はすべて eggx_ から始まる名前に統一．(0.80)
