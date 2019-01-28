@@ -10,9 +10,10 @@ var
 proc draw_init*(width, height: cint): cint {.exportc.} =
   gsetinitialparsegeometry("%+d%+d", Gwin * (200 + 10), 0)
   let
-    win: cint = gopen(width, height)
+    win: cint = gopen(width, height) # The returned int value increments with each new window.
   layer(win, 0, 1)
   Gwin = win
+  echo "Gwin = ", Gwin
   return win
 
 proc draw_clear*(win: cint) {.exportc.} =

@@ -2,7 +2,7 @@ import draw
 import strformat
 from os import sleep
 
-proc hw_sync_placeholder(cnt: int) = sleep(cnt*10)
+proc hw_sync_placeholder(cnt: int) = sleep(cnt)
 
 const
   thres = 4.0
@@ -45,12 +45,13 @@ proc mandel*(winWidth: cint  = 200,
     win = draw_init(winWidth, winHeight)
     label = fmt"Nim (win={win}) IMG({realBegin}, {imagBegin}) ({realEnd}, {imagEnd})"
 
-  draw_title(win, cstring(label))
+  draw_title(win, cstring(label)) # convert label from string -> cstring
 
   for _ in 1 .. repeat:
     var
       yreal = imagBegin
     for y in 0.cint ..< winHeight:
+      hw_sync(1)
       var
         xreal = realBegin
       for x in 0.cint ..< winWidth:
@@ -58,16 +59,13 @@ proc mandel*(winWidth: cint  = 200,
           n = get_mandel(xreal, yreal)
         if n > 0:
            draw_pixel(win, x, y, n, 1, limit)
+        if y mod modn == 0:
+          draw_flush(win)
         xreal += xstep
-
-      hw_sync(1)
-
-      if y mod modn == 0:
-        draw_flush(win)
       yreal += ystep
 
     draw_finish(win)
-    hw_sync(200)
+    hw_sync(2000)
     draw_clear(win)
 
 when isMainModule:

@@ -35,7 +35,7 @@ module top;
 
       yr = ystart;
       for (y = 0; y < height; y++) begin
-        hw_sync(10);
+        hw_sync(1);
         xr = xstart;
         for (x = 0; x < width; x++) begin
           n = get_mandel(xr, yr);
@@ -47,7 +47,7 @@ module top;
         yr = yr + yincr;
       end
       draw_finish(win);
-      hw_sync(200);
+      hw_sync(2000);
       draw_clear(win);
     end
   endtask
