@@ -18,7 +18,7 @@ module top;
       im = 2.0 * re * im + c_imaginary;
       re = tmp;
     end
-    if (i == 1000) return 1;
+    if (i == 1000) return 0;
     else           return i;
   endfunction
 

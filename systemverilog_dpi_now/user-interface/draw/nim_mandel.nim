@@ -14,24 +14,19 @@ proc get_mandel(c_real, c_imaginary: float64): int32 =
   var
     i: int32
     re, im: float64
-  re = 0.0
-  im = 0.0
 
-  for idx in 0'i32 ..< limit.int32:
-    var
-      xsq, ysq, tmp: float64
-    i = idx
-    xsq = re * re
-    ysq = im * im
+  while true:
+    let
+      xsq = re * re
+      ysq = im * im
     if xsq + ysq > thres:
       break
-    tmp = xsq - ysq + c_real
     im = 2 * re * im + c_imaginary
-    re = tmp
-  if i == limit:
-    return 0
-  else:
-    return i
+    re = xsq - ysq + c_real
+    i += 1
+    if i >= limit:
+      return 0
+  return i
 
 proc mandel*(winWidth  = 200,
              winHeight = 200,
