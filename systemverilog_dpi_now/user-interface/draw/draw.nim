@@ -5,21 +5,20 @@ const
   myColor = DS9_B
 
 var
-  Gwin: int32 = 0
+  Gwin: cint = 0
 
-proc draw_init*(width, height: int32): int32 {.exportc.} =
-  var
-    win: int32
+proc draw_init*(width, height: cint): cint {.exportc.} =
   gsetinitialparsegeometry("%+d%+d", Gwin * (200 + 10), 0)
-  win = gopen(width, height)
+  let
+    win: cint = gopen(width, height)
   layer(win, 0, 1)
   Gwin = win
   return win
 
-proc draw_clear*(win: int32) {.exportc.} =
+proc draw_clear*(win: cint) {.exportc.} =
   gclr(win)
 
-proc draw_title*(win: int32; title: cstring) {.exportc.} =
+proc draw_title*(win: cint; title: cstring) {.exportc.} =
   discard winname(win, title)
 
 proc draw_pixel*(win, x, y, n, minlimit, maxlimit: cint) {.exportc.} =
@@ -37,8 +36,8 @@ proc draw_pixel*(win, x, y, n, minlimit, maxlimit: cint) {.exportc.} =
   newrgbcolor(win, color_r, color_g, color_b)
   pset(win, x.cfloat, y.cfloat)
 
-proc draw_flush*(win: int32) {.exportc.} =
+proc draw_flush*(win: cint) {.exportc.} =
   copylayer(win, 1, 0)
 
-proc draw_finish*(win: int32) {.exportc.} =
+proc draw_finish*(win: cint) {.exportc.} =
   draw_flush(win)

@@ -2,18 +2,18 @@ import draw
 import strformat
 from os import sleep
 
-proc hw_sync_placeholder(cnt: int) = discard
+proc hw_sync_placeholder(cnt: int) = sleep(cnt*10)
 
 const
   thres = 4.0
-  limit: int32 = 1000
+  limit: cint = 1000
 
 # Mandel
 
-proc get_mandel(c_real, c_imaginary: float64): int32 =
+proc get_mandel(c_real, c_imaginary: float): int32 =
   var
     i: int32
-    re, im: float64
+    re, im: float
 
   while true:
     let
@@ -28,21 +28,21 @@ proc get_mandel(c_real, c_imaginary: float64): int32 =
       return 0
   return i
 
-proc mandel*(winWidth  = 200,
-             winHeight = 200,
-             xScale    = 1.0,
-             yScale    = 1.0,
-             realBegin = 0.075,
-             realEnd   = 0.175,
-             imagBegin = 0.59,
-             imagEnd   = 0.69,
-             repeat    = 1,
-             hw_sync   = hw_sync_placeholder) =
+proc mandel*(winWidth: cint  = 200,
+             winHeight: cint = 200,
+             xScale          = 1.0,
+             yScale          = 1.0,
+             realBegin       = 0.075,
+             realEnd         = 0.175,
+             imagBegin       = 0.59,
+             imagEnd         = 0.69,
+             repeat          = 1,
+             hw_sync         = hw_sync_placeholder) =
   let
     modn = winWidth div 20
     xstep = xScale * (realEnd - realBegin) / winWidth.float
     ystep = yScale * (imagEnd - imagBegin) / winHeight.float
-    win = draw_init(winWidth.int32, winHeight.int32)
+    win = draw_init(winWidth, winHeight)
     label = fmt"Nim (win={win}) IMG({realBegin}, {imagBegin}) ({realEnd}, {imagEnd})"
 
   draw_title(win, cstring(label))
@@ -50,14 +50,14 @@ proc mandel*(winWidth  = 200,
   for _ in 1 .. repeat:
     var
       yreal = imagBegin
-    for y in 0 ..< winHeight:
+    for y in 0.cint ..< winHeight:
       var
         xreal = realBegin
-      for x in 0 ..< winWidth:
+      for x in 0.cint ..< winWidth:
         let
           n = get_mandel(xreal, yreal)
         if n > 0:
-           draw_pixel(win.cint, x.cint, y.cint, n.cint, 1.cint, limit.cint)
+           draw_pixel(win, x, y, n, 1, limit)
         xreal += xstep
 
       hw_sync(1)
@@ -65,11 +65,9 @@ proc mandel*(winWidth  = 200,
       if y mod modn == 0:
         draw_flush(win)
       yreal += ystep
+
     draw_finish(win)
-
     hw_sync(200)
-
-    sleep(5000)                 # 5 seconds
     draw_clear(win)
 
 when isMainModule:
