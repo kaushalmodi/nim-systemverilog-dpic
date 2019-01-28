@@ -7,6 +7,7 @@ module top;
   real xstart, xend, ystart, yend;
 
   parameter int num_draws = 5;
+  parameter int end_pause = 2000;
 
   function int get_mandel(input real c_real, input real c_imaginary);
     int i;
@@ -26,7 +27,8 @@ module top;
 
   task vl_mandel(input int width, input int height,
                  input real xstart, input real xend, input real ystart, input real yend,
-                 input int num);
+                 input int num,
+                 input int pause);
 
     win = draw_init(width, height);
     draw_title(win, "SystemVerilog");
@@ -49,7 +51,7 @@ module top;
         yr = yr + yincr;
       end
       draw_finish(win);
-      hw_sync(2000);
+      hw_sync(pause);
       draw_clear(win);
     end
   endtask
@@ -61,9 +63,9 @@ module top;
 
   initial begin
     fork
-      begin vl_mandel(200, 200, 0.075, 0.175, 0.59, 0.69, num_draws); end
-      begin  c_mandel(200, 200, 0.075, 0.175, 0.59, 0.69, num_draws); end
-      begin  c_mandel(100, 100, 0.075, 0.175, 0.59, 0.69, num_draws); end
+      begin vl_mandel(200, 200, 0.075, 0.175, 0.59, 0.69, num_draws, end_pause); end
+      begin  c_mandel(200, 200, 0.075, 0.175, 0.59, 0.69, num_draws, end_pause); end
+      begin  c_mandel(100, 100, 0.075, 0.175, 0.59, 0.69, num_draws, end_pause); end
     join
     $finish;
   end
@@ -74,7 +76,7 @@ module top;
                                        input int width,   input int height,
                                        input real xstart, input real xend,
                                        input real ystart, input real yend,
-                                       input int num);
+                                       input int num, input int pause);
 
   import "DPI-C" function void draw_finish(
                                            input int win);

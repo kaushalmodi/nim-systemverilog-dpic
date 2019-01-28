@@ -36,7 +36,8 @@ proc mandel*(winWidth: cint  = 200,
              realEnd         = 0.175,
              imagBegin       = 0.59,
              imagEnd         = 0.69,
-             repeat          = 1,
+             repeat: cint    = 1,
+             endPause: cint  = 3000,
              hw_sync         = hw_sync_placeholder) =
   let
     modn = winWidth div 20
@@ -65,7 +66,7 @@ proc mandel*(winWidth: cint  = 200,
       yreal += ystep
 
     draw_finish(win)
-    hw_sync(2000)
+    hw_sync(endPause)
     draw_clear(win)
 
 when isMainModule:
