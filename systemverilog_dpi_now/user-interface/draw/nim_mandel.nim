@@ -2,7 +2,7 @@ import draw
 import strformat
 from os import sleep
 
-proc hw_sync_placeholder(cnt: int) = sleep(cnt)
+proc hw_sync_placeholder(cnt: cint) = sleep(cnt)
 
 const
   thres = 4.0

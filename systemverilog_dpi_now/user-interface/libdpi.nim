@@ -1,9 +1,9 @@
 import svdpi
 import draw/[draw, nim_mandel]
 
-proc hw_sync(cnt: int) {.importc, gcsafe, noSideEffect.}
+proc hw_sync(cnt: cint) {.importc, gcsafe, noSideEffect.}
 
-proc c_mandel(width, height: int32; xstart, xend, ystart, yend: float64): cint {.exportc.} =
+proc c_mandel(width, height: cint; xstart, xend, ystart, yend: float): cint {.exportc.} =
   let
     xScale = 1.0
     yScale = 1.0
