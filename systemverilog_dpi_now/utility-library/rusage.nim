@@ -3,9 +3,9 @@ import posix
 
 type
   Rusage* {.importc: "struct rusage",
-           header: "<sys/resource.h>",
-           pure,
-           final.} = object
+            header: "<sys/resource.h>",
+            pure,
+            final.} = object
     ru_utime*, ru_stime*: Timeval                       # User and system time
     ru_maxrss*, ru_ixrss*, ru_idrss*, ru_isrss*,        # memory sizes
       ru_minflt*, ru_majflt*, ru_nswap*,                # paging activity
