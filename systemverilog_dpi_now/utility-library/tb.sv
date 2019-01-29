@@ -9,11 +9,10 @@ module top;
    * Just something to eat up time so we have something to measure.
    */
   task consumeTime(inout int sum);
-    int i, j, k;
     sum = 0;
-    for(i = 0; i < 100; i++) begin
-      for(j = 0; j < 100; j++) begin
-        for(k = 0; k < 5000; k++) begin
+    for(int i = 0; i < 100; i++) begin
+      for(int j = 0; j < 100; j++) begin
+        for(int k = 0; k < 5000; k++) begin
           sum = sum + i * 2 + j * 3 + k * 4;
         end
       end
@@ -50,6 +49,8 @@ module top;
 
     // Calculate total time since execution began.
     useconds = timer_split(totaltime);
+
+    assert (useconds > 0);
 
     // Try to print it nicely.
     seconds = useconds / 1000000.0;
