@@ -8,11 +8,9 @@ else:
 type
   RusageP = ptr Rusage
 
-proc c_malloc(size: csize): pointer {.importc: "malloc", header: "<stdlib.h>".}
-
 proc timer_new(): RusageP =
   ## Malloc a new rusage structure.
-  return cast[RusageP](c_malloc(sizeof(Rusage)))
+  return cast[RusageP](alloc(sizeof(Rusage)))
 
 proc timer_restart(rp: RusageP) =
   ## Given an existing rusage structure, "refill" the entries from now.
