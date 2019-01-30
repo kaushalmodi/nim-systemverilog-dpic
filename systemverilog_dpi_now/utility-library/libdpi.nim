@@ -1,5 +1,8 @@
 import svdpi
-import rusage
+when (NimMajor, NimMinor, NimPatch) < (0, 19, 9):
+  import rusage
+else:
+  import posix
 # import strformat
 
 type

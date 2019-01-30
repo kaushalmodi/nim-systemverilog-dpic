@@ -1,5 +1,7 @@
-# https://github.com/nim-lang/Nim/pull/10484/files
 import posix
+
+# Below Rusage-related code will be part of Nim 0.20.
+# https://github.com/nim-lang/Nim/commit/b2a5195e92f8852a47ca70136b103bc374b73393
 
 type
   Rusage* {.importc: "struct rusage",
