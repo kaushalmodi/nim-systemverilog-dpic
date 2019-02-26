@@ -1,4 +1,4 @@
-// Time-stamp: <2019-01-17 21:59:34 kmodi>
+// Time-stamp: <2019-02-26 12:48:37 kmodi>
 
 program top;
 
@@ -8,4 +8,4 @@ program top;
     hello();
   end
 
-endprogram
+endprogram : top
