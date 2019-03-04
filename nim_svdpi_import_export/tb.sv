@@ -1,4 +1,4 @@
-// Time-stamp: <2019-01-20 01:45:18 kmodi>
+// Time-stamp: <2019-03-04 18:07:54 kmodi>
 // https://verificationacademy.com/resources/technical-papers/dpi-redux-functionality-speed-optimization
 
 module top();
@@ -24,6 +24,7 @@ module top();
     #10;
     ret = nimAddFunction(10, 20, c);
     nimAddTask(10, 20, c);
+    $finish;
   end
 
 endmodule : top
