@@ -1,4 +1,4 @@
-# Time-stamp: <2019-01-28 14:28:52 kmodi>
+# Time-stamp: <2019-03-18 21:33:39 kmodi>
 # Author    : Kaushal Modi
 
 FILES   = tb.sv
@@ -11,6 +11,15 @@ OPTIONS =
 
 # Subdirs contains a list of all directories containing a "Makefile".
 SUBDIRS = $(shell find . -name "Makefile" | sed 's|/Makefile||')
+
+ARCH ?= 64
+ifeq ($(ARCH), 64)
+	NIM_ARCH_FLAGS :=
+	NC_ARCH_FLAGS := -64bit
+else
+	NIM_ARCH_FLAGS := --cpu:i386 --passC:-m32 --passL:-m32
+	NC_ARCH_FLAGS :=
+endif
 
 NIM_GC      = regions
 NIM_DEFINES =
@@ -28,10 +37,11 @@ clean:
 # https://irclogs.nim-lang.org/21-01-2019.html#17:16:39
 libdpi:
 	@find . \( -name libdpi.o -o -name libdpi.so \) -delete
-	nim c --out:libdpi.so --app:lib --nimcache:./.nimcache --gc:$(NIM_GC) $(NIM_DEFINES) libdpi.nim
+	nim c --out:libdpi.so --app:lib --nimcache:./.nimcache $(NIM_ARCH_FLAGS) --gc:$(NIM_GC) $(NIM_DEFINES) libdpi.nim
 
 nc:
-	xrun -sv -64bit -timescale 1ns/10ps \
+	xrun -sv $(NC_ARCH_FLAGS) \
+	-timescale 1ns/10ps \
 	+define+SHM_DUMP -debug \
 	+define+$(DEFINES) \
 	$(FILES) \
@@ -51,3 +61,7 @@ $(SUBDIRS):
 	$(MAKE) -C $@
 
 all: $(SUBDIRS)
+
+
+# Run "make ARCH=32" to build 32-bit libdpi.so and run 32-bit xrun.
+# Run "make" to build 64-bit libdpi.so and run 64-bit xrun.
