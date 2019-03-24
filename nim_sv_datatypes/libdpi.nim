@@ -64,6 +64,8 @@ proc ret_nilPtr(): ptr seq[int] {.exportc.} = nil
 
 type
   Animal = object
+    # We need to use cstring and not string type below. Else you get the error:
+    # xmsim: *E,SIGUSR: Unix Signal SIGSEGV raised from user application code.
     name, species: cstring
     age: cint
 # Fri Jan 18 18:39:47 EST 2019 - kmodi
