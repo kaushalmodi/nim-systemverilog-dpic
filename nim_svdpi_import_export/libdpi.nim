@@ -1,11 +1,11 @@
-# Time-stamp: <2019-03-24 14:56:34 kmodi>
+# Time-stamp: <2019-03-24 14:59:31 kmodi>
 # https://verificationacademy.com/resources/technical-papers/dpi-redux-functionality-speed-optimization
 
 import svdpi
 import strformat
 
 # Signature / header lines for the functions/tasks defined in SV.
-proc sv_print_scope(value: cint): cint {.importc, discardable.}
+proc sv_print_scope(value: cint) {.importc.}
 proc sv_consume_time(d: cint): cint {.importc, discardable.}
 
 proc nimAddFunction(a, b: cint; c: ref cint): cint {.exportc.} =
