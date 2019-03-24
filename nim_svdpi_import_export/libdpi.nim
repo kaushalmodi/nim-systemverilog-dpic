@@ -1,4 +1,4 @@
-# Time-stamp: <2019-03-24 14:39:18 kmodi>
+# Time-stamp: <2019-03-24 14:56:34 kmodi>
 # https://verificationacademy.com/resources/technical-papers/dpi-redux-functionality-speed-optimization
 
 import svdpi
@@ -25,4 +25,5 @@ proc nimAddTask(a, b: cint; c: ref cint): cint {.exportc.} =
   sv_consume_time(10)
   sv_consume_time(10)
   sv_print_scope(c[])
+  sv_consume_time(10)
   return 0
