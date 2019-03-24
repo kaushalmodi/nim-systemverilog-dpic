@@ -1,4 +1,4 @@
-// Time-stamp: <2019-01-18 18:47:46 kmodi>
+// Time-stamp: <2019-03-18 22:19:41 kmodi>
 
 program top;
 
@@ -7,10 +7,10 @@ program top;
   import "DPI-C" hello = task hello_task();
 
   // * Receiving SystemVerilog variables from C
-  import "DPI-C" ret_int16  = function shortint ret_shortint();
-  import "DPI-C" ret_int32  = function int ret_int();
-  import "DPI-C" ret_int64  = function longint ret_longint();
-  import "DPI-C" ret_int8   = function byte ret_byte();
+  import "DPI-C" ret_cshort    = function shortint ret_shortint();
+  import "DPI-C" ret_cint      = function int ret_int();
+  import "DPI-C" ret_clonglong = function longint ret_longint();
+  import "DPI-C" ret_cchar     = function byte ret_byte();
 
   import "DPI-C" ret_bit    = function bit ret_bit();
   import "DPI-C" ret_logic0 = function logic ret_logic0();

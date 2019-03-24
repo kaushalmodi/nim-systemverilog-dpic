@@ -25,21 +25,21 @@ proc hello() {.exportc.} =
   echo "Hello from Nim!"
 #+end_src
 * Datatype Translation
-|-----------+---------------|
-| Nim       | SystemVerilog |
-|-----------+---------------|
-| byte      | byte          |
-| int       | int           |
-| long long | longint       |
-| short int | shortint      |
-| double    | real          |
-| float     | shortreal     |
-| void*     | chandle       |
-| char*     | string        |
-|-----------+---------------|
+|---------------+-----------+--------------------|
+| SystemVerilog | C         | Nim                |
+|---------------+-----------+--------------------|
+| byte          | char      | uint8              |
+| int           | int       | cint or int32      |
+| longint       | long long | clonglong or int64 |
+| shortint      | short int | cshort or int16    |
+| real          | double    | cdouble or float64 |
+| shortreal     | float     | cfloat or float32  |
+| chandle       | void*     | pointer or ptr T   |
+| string        | char*     | cstring            |
+|---------------+-----------+--------------------|
 * Imports
 ** Tasks
-- A Nim proc mapped to a SV *task* needs to have an ~int32~ return
+- A Nim proc mapped to a SV *task* needs to have an ~cint~ return
   type, and it should return a value of 0 (default) or 1.
 
   Failure to do so will give this error:

@@ -28,8 +28,8 @@ proc pass_int_array(dyn_arr: svOpenArrayHandle) {.exportc.} =
       # The SV arrays are declared to be of int type:
       #   int fxd_arr_1 [3:8];
       #   int fxd_arr_2 [12:1];
-      # So cast the pointer to int32 or cint pointer.
-      valPtr = cast[ptr int32](svGetArrElemPtr1(dyn_arr, i))
+      # So cast the pointer to cint or int32 pointer.
+      valPtr = cast[ptr cint](svGetArrElemPtr1(dyn_arr, i))
       val = valPtr[]
     echo fmt"  Nim: array[{i:>2}]: {val:>11}"
   echo "\n"
@@ -52,7 +52,7 @@ proc add_lpv(aRef, bRef, cRef: ref svLogicVecVal) {.exportc.} =
 # svLogicVecVal from the SV side. But as per Araq, using "var array"
 # is the correct approach, and not "ref array".
 # - https://irclogs.nim-lang.org/21-01-2019.html#18:20:35
-proc get_nums(nums: var array[10, svLogicVecVal]) {.exportc.} =
+proc get_nums_var_arg(nums: var array[10, svLogicVecVal]) {.exportc.} =
   # https://irclogs.nim-lang.org/21-01-2019.html#18:04:11
   withScratchRegion:
     echo fmt"packed logic array length = {nums.len}"
@@ -65,7 +65,7 @@ proc get_nums(nums: var array[10, svLogicVecVal]) {.exportc.} =
       echo fmt"Nim: nums[{i}] = {nums[i]}"
 
 # Even though not recommended, the "ref array" approach works:
-proc get_nums2(numsRef: ref array[10, svLogicVecVal]) {.exportc.} =
+proc get_nums_ref_arg1(numsRef: ref array[10, svLogicVecVal]) {.exportc.} =
   withScratchRegion:
     echo fmt"packed logic array length = {numsRef[].len}"
     for i in 0 .. numsRef[].high:
@@ -75,7 +75,7 @@ proc get_nums2(numsRef: ref array[10, svLogicVecVal]) {.exportc.} =
 
 # Above can be alternatively written as below too; again: not
 # recommended.
-proc get_nums3(numsRef: ref array[10, svLogicVecVal]) {.exportc.} =
+proc get_nums_ref_arg2(numsRef: ref array[10, svLogicVecVal]) {.exportc.} =
   withScratchRegion:
     var
       nums = numsRef[]

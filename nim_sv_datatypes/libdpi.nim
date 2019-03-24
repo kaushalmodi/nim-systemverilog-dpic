@@ -14,24 +14,24 @@ proc hello() {.exportc.} =
   echo "Hello from Nim!"
 
 # Input: none
-# Return: int16 / shortint (SV) - 16-bit signed
-proc ret_int16(): int16 {.exportc.} =
-  high(int16)
+# Return: int16 / short int (C) / shortint (SV) - 16-bit signed
+proc ret_cshort(): cshort {.exportc.} =
+  high(cshort)
 
 # Input: none
-# Return: int32 / int (SV) - 32-bit signed
-proc ret_int32(): int32 {.exportc.} =
-  high(int32)
+# Return: int32 / int (C) / int (SV) - 32-bit signed
+proc ret_cint(): cint {.exportc.} =
+  high(cint)
 
 # Input: none
-# Return: int64 / longint (SV) - 64-bit signed
-proc ret_int64(): int64 {.exportc.} =
-  high(int64)
+# Return: int64 / long long (C) / longint (SV) - 64-bit signed
+proc ret_clonglong(): clonglong {.exportc.} =
+  high(clonglong)
 
 # Input: none
-# Return: int8 / byte - 8-bit signed
-proc ret_int8(): int8 {.exportc.} =
-  high(int8)
+# Return: int8 / char (C) / byte (SV) - 8-bit signed
+proc ret_cchar(): cchar {.exportc.} =
+  high(cchar)
 
 # Input: none
 # Return: Bit / bit - 1-bit

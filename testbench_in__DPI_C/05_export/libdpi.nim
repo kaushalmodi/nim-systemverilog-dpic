@@ -6,7 +6,7 @@ proc import_func() {.exportc.} =
   export_func()
   echo "Nim: After calling export function"
 
-proc import_task(): int32 {.exportc.} =
+proc import_task(): cint {.exportc.} =
   echo "Nim: Before calling export task"
   export_task()
   echo "Nim: After calling export task"

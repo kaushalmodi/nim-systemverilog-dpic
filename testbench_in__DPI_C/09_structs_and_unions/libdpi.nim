@@ -3,9 +3,9 @@ import strformat
 
 type
   nimObj = object
-    p: int32 # int in SV
-    q: int32 # int in SV
-    r: int8  # byte in SV
+    p: cint  # int in SV
+    q: cint  # int in SV
+    r: uint8 # byte in SV
 
 proc export_func(x: array[3, svBitVec32]) {.importc.}
 
