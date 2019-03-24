@@ -7,7 +7,7 @@ proc vl_task(inp1, inp2: cint; result: var cint) {.importc.}
 
 proc c_test(): cint {.exportc.} =
   const
-    lineMax: int32 = 1024
+    lineMax: cint = 1024
     fileName = "compressed.txt.gz"
   var
     tries, matches: int

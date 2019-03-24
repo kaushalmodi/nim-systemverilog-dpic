@@ -1,15 +1,15 @@
-# Time-stamp: <2019-01-20 01:52:53 kmodi>
+# Time-stamp: <2019-03-24 14:25:09 kmodi>
 # https://verificationacademy.com/resources/technical-papers/dpi-redux-functionality-speed-optimization
 
 import svdpi
 import strformat
 
 # Signature / header lines for the functions/tasks defined in SV.
-proc sv_print_scope(value: int32): int32 {.importc.}
-proc sv_consume_time(d: int32): int32 {.importc.}
+proc sv_print_scope(value: cint): cint {.importc.}
+proc sv_consume_time(d: cint): cint {.importc.}
 
-proc nimAddFunction(a, b: int32; c: ref int32): int32 {.exportc.} =
-  #                                 ^^^ - c is an output on SV side, so it becomes a ref here.
+proc nimAddFunction(a, b: cint; c: ref cint): cint {.exportc.} =
+  #                                ^^^ - c is an output on SV side, so it becomes a ref here.
   let
     scopeName = svGetNameFromScope(svGetScope())
   c[] = a + b
@@ -17,7 +17,7 @@ proc nimAddFunction(a, b: int32; c: ref int32): int32 {.exportc.} =
   discard sv_print_scope(c[])
   return 0
 
-proc nimAddTask(a, b: int32; c: ref int32): int32 {.exportc.} =
+proc nimAddTask(a, b: cint; c: ref cint): cint {.exportc.} =
   let
     scopeName = svGetNameFromScope(svGetScope())
   c[] = a + b
