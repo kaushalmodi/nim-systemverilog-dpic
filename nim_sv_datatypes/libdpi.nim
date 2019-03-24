@@ -65,7 +65,7 @@ proc ret_nilPtr(): ptr seq[int] {.exportc.} = nil
 type
   Animal = object
     name, species: cstring
-    age: int32
+    age: cint
 # Fri Jan 18 18:39:47 EST 2019 - kmodi
 # Below does not work on the SystemVerilog side because DPI-C cannot
 # accept a struct as a return type.
@@ -81,4 +81,5 @@ type
 # https://stackoverflow.com/questions/50351848/passing-c-structs-through-systemverilog-dpi-c-layer
 # helped me understand this.
 proc print_object(animalAddr: ref Animal) {.exportc.} =
-  echo fmt"Received {animalAddr[]} from SV."
+  withScratchRegion:
+    echo fmt"Received {animalAddr[]} from SV."
