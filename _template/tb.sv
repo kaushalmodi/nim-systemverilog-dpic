@@ -1,11 +1,12 @@
-// Time-stamp: <2019-02-26 12:48:37 kmodi>
+// Time-stamp: <2019-03-25 16:33:50 kmodi>
 
 program top;
 
-  import "DPI-C" hello=task hello();
+  import "DPI-C" function void hello();
 
   initial begin
     hello();
+    $finish;
   end
 
 endprogram : top
