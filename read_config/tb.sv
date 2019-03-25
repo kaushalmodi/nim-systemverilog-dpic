@@ -1,13 +1,13 @@
-// Time-stamp: <2019-03-25 17:03:53 kmodi>
+// Time-stamp: <2019-03-25 17:09:51 kmodi>
 
 program top;
 
   import "DPI-C" function void dump_cfg();
-  import "DPI-C" function int get_cfg_int(input string group, input string key);
-  import "DPI-C" function real get_cfg_float(input string group, input string key);
-  import "DPI-C" function string get_cfg_string(input string group, input string key);
-  import "DPI-C" function int get_cfg_int_array_num_elems(input string group, input string key);
-  import "DPI-C" function void get_cfg_int_array(input string group, input string key,
+  import "DPI-C" function int get_cfg_int(input string group, key);
+  import "DPI-C" function real get_cfg_float(input string group, key);
+  import "DPI-C" function string get_cfg_string(input string group, key);
+  import "DPI-C" function int get_cfg_int_array_num_elems(input string group, key);
+  import "DPI-C" function void get_cfg_int_array(input string group, key,
                                                  output int arr_val[]);
 
   initial begin
