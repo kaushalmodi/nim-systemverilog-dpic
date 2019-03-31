@@ -1,16 +1,3 @@
-import svdpi
-import strformat, parsetoml
-from os import getCurrentDir, `/`
-from sequtils import mapIt
-
-let
-  configFile = getCurrentDir() / "config.toml"
-  cfg = parsetoml.parseFile(configFile).getTable()
-
-proc dump_cfg() {.exportc.} =
-  echo fmt"Config read from {configFile}:"
-  parsetoml.dump(cfg)
-
 proc get_cfg_int(group, key: cstring): cint {.exportc.} =
   return cfg[$group][$key].getInt().cint
 
