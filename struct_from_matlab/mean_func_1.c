@@ -23,10 +23,10 @@ void mean_func_1(const struct0_T *in, struct1_T *out)
   double y;
   int k;
   int ix;
-  for (i = 1; i <= in->len; i++) {
-    printf("in(%0d) = %0d;\n", i, in->data->data[i - 1]);
-    fflush(stdout);
-  }
+  /* for (i = 1; i <= in->len; i++) { */
+  /*   printf("in(%0d) = %0d;\n", i, in->data->data[i - 1]); */
+  /*   fflush(stdout); */
+  /* } */
 
   if (1 > in->len) {
     i = 0;
