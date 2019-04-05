@@ -7,7 +7,7 @@ let
   dataObjRef = DataObjRef(data: dataPtr)
 
   inp1 = InputObjRef(data: dataObjRef,
-                     Len: inputData.len.cint)
+                     len: inputData.len.cint)
   out1: OutputObjRef = new(OutputObj) # initialize
 
 mean_func_1(inp1, out1)

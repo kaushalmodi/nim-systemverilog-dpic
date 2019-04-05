@@ -21,20 +21,28 @@ static:
 # For now, we need to cimport each included file manually:
 #  https://github.com/nimterop/nimterop/issues/123
 cImport(cSearchPath("rtwtypes.h"))
+
+cOverride:
+  type
+    emxArray_int32_T* = object
+      data*: ptr UncheckedArray[cint] # this pointer needed to be fixed
+      size*: ptr UncheckedArray[cint] # this pointer needed to be fixed
+      allocatedSize*: cint
+      numDimensions*: cint
+      canFreeData*: boolean_T
+    DataObj* = emxArray_int32_T
+    DataObjRef* = ref DataObj
+
+    struct0_T* = object
+      data*: DataObjRef
+      len*: cint
+    InputObj* = struct0_T
+    InputObjRef* = ref InputObj
+
 cImport(cSearchPath("mean_func_1_types.h"))
-cImport(cSearchPath("mean_func_1.h"))
 
 type
-  DataObj* = emxArray_int32_T
-  DataObjRef* = ref DataObj
-
-  InputObj* = struct0_T
-  InputObjRef* = ref InputObj
-
   OutputObj* = struct1_T
   OutputObjRef* = ref OutputObj
 
-# override the mean_func_1 signature
-# below does not work
-# proc mean_func_1*(inp: InputObjRef; outp: OutputObjRef) {.importc, header: includePath / "mean_func_1.h".}
 proc mean_func_1*(inp: InputObjRef; outp: OutputObjRef) {.importc, dynlib: soFile.}

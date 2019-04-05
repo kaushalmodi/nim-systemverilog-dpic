@@ -8,7 +8,7 @@ proc get_mean_func_1_out(arrPtr: svOpenArrayHandle): OutputObj =
     uncheckedArrPtr1 = cast[ptr UncheckedArray[cint]](uncheckedArrPtr0)
     dataObjRef = DataObjRef(data: uncheckedArrPtr1)
     inp1 = InputObjRef(data: dataObjRef,
-                       Len: arrLen)
+                       len: arrLen)
     out1: OutputObjRef = new(OutputObj) # initialize
 
   for i in 0.cint ..< arrLen:
@@ -23,10 +23,10 @@ proc get_mean(arrPtr: svOpenArrayHandle): cdouble {.exportc.} =
   return get_mean_func_1_out(arrPtr).mean
 
 proc get_max(arrPtr: svOpenArrayHandle): cint {.exportc.} =
-  return get_mean_func_1_out(arrPtr).Max
+  return get_mean_func_1_out(arrPtr).max
 
 proc get_min(arrPtr: svOpenArrayHandle): cint {.exportc.} =
-  return get_mean_func_1_out(arrPtr).Min
+  return get_mean_func_1_out(arrPtr).min
 
 proc get_params(arrPtr: svOpenArrayHandle; params: ref OutputObj) {.exportc.} =
   params[] = get_mean_func_1_out(arrPtr)
