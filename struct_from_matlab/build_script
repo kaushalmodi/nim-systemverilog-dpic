@@ -1,0 +1,10 @@
+gcc -m32 -c -ansi -pedantic -Wno-long-long -fwrapv -fPIC -O0 -DMODEL=mean_func_1 -DHAVESTDIO -DUSE_RTMODEL -DUNIX  -o "mean_func_1_initialize.o" "mean_func_1_initialize.c"
+gcc -m32 -c -ansi -pedantic -Wno-long-long -fwrapv -fPIC -O0 -DMODEL=mean_func_1 -DHAVESTDIO -DUSE_RTMODEL -DUNIX  -o "mean_func_1_terminate.o" "mean_func_1_terminate.c"
+gcc -m32 -c -ansi -pedantic -Wno-long-long -fwrapv -fPIC -O0 -DMODEL=mean_func_1 -DHAVESTDIO -DUSE_RTMODEL -DUNIX  -o "mean_func_1.o" "mean_func_1.c"
+gcc -m32 -c -ansi -pedantic -Wno-long-long -fwrapv -fPIC -O0 -DMODEL=mean_func_1 -DHAVESTDIO -DUSE_RTMODEL -DUNIX  -o "mean_func_1_emxutil.o" "mean_func_1_emxutil.c"
+gcc -m32 -c -ansi -pedantic -Wno-long-long -fwrapv -fPIC -O0 -DMODEL=mean_func_1 -DHAVESTDIO -DUSE_RTMODEL -DUNIX  -o "mean_func_1_emxAPI.o" "mean_func_1_emxAPI.c"
+gcc -m32 -c -ansi -pedantic -Wno-long-long -fwrapv -fPIC -O0 -DMODEL=mean_func_1 -DHAVESTDIO -DUSE_RTMODEL -DUNIX  -o "rt_nonfinite.o" "rt_nonfinite.c"
+gcc -m32 -c -ansi -pedantic -Wno-long-long -fwrapv -fPIC -O0 -DMODEL=mean_func_1 -DHAVESTDIO -DUSE_RTMODEL -DUNIX  -o "rtGetNaN.o" "rtGetNaN.c"
+gcc -m32 -c -ansi -pedantic -Wno-long-long -fwrapv -fPIC -O0 -DMODEL=mean_func_1 -DHAVESTDIO -DUSE_RTMODEL -DUNIX  -o "rtGetInf.o" "rtGetInf.c"
+### Creating dynamic library ./mean_func_1.so ...
+gcc -m32 -shared -Wl,-rpath,"/cad/adi/apps/mathworks/matlab/2017b/bin/glnxa64",-L"/cad/adi/apps/mathworks/matlab/2017b/bin/glnxa64" -Wl,--no-undefined -o ./mean_func_1.so mean_func_1_initialize.o mean_func_1_terminate.o mean_func_1.o mean_func_1_emxutil.o mean_func_1_emxAPI.o rt_nonfinite.o rtGetNaN.o rtGetInf.o -lm
