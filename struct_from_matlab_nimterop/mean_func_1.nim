@@ -15,27 +15,18 @@ static:
   doAssert fileExists(includePath / "mean_func_1.h")
 cAddSearchDir(includePath)
 
-cImport(cSearchPath("rtwtypes.h")) # for boolean_T
+cImport(cSearchPath("mean_func_1.h"))
 
-cOverride:
-  type
-    emxArray_int32_T* = object
-      data*: ptr UncheckedArray[cint]
-      size*: ptr UncheckedArray[cint]
-      allocatedSize*: cint
-      numDimensions*: cint
-      canFreeData*: boolean_T
-    DataObj* = emxArray_int32_T
-    DataObjRef* = ref DataObj
-
-    InputObj* = object
-      data*: DataObjRef
-      Len*: cint # length of data.data[]
-    struct0_T* = InputObj
-    InputObjRef* = ref InputObj
-
-cImport(cSearchPath("mean_func_1_types.h"))
 type
+  DataObj* = emxArray_int32_T
+  DataObjRef* = ref DataObj
+
+  # struct0_T
+  InputObj* = object
+    data*: DataObjRef # it's ptr instead of ref in the original type
+    Len*: cint # length of data.data[]
+  InputObjRef* = ref InputObj
+
   OutputObj* = struct1_T
   OutputObjRef* = ref OutputObj
 
