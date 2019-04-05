@@ -27,3 +27,6 @@ proc get_max(arrPtr: svOpenArrayHandle): cint {.exportc.} =
 
 proc get_min(arrPtr: svOpenArrayHandle): cint {.exportc.} =
   return get_mean_func_1_out(arrPtr).Min
+
+proc get_params(arrPtr: svOpenArrayHandle; params: ref OutputObj) {.exportc.} =
+  params[] = get_mean_func_1_out(arrPtr)
