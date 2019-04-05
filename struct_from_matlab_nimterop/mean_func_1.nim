@@ -13,9 +13,14 @@ static:
   doAssert fileExists(includePath / "rtwtypes.h")
   doAssert fileExists(includePath / "mean_func_1_types.h")
   doAssert fileExists(includePath / "mean_func_1.h")
-cAddSearchDir(includePath)
 
-cImport(cSearchPath("mean_func_1.h"))
+# cAddSearchDir + cSearchPath does not work: https://github.com/nimterop/nimterop/issues/122.
+# cAddSearchDir(includePath)
+# cImport(cSearchPath("mean_func_1.h"))
+# As cAddSearchDir does not work, each .h needs to be added manually.
+cImport(includePath / "rtwtypes.h")
+cImport(includePath / "mean_func_1_types.h")
+cImport(includePath / "mean_func_1.h")
 
 type
   DataObj* = emxArray_int32_T
