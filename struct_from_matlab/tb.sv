@@ -1,4 +1,4 @@
-// Time-stamp: <2019-04-05 00:14:06 kmodi>
+// Time-stamp: <2019-04-05 13:04:00 kmodi>
 
 program top;
 
@@ -17,7 +17,7 @@ program top;
     params_s p;
     int vals[];
 
-    vals = '{1, 3, 5, 7, 9};
+    vals = '{100, 3, 5, 9, 7};
 
     $display("Mean of %p = %0.3f", vals, get_mean(vals));
     $display("Max of %p = %0d", vals, get_max(vals));
