@@ -16,8 +16,8 @@ sample/
 /systemverilog_dpi_now/user-interface/libdpi
 /systemverilog_dpi_now/user-interface/draw/nim_mandel
 libdpi.json
-/struct_from_matlab/Makefile
 /struct_from_matlab/mean_func_1_ref.rsp
 /struct_from_matlab/mean_func_1_rtw.mk
 /struct_from_matlab/mean_func_1.def
 /struct_from_matlab/rtw_proj.tmw
+/struct_from_matlab/mean_func_test
