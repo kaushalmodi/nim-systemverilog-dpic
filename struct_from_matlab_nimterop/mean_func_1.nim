@@ -28,10 +28,7 @@ type
   DataObj* = emxArray_int32_T
   DataObjRef* = ref DataObj
 
-  # struct0_T
-  InputObj* = object
-    data*: DataObjRef # it's ptr instead of ref in the original type
-    Len*: cint # length of data.data[]
+  InputObj* = struct0_T
   InputObjRef* = ref InputObj
 
   OutputObj* = struct1_T
