@@ -31,17 +31,13 @@ cOverride:
       numDimensions*: cint
       canFreeData*: boolean_T
     DataObj* = emxArray_int32_T
-    DataObjRef* = ref DataObj
-
-    struct0_T* = object
-      data*: DataObjRef
-      len*: cint
-    InputObj* = struct0_T
-    InputObjRef* = ref InputObj
 
 cImport(cSearchPath("mean_func_1_types.h"))
 
 type
+  InputObj* = struct0_T
+  InputObjRef* = ref InputObj
+
   OutputObj* = struct1_T
   OutputObjRef* = ref OutputObj
 

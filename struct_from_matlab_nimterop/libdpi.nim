@@ -4,10 +4,13 @@ proc get_mean_func_1_out(arrPtr: svOpenArrayHandle): OutputObj =
   let
     arrSize = svSizeOfArray(arrPtr)
     arrLen = svLength(arrPtr, 1)
-    uncheckedArrPtr0 = alloc0(arrSize)
-    uncheckedArrPtr1 = cast[ptr UncheckedArray[cint]](uncheckedArrPtr0)
-    dataObjRef = DataObjRef(data: uncheckedArrPtr1)
-    inp1 = InputObjRef(data: dataObjRef,
+    uncheckedArrPtr = cast[ptr UncheckedArray[cint]](alloc0(arrSize))
+    dataObjPtr = cast[ptr DataObj](alloc0(sizeof DataObj))
+
+  dataObjPtr[].data = uncheckedArrPtr
+
+  let
+    inp1 = InputObjRef(data: dataObjPtr,
                        len: arrLen)
     out1: OutputObjRef = new(OutputObj) # initialize
 
@@ -28,5 +31,5 @@ proc get_max(arrPtr: svOpenArrayHandle): cint {.exportc.} =
 proc get_min(arrPtr: svOpenArrayHandle): cint {.exportc.} =
   return get_mean_func_1_out(arrPtr).min
 
-proc get_params(arrPtr: svOpenArrayHandle; params: ref OutputObj) {.exportc.} =
+proc get_params(arrPtr: svOpenArrayHandle; params: OutputObjRef) {.exportc.} =
   params[] = get_mean_func_1_out(arrPtr)

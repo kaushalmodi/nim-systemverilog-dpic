@@ -2,11 +2,13 @@ import mean_func_1
 
 let
   inputData = [100.cint, 3, 7, 5]
-  dataPtr = cast[ptr UncheckedArray[cint]](unsafeAddr inputData[0])
+  inputDataPtr = cast[ptr UncheckedArray[cint]](unsafeAddr inputData[0])
+  dataObjPtr = cast[ptr DataObj](alloc0(sizeof DataObj))
 
-  dataObjRef = DataObjRef(data: dataPtr)
+dataObjPtr[].data = inputDataPtr
 
-  inp1 = InputObjRef(data: dataObjRef,
+let
+  inp1 = InputObjRef(data: dataObjPtr,
                      len: inputData.len.cint)
   out1: OutputObjRef = new(OutputObj) # initialize
 
