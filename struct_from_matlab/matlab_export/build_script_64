@@ -8,3 +8,4 @@ gcc -m64 -c -ansi -pedantic -Wno-long-long -fwrapv -fPIC -O0 -DMODEL=mean_func_1
 gcc -m64 -c -ansi -pedantic -Wno-long-long -fwrapv -fPIC -O0 -DMODEL=mean_func_1 -DHAVESTDIO -DUSE_RTMODEL -DUNIX  -o "rtGetInf.o" "rtGetInf.c"
 ### Creating dynamic library ./mean_func_1_64.so ...
 gcc -m64 -shared -Wl,-rpath,"/cad/adi/apps/mathworks/matlab/2017b/bin/glnxa64",-L"/cad/adi/apps/mathworks/matlab/2017b/bin/glnxa64" -Wl,--no-undefined -o ./mean_func_1_64.so mean_func_1_initialize.o mean_func_1_terminate.o mean_func_1.o mean_func_1_emxutil.o mean_func_1_emxAPI.o rt_nonfinite.o rtGetNaN.o rtGetInf.o -lm
+rm -f *.o
