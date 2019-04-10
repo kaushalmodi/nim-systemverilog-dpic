@@ -23,4 +23,4 @@ type
   OutputObj* = struct1_T
   OutputObjRef* = ref OutputObj
 
-proc mean_func*(inp: array[4, InputObj]; outp: OutputObjRef) {.importc: "mean_func_2", dynlib: soFile.}
+proc mean_func*(inp: array[3, InputObj]; outp: OutputObjRef) {.importc: "mean_func_2", dynlib: soFile.}
