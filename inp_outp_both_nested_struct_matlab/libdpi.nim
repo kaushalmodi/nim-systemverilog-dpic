@@ -8,9 +8,7 @@ type
     arr: array[Max, cint]
     length: cint
   InpStructWrapper = object # this needs to match the workaround struct in_struct_s in tb.sv
-    a: InpStructElem
-    b: InpStructElem
-    c: InpStructElem
+    a, b, c: InpStructElem
 
 proc get_mean_func_3_out(inStruct: InpStructWrapper): OutputObj =
   let

@@ -1,4 +1,4 @@
-// Time-stamp: <2019-04-11 17:09:35 kmodi>
+// Time-stamp: <2019-04-11 18:01:14 kmodi>
 
 program top;
 
@@ -11,9 +11,7 @@ program top;
   } struct_elem_s;
 
   typedef struct {
-    struct_elem_s x1;
-    struct_elem_s x2;
-    struct_elem_s x3;
+    struct_elem_s x1, x2, x3;
   } out_struct_s;
 
   typedef struct {
@@ -26,9 +24,7 @@ program top;
   } in_struct_wrapper_s;
 
   typedef struct {
-    in_struct_wrapper_s a;
-    in_struct_wrapper_s b;
-    in_struct_wrapper_s c;
+    in_struct_wrapper_s a, b, c;
   } in_struct_s;
 
   import "DPI-C" function void get_params(input in_struct_s in_str, output out_struct_s out_str);
