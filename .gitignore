@@ -1,3 +1,22 @@
+# https://stackoverflow.com/a/25592735/1219634
+
+# Ignore all
+*
+
+# Unignore all with extensions
+!*.*
+
+# Unignore all dirs
+!*/
+
+# Unignore build scripts
+!build_script
+!build_script_64
+
+# Unignore make files
+!makefile
+!Makefile
+
 xcelium.d/
 *.log
 *.so
@@ -9,18 +28,11 @@ xrun.key
 EGGX080.tar.gz
 *.o
 mandel
-/systemverilog_dpi_now/user-interface/draw/EGGX080/egg
 sample/
-/systemverilog_dpi_now/user-interface/draw/draw
 *.a
-/systemverilog_dpi_now/user-interface/libdpi
-/systemverilog_dpi_now/user-interface/draw/nim_mandel
 libdpi.json
 *.rsp
 *.def
 *rtw.mk
-rtw_proj.tmw
-mean_func_test
-mean_func_1
-libdpi
-mean_func_2
+*.tmw
+*.mat

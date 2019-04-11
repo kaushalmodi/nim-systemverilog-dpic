@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+gcc -m64 -c -ansi -pedantic -Wno-long-long -fwrapv -fPIC -O0 -DMODEL=mean_func_3 -DHAVESTDIO -DUSE_RTMODEL -DUNIX  -o "mean_func_3_initialize.o" "mean_func_3_initialize.c"
+gcc -m64 -c -ansi -pedantic -Wno-long-long -fwrapv -fPIC -O0 -DMODEL=mean_func_3 -DHAVESTDIO -DUSE_RTMODEL -DUNIX  -o "mean_func_3_terminate.o" "mean_func_3_terminate.c"
+gcc -m64 -c -ansi -pedantic -Wno-long-long -fwrapv -fPIC -O0 -DMODEL=mean_func_3 -DHAVESTDIO -DUSE_RTMODEL -DUNIX  -o "mean_func_3.o" "mean_func_3.c"
+gcc -m64 -c -ansi -pedantic -Wno-long-long -fwrapv -fPIC -O0 -DMODEL=mean_func_3 -DHAVESTDIO -DUSE_RTMODEL -DUNIX  -o "mean_func_3_emxutil.o" "mean_func_3_emxutil.c"
+gcc -m64 -c -ansi -pedantic -Wno-long-long -fwrapv -fPIC -O0 -DMODEL=mean_func_3 -DHAVESTDIO -DUSE_RTMODEL -DUNIX  -o "mean_func_3_emxAPI.o" "mean_func_3_emxAPI.c"
+gcc -m64 -c -ansi -pedantic -Wno-long-long -fwrapv -fPIC -O0 -DMODEL=mean_func_3 -DHAVESTDIO -DUSE_RTMODEL -DUNIX  -o "rt_nonfinite.o" "rt_nonfinite.c"
+gcc -m64 -c -ansi -pedantic -Wno-long-long -fwrapv -fPIC -O0 -DMODEL=mean_func_3 -DHAVESTDIO -DUSE_RTMODEL -DUNIX  -o "rtGetNaN.o" "rtGetNaN.c"
+gcc -m64 -c -ansi -pedantic -Wno-long-long -fwrapv -fPIC -O0 -DMODEL=mean_func_3 -DHAVESTDIO -DUSE_RTMODEL -DUNIX  -o "rtGetInf.o" "rtGetInf.c"
+### Creating dynamic library ./mean_func_3.so ...
+gcc -m64 -shared -Wl,-rpath,"/cad/adi/apps/mathworks/matlab/2017b/bin/glnxa64",-L"/cad/adi/apps/mathworks/matlab/2017b/bin/glnxa64" -Wl,--no-undefined -o ./mean_func_3_64.so mean_func_3_initialize.o mean_func_3_terminate.o mean_func_3.o mean_func_3_emxutil.o mean_func_3_emxAPI.o rt_nonfinite.o rtGetNaN.o rtGetInf.o -lm
+
+rm -f *.o
