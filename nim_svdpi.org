@@ -25,18 +25,18 @@ proc hello() {.exportc.} =
   echo "Hello from Nim!"
 #+end_src
 * Datatype Translation
-|---------------+-----------+--------------------|
-| SystemVerilog | C         | Nim                |
-|---------------+-----------+--------------------|
-| byte          | char      | uint8              |
-| int           | int       | cint or int32      |
-| longint       | long long | clonglong or int64 |
-| shortint      | short int | cshort or int16    |
-| real          | double    | cdouble or float64 |
-| shortreal     | float     | cfloat or float32  |
-| chandle       | void*     | pointer or ptr T   |
-| string        | char*     | cstring            |
-|---------------+-----------+--------------------|
+|---------------+-----------+-----------------------|
+| SystemVerilog | C         | Nim                   |
+|---------------+-----------+-----------------------|
+| byte          | char      | byte or char or uint8 |
+| int           | int       | cint or int32         |
+| longint       | long long | clonglong or int64    |
+| shortint      | short int | cshort or int16       |
+| real          | double    | cdouble or float64    |
+| shortreal     | float     | cfloat or float32     |
+| chandle       | void*     | pointer or ptr T      |
+| string        | char*     | cstring               |
+|---------------+-----------+-----------------------|
 * Imports
 ** Tasks
 - A Nim proc mapped to a SV *task* needs to have an ~cint~ return
