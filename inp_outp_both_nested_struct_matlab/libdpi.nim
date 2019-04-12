@@ -17,10 +17,8 @@ proc get_mean_func_3_out(inStruct: InpStructWrapper): OutputObj =
 
   # echo fmt"input [debug in Nim] = {inStruct.a.arr}"
 
-  var
-    idx = 0
-  for sElem in inStruct.fields:
-    # echo "struct element [debug in Nim]: ", sElem
+  for key, sElem in inStruct.fieldPairs:
+    # echo "struct element [debug in Nim]: ", key, " = ", sElem
     let
       inputArrPtr = cast[ptr UncheckedArray[cint]](unsafeAddr sElem.arr[0])
       inputSizeArray = [sElem.length]
@@ -37,15 +35,15 @@ proc get_mean_func_3_out(inStruct: InpStructWrapper): OutputObj =
     arrWrapObjPtr[].data = intArrayObjPtr
     arrWrapObjPtr[].len = sElem.length.cint
 
-    case idx:
-    of 0:
+    case key
+    of "a":
       inputObjPtr[].x1 = arrWrapObjPtr[]
-    of 1:
+    of "b":
       inputObjPtr[].x2 = arrWrapObjPtr[]
-    else:
+    of "c":
       inputObjPtr[].x3 = arrWrapObjPtr[]
-
-    idx += 1
+    else:
+      discard
 
   mean_func(inputObjPtr, outputObjPtr)
   return outputObjPtr[]
