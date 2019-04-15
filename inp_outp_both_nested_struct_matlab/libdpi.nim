@@ -48,6 +48,6 @@ proc get_mean_func_3_out(inStruct: InpStructWrapper): OutputObj =
   mean_func(inputObjPtr, outputObjPtr)
   return outputObjPtr[]
 
-proc get_params(inStruct: ref InpStructWrapper; outStruct: ref OutputObj) {.exportc.} =
+proc get_params(inStruct: ptr InpStructWrapper; outStruct: ptr OutputObj) {.exportc.} =
   # echo $inStruct[]
   outStruct[] = get_mean_func_3_out(inStruct[])
