@@ -1,4 +1,4 @@
-# Time-stamp: <2019-04-12 09:09:51 kmodi>
+# Time-stamp: <2019-04-15 10:24:11 kmodi>
 # Author    : Kaushal Modi
 
 FILES   = tb.sv
@@ -21,7 +21,7 @@ else
 	NC_ARCH_FLAGS :=
 endif
 
-NIM_GC      = regions
+NIM_GC ?=
 NIM_DEFINES =
 
 .PHONY: clean libdpi nc clibdpi $(SUBDIRS) all
@@ -37,7 +37,7 @@ clean:
 # https://irclogs.nim-lang.org/21-01-2019.html#17:16:39
 libdpi:
 	@find . \( -name libdpi.o -o -name libdpi.so \) -delete
-	nim c --out:libdpi.so --app:lib --nimcache:./.nimcache $(NIM_ARCH_FLAGS) --gc:$(NIM_GC) --hint[Processing]:off $(NIM_DEFINES) libdpi.nim
+	nim c --out:libdpi.so --app:lib --nimcache:./.nimcache $(NIM_ARCH_FLAGS) $(NIM_GC) --hint[Processing]:off $(NIM_DEFINES) libdpi.nim
 
 nc:
 	xrun -sv $(NC_ARCH_FLAGS) \

@@ -58,8 +58,7 @@ proc get_nums_var_arg(nums: var array[10, svLogicVecVal]) {.exportc.} =
     nums[i].aval = uint32(i+10)
     nums[i].bval = 0
     # The echoing of the array elements causes crash if nim
-    # compilation is done without --gc:none *or* without
-    # --gc:regions and this wrapping in withScratchRegion.
+    # compilation is done without --gc:none *or* --gc:regions.
     echo fmt"Nim: nums[{i}] = {nums[i]}"
 
 # Even though not recommended, the "ref array" approach works:
