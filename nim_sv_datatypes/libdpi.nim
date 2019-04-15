@@ -79,9 +79,8 @@ type
 #          age: 23)
 
 # Even though SystemVerilog sends objects by values, we always receive
-# them by reference on the C/Nim side. The example in the question on
+# them by reference/pointer on the C/Nim side. The example in the
+# below question on SO helped me understand this:
 # https://stackoverflow.com/questions/50351848/passing-c-structs-through-systemverilog-dpi-c-layer
-# helped me understand this.
-proc print_object(animalAddr: ref Animal) {.exportc.} =
-  withScratchRegion:
-    echo fmt"Received {animalAddr[]} from SV."
+proc print_object(animalAddr: ptr Animal) {.exportc.} =
+  echo fmt"Received {animalAddr[]} from SV."
