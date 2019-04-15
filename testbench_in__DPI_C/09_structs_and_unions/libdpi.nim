@@ -44,5 +44,5 @@ proc send_arr_struct_unpkd(dyn_arr: svOpenArrayHandle) {.exportc.} =
   echo "** Unpacked struct **"
   send_arr_struct_pkd(dyn_arr)
 
-proc send_union(fa, fu: ref svBitVecVal) {.exportc.} =
+proc send_union(fa, fu: ptr svBitVecVal) {.exportc.} =
   echo fmt"  Nim: fa = {fa[]:x}, fu = {fu[]:x}"
