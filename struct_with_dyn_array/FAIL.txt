@@ -1,0 +1,4 @@
+This example doesn't compile in xrun.
+xrun: 18.03-s006: (c) Copyright 1995-2018 Cadence Design Systems, Inc.
+
+Looking for a solution .. https://stackoverflow.com/q/55653171/1219634
