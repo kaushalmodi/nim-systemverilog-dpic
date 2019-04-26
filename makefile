@@ -1,4 +1,4 @@
-# Time-stamp: <2019-04-26 15:05:09 kmodi>
+# Time-stamp: <2019-04-26 17:46:54 kmodi>
 # Author    : Kaushal Modi
 
 FILES   = tb.sv
@@ -23,6 +23,8 @@ else
 	GCC_ARCH_FLAG := -m32
 endif
 
+# Possible values of NIM_COMPILES_TO: c, cpp
+NIM_COMPILES_TO ?= c
 NIM_GC ?=
 NIM_DEFINES =
 
@@ -39,7 +41,7 @@ clean:
 # https://irclogs.nim-lang.org/21-01-2019.html#17:16:39
 libdpi:
 	@find . \( -name libdpi.o -o -name libdpi.so \) -delete
-	nim c --out:libdpi.so --app:lib --nimcache:./.nimcache $(NIM_ARCH_FLAGS) $(NIM_GC) --hint[Processing]:off $(NIM_DEFINES) libdpi.nim
+	nim $(NIM_COMPILES_TO) --out:libdpi.so --app:lib --nimcache:./.nimcache $(NIM_ARCH_FLAGS) $(NIM_GC) --hint[Processing]:off $(NIM_DEFINES) libdpi.nim
 
 nc:
 	xrun -sv $(NC_ARCH_FLAGS) \
