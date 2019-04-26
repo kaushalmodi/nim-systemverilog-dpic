@@ -1,4 +1,4 @@
-# Time-stamp: <2019-04-15 10:24:11 kmodi>
+# Time-stamp: <2019-04-26 15:05:09 kmodi>
 # Author    : Kaushal Modi
 
 FILES   = tb.sv
@@ -16,9 +16,11 @@ ARCH ?= 64
 ifeq ($(ARCH), 64)
 	NIM_ARCH_FLAGS :=
 	NC_ARCH_FLAGS := -64bit
+	GCC_ARCH_FLAG := -m64
 else
 	NIM_ARCH_FLAGS := --cpu:i386 --passC:-m32 --passL:-m32
 	NC_ARCH_FLAGS :=
+	GCC_ARCH_FLAG := -m32
 endif
 
 NIM_GC ?=
@@ -53,8 +55,16 @@ nc:
 # -I$(XCELIUM_ROOT)/../include for "svdpi.h"
 clibdpi:
 	@find . \( -name libdpi.o -o -name libdpi.so \) -delete
-	gcc -c -fPIC -I$(XCELIUM_ROOT)/../include libdpi.c -m64 -o libdpi.o
-	gcc -shared -Wl,-soname,libdpi.so -m64 -o libdpi.so libdpi.o
+	gcc -c -fPIC -I$(XCELIUM_ROOT)/../include libdpi.c $(GCC_ARCH_FLAG) -o libdpi.o
+	gcc -shared -Wl,-soname,libdpi.so $(GCC_ARCH_FLAG) -o libdpi.so libdpi.o
+	@rm -f libdpi.o
+
+# libdpi.cpp -> libdpi.so
+# -I$(XCELIUM_ROOT)/../include for "svdpi.h"
+cpplibdpi:
+	@find . \( -name libdpi.o -o -name libdpi.so \) -delete
+	g++ -c -fPIC -I$(XCELIUM_ROOT)/../include libdpi.cpp $(GCC_ARCH_FLAG) -o libdpi.o
+	g++ -shared -Wl,-soname,libdpi.so $(GCC_ARCH_FLAG) -o libdpi.so libdpi.o
 	@rm -f libdpi.o
 
 $(SUBDIRS):
