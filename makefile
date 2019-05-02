@@ -1,4 +1,4 @@
-# Time-stamp: <2019-04-30 09:57:28 kmodi>
+# Time-stamp: <2019-05-02 09:51:45 kmodi>
 # Author    : Kaushal Modi
 
 FILES   ?= tb.sv
@@ -7,7 +7,7 @@ DEFINES	= DEFINE_PLACEHOLDER
 #     being used. I know it already.
 # SPDUSD: Don't warn about unused include dirs.
 NOWARNS = -nowarn DSEM2009 -nowarn DSEMEL -nowarn SPDUSD
-OPTIONS =
+NC_SWITCHES = -clean
 
 # Subdirs contains a list of all directories containing a "Makefile".
 SUBDIRS = $(shell find . -name "Makefile" | sed 's|/Makefile||')
@@ -57,7 +57,7 @@ nc:
 	$(FILES) \
 	+incdir+./ \
 	$(NOWARNS) \
-	$(OPTIONS)
+	$(NC_SWITCHES)
 
 # libdpi.c -> $(DEFAULT_SV_LIB)
 # -I$(XCELIUM_ROOT)/../include for "svdpi.h"
