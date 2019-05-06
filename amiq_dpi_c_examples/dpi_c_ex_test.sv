@@ -148,7 +148,7 @@ class dpi_c_ex_test;
     test_reg();
     test_reg_vector();
     test_chandle();
-//     test_unsized_int_array();
+    test_unsized_int_array();
 
 // `ifndef XCELIUM
 //     test_unsized_byte_array();
@@ -406,23 +406,23 @@ class dpi_c_ex_test;
     end
   endfunction : test_chandle
 
-//   function void test_unsized_int_array();
-//     int_array_t expected, cres;
+  function void test_unsized_int_array();
+    int_array_t expected, cres;
 
-//     cres = new[m_int_ua.size()];
+    cres = new[m_int_ua.size()];
 
-//     $display($sformatf("test.test_unsized_int_array calls compute_unsized_int_array with %p", m_int_ua));
+    $display($sformatf("test.test_unsized_int_array calls compute_unsized_int_array with %p", m_int_ua));
 
-//     expected = transform_int_array(m_int_ua);
+    expected = transform_int_array(m_int_ua);
 
-//     compute_unsized_int_array(m_int_ua, cres);
+    compute_unsized_int_array(m_int_ua, cres);
 
-//     foreach(expected[i])
-//       COMPUTE_UNSIZED_INT_ARRAY_A_ERR: assert(cres[i] == expected[i]) else begin
-//         $display($sformatf("compute_unsized_int_array error: expected %0d received %0d for input %0d", expected[i], cres[i], m_int_ua[i]));
-//         $finish();
-//       end
-//   endfunction
+    foreach(expected[i])
+      COMPUTE_UNSIZED_INT_ARRAY_A_ERR: assert(cres[i] == expected[i]) else begin
+        $display($sformatf("compute_unsized_int_array error: expected %0d received %0d for input %0d", expected[i], cres[i], m_int_ua[i]));
+        $finish();
+      end
+  endfunction : test_unsized_int_array
 
 //   function void test_unsized_byte_array();
 //     byte_array_t expected, cres;
@@ -551,10 +551,11 @@ class dpi_c_ex_test;
 //       transform_byte_array[i] = in[i] + 3;
 //   endfunction
 
-//   function int_array_t transform_int_array(int_array_t in);
-//     transform_int_array=new[in.size()];
+  function int_array_t transform_int_array(int_array_t in);
+    transform_int_array=new[in.size()];
 
-//     foreach(in[i])
-//       transform_int_array[i] = in[i] + 3;
-//   endfunction
+    foreach(in[i])
+      transform_int_array[i] = in[i] + 3;
+  endfunction : transform_int_array
+
 endclass : dpi_c_ex_test

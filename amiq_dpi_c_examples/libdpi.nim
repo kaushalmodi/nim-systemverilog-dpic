@@ -248,3 +248,25 @@ proc call_chandle(inChandle: Chandle; oValuePtr: ptr cint) {.exportc.} =
     # pcp = cast[type print_chandle](inChandle) # this works too
   oValuePtr[] = pcp()
   logInfo "dpi_c.call_chandle() returns {oValuePtr[]}"
+
+## unsized int array
+proc compute_unsized_int_array(inDArrHandle, outDArrHandle: svOpenArrayHandle) {.exportc.} =
+  let
+    arrLen = svSize(inDArrHandle, 1)
+    arrSize = svSizeOfArray(inDArrHandle)
+  # Method 1: First copy inp array to outp array, and then increment
+  #           all elements in outp array by 3.
+  copyMem(cast[ptr cint](svGetArrayPtr(outDArrHandle)),
+          cast[ptr cint](svGetArrayPtr(inDArrHandle)),
+          arrSize)
+  for i in 0 ..< arrLen:
+    let
+      outIntArrElemPtr = cast[ptr cint](svGetArrElemPtr1(outDArrHandle, i))
+    outIntArrElemPtr[] += 3
+  # # Method 2: Loop through all inp array elements, and set outp array
+  # #           elem = inp array elem + 3
+  # for i in 0 ..< arrLen:
+  #   let
+  #     inIntArrElemPtr = cast[ptr cint](svGetArrElemPtr1(inDArrHandle, i))
+  #     outIntArrElemPtr = cast[ptr cint](svGetArrElemPtr1(outDArrHandle, i))
+  #   outIntArrElemPtr[] = inIntArrElemPtr[] + 3
