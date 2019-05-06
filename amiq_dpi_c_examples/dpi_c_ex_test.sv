@@ -145,7 +145,7 @@ class dpi_c_ex_test;
     test_bit_vector();
     test_logic();
     test_logic_vector();
-//     test_reg();
+    test_reg();
 //     test_reg_vector();
 //     test_chandle();
 //     test_unsized_int_array();
@@ -343,23 +343,23 @@ class dpi_c_ex_test;
     end
   endfunction : test_logic_vector
 
-//   function void test_reg();
-//     reg cres, ares;
-//     reg expected;
-//     expected = transform_reg(m_reg);
+  function void test_reg();
+    reg cres, ares;
+    reg expected;
+    expected = transform_reg(m_reg);
 
-//     $display($sformatf("test.test_reg calls compute_reg with %x", m_reg));
-//     compute_reg(m_reg, cres);
-//     ares = get_reg(m_reg);
-//     COMPUTE_REG_ERR: assert(cres === expected) else begin
-//       $display($sformatf("compute_reg error: expected %x received %x for input %x", expected, cres, m_reg));
-//       $finish();
-//     end
-//     GET_REG_ERR: assert(ares === expected) else begin
-//       $display($sformatf("get_reg error: expected %x received %x for input %x", expected, ares, m_reg));
-//       $finish();
-//     end
-//   endfunction
+    $display($sformatf("test.test_reg calls compute_reg with %x", m_reg));
+    compute_reg(m_reg, cres);
+    ares = get_reg(m_reg);
+    COMPUTE_REG_ERR: assert(cres === expected) else begin
+      $display($sformatf("compute_reg error: expected %x received %x for input %x", expected, cres, m_reg));
+      $finish();
+    end
+    GET_REG_ERR: assert(ares === expected) else begin
+      $display($sformatf("get_reg error: expected %x received %x for input %x", expected, ares, m_reg));
+      $finish();
+    end
+  endfunction : test_reg
 
 //   function void test_reg_vector();
 //     reg_vector_t cres=0, ares=0;
@@ -533,14 +533,14 @@ class dpi_c_ex_test;
     endcase
   endfunction : transform_logic
 
-//   function reg transform_reg(reg in);
-//     case (in)
-//       1'b0: return 1'b1;
-//       1'b1: return 1'bx;
-//       1'bz: return 1'b0;
-//       1'bx: return 1'bz;
-//     endcase
-//   endfunction
+  function reg transform_reg(reg in);
+    case (in)
+      1'b0: return 1'b1;
+      1'b1: return 1'bx;
+      1'bz: return 1'b0;
+      1'bx: return 1'bz;
+    endcase
+  endfunction : transform_reg
 
 //   function int get_expected_chandle_value();
 //     return 10;

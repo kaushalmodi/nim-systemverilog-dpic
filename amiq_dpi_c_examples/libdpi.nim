@@ -193,3 +193,14 @@ proc get_logic_vector(iValuePtr: ptr svLogicVecVal; asize: cint): ptr svLogicVec
       bit = transform_svLogic(svGetBitselLogic(iValuePtr, i))
     svPutBitselLogic(result, i, bit)
   logInfo "dpi_c.get_logic_vector(): result {svLogicVecVal2String(result, asize)}"
+
+## reg
+proc compute_reg(i_value: svLogic; resPtr: ptr svLogic) {.exportc.} =
+  logInfo "dpi_c.compute_reg(): integer value:{i_value}, input {SvLogic(i_value)}"
+  resPtr[] = transform_svLogic(i_value)
+  logInfo "dpi_c.compute_reg(): result {SvLogic(resPtr[])} <- {SvLogic(i_value)}"
+
+proc get_reg(i_value: svLogic): svLogic {.exportc.} =
+  logInfo "dpi_c.get_reg(): input {SvLogic(i_value)}"
+  result = transform_svLogic(i_value)
+  logInfo "dpi_c.get_reg(): result {SvLogic(result)} <- {SvLogic(i_value)}"
