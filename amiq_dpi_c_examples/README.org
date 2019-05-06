@@ -1,0 +1,8 @@
+* Blog post
+[[https://www.amiq.com/consulting/2019/01/30/how-to-call-c-functions-from-systemverilog-using-dpi-c/]]
+* Source
+[[https://github.com/amiq-consulting/amiq_blog/tree/master/amiq_sv_dpi_c_how_to_map_systemverilog_data_types_to_c_using_dpi_c/src]]
+* Simulate the SV tb with the original libdpi.c
+#+begin_example
+make orig
+#+end_example
