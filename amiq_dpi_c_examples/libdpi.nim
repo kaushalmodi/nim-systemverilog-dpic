@@ -128,3 +128,16 @@ proc get_bit(i_value: svBit): svBit {.exportc.} =
   logInfo "dpi_c.get_bit(): input {i_value}"
   result = transform_svBit(i_value)
   logInfo "dpi_c.get_bit(): result {result}"
+
+## bit vector
+proc transform_svBitVecVal(inp: svBitVecVal): svBitVecVal = (inp shl 3) + 2
+
+proc compute_bit_vector(iValuePtr: ptr svBitVecVal; resPtr: ptr svBitVecVal) {.exportc.} =
+  logInfo "dpi_c.compute_bit_vector(): input {iValuePtr[]} ({iValuePtr[]:#b})"
+  resPtr[] = transform_svBitVecVal(iValuePtr[])
+  logInfo "dpi_c.compute_bit_vector(): result {resPtr[]} ({resPtr[]:#b})"
+
+proc get_bit_vector(iValuePtr: ptr svBitVecVal): svBitVecVal {.exportc.} =
+  logInfo "dpi_c.get_bit_vector(): input {iValuePtr[]} ({iValuePtr[]:#b})"
+  result = transform_svBitVecVal(iValuePtr[])
+  logInfo "dpi_c.get_bit_vector(): result {result} ({result:#b})"

@@ -142,7 +142,7 @@ class dpi_c_ex_test;
     test_string();
     test_string_array();
     test_bit();
-//     test_bit_vector();
+    test_bit_vector();
 //     test_logic();
 //     test_logic_vector();
 //     test_reg();
@@ -284,24 +284,24 @@ class dpi_c_ex_test;
     end
   endfunction : test_bit
 
-//   function void test_bit_vector();
-//     bit_vector_t cres, ares;
-//     bit_vector_t expected = transform_bit_vector(m_bit_a);
-//     $display($sformatf("test.test_bit_array calls compute_bit_vector with %b", m_bit_a));
-//     compute_bit_vector(m_bit_a, cres);
+  function void test_bit_vector();
+    bit_vector_t cres, ares;
+    bit_vector_t expected = transform_bit_vector(m_bit_a);
+    $display($sformatf("test.test_bit_array calls compute_bit_vector with %b", m_bit_a));
+    compute_bit_vector(m_bit_a, cres);
 
-//     COMPUTE_BIT_ARRAY_ERR: assert(cres == expected) else begin
-//       $display($sformatf("compute_bit_vector error: expected %b received %b for input %b", expected, cres, m_bit_a));
-//       $finish();
-//     end
-// `ifndef QUESTA
-//     ares = get_bit_vector(m_bit_a);
-//     GET_BIT_ARRAY_ERR: assert(ares == expected) else begin
-//       $display($sformatf("get_bit_vector error: expected %b received %b for input %b", expected, ares, m_bit_a));
-//       $finish();
-//     end
-// `endif
-//   endfunction
+    COMPUTE_BIT_ARRAY_ERR: assert(cres == expected) else begin
+      $display($sformatf("compute_bit_vector error: expected %b received %b for input %b", expected, cres, m_bit_a));
+      $finish();
+    end
+`ifndef QUESTA
+    ares = get_bit_vector(m_bit_a);
+    GET_BIT_ARRAY_ERR: assert(ares == expected) else begin
+      $display($sformatf("get_bit_vector error: expected %b received %b for input %b", expected, ares, m_bit_a));
+      $finish();
+    end
+`endif
+  endfunction
 
 //   function void test_logic();
 //     logic cres, ares;
@@ -522,9 +522,9 @@ class dpi_c_ex_test;
     return in * 3;
   endfunction : transform_real
 
-//   function bit_vector_t transform_bit_vector(bit_vector_t in);
-//     return (in << 3) + 2;
-//   endfunction
+  function bit_vector_t transform_bit_vector(bit_vector_t in);
+    return (in << 3) + 2;
+  endfunction
 
 //   function logic transform_logic(logic in);
 //     case (in)
