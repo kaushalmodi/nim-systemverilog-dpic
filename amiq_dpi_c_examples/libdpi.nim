@@ -2,10 +2,11 @@ from strutils import `%`
 import svdpi, strformat
 
 # https://github.com/nim-lang/Nim/issues/10578#issuecomment-461635978
-const externCDecl = when defined(cpp):
-                      """extern "C" $1 $2 $3"""
-                    else:
-                      """$1 $2 $3"""
+const
+  externCDecl = when defined(cpp):
+                  """extern "C" $1 $2 $3"""
+                else:
+                  """$1 $2 $3"""
 
 template logInfo(data: string): untyped =
   let
