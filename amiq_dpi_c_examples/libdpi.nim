@@ -77,3 +77,16 @@ proc get_longint(i_value: clonglong): clonglong {.exportc.} =
   logInfo "dpi_c.get_longint(): received {i_value}"
   result = transform_long_int(i_value)
   logInfo "dpi_c.get_longint(): return {result}"
+
+## real
+proc transform_double(inp: cdouble): cdouble = inp*3
+
+proc compute_real(i_value: cdouble; resPtr: ptr cdouble) {.exportc.} =
+  logInfo "dpi_c.compute_real(): received {i_value}"
+  resPtr[] = transform_double(i_value)
+  logInfo "dpi_c.compute_real(): return {resPtr[]}"
+
+proc get_real(i_value: cdouble): cdouble {.exportc.} =
+  logInfo "dpi_c.get_real(): received {i_value}"
+  result = transform_double(i_value)
+  logInfo "dpi_c.get_real(): return {result}"

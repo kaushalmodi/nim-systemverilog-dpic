@@ -138,7 +138,7 @@ class dpi_c_ex_test;
     test_shortint();
     test_int();
     test_longint();
-//     test_real();
+    test_real();
 //     test_string();
 //     test_string_array();
 //     test_bit();
@@ -224,21 +224,21 @@ class dpi_c_ex_test;
     end
   endfunction : test_longint
 
-//   function void test_real();
-//     real cres, ares;
-//     real expected = transform_real(m_real);
-//     $display($sformatf("test.test_real calls compute_real with %f", m_real));
-//     compute_real(m_real, cres);
-//     ares = get_real(m_real);
-//     COMPUTE_REAL_ERR: assert(cres == expected) else begin
-//       $display($sformatf("compute_real error: expected %d received %d for input %d", expected, cres, m_real));
-//       $finish();
-//     end
-//     GET_REAL_ERR: assert(ares == expected) else begin
-//       $display($sformatf("get_real error: expected %d received %d for input %d", expected, ares, m_real));
-//       $finish();
-//     end
-//   endfunction
+  function void test_real();
+    real cres, ares;
+    real expected = transform_real(m_real);
+    $display($sformatf("test.test_real calls compute_real with %f", m_real));
+    compute_real(m_real, cres);
+    ares = get_real(m_real);
+    COMPUTE_REAL_ERR: assert(cres == expected) else begin
+      $display($sformatf("compute_real error: expected %d received %d for input %d", expected, cres, m_real));
+      $finish();
+    end
+    GET_REAL_ERR: assert(ares == expected) else begin
+      $display($sformatf("get_real error: expected %d received %d for input %d", expected, ares, m_real));
+      $finish();
+    end
+  endfunction : test_real
 
 //   function void test_string();
 //     string cres, ares;
@@ -518,9 +518,9 @@ class dpi_c_ex_test;
     return 65535-in;
   endfunction : transform_shortint
 
-//   function real transform_real(real in);
-//     return in * 3;
-//   endfunction
+  function real transform_real(real in);
+    return in * 3;
+  endfunction : transform_real
 
 //   function bit_vector_t transform_bit_vector(bit_vector_t in);
 //     return (in << 3) + 2;
