@@ -170,3 +170,26 @@ proc get_logic(i_value: svLogic): svLogic {.exportc.} =
   logInfo "dpi_c.get_logic(): input {SvLogic(i_value)}"
   result = transform_svLogic(i_value)
   logInfo "dpi_c.get_logic(): result {SvLogic(result)} <- {SvLogic(i_value)}"
+
+## logic vector
+proc svLogicVecVal2String(svlvvPtr: ptr svLogicVecVal; asize: cint): string =
+  ## Convert svLogicVecVal (e.g. logic[4:0]) to string.
+  result = "'b"
+  for i in countDown(asize-1, 0):
+    result.add($SvLogic(svGetBitselLogic(svlvvPtr, i)))
+
+proc compute_logic_vector(iValuePtr: ptr svLogicVecVal; resPtr: ptr svLogicVecVal; asize: cint) {.exportc.} =
+  logInfo "dpi_c.compute_logic_vector(): input {svLogicVecVal2String(iValuePtr, asize)}"
+  for i in 0 ..< asize:
+    let
+      bit = transform_svLogic(svGetBitselLogic(iValuePtr, i))
+    svPutBitselLogic(resPtr, i, bit)
+  logInfo "dpi_c.compute_logic_vector(): result {svLogicVecVal2String(resPtr, asize)}"
+
+proc get_logic_vector(iValuePtr: ptr svLogicVecVal; asize: cint): ptr svLogicVecVal {.exportc.} =
+  logInfo "dpi_c.get_logic_vector(): input {svLogicVecVal2String(iValuePtr, asize)}"
+  for i in 0 ..< asize:
+    let
+      bit = transform_svLogic(svGetBitselLogic(iValuePtr, i))
+    svPutBitselLogic(result, i, bit)
+  logInfo "dpi_c.get_logic_vector(): result {svLogicVecVal2String(result, asize)}"
