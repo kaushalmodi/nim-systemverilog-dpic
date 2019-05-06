@@ -1,6 +1,12 @@
 from strutils import `%`
 import svdpi, strformat
 
+# https://github.com/nim-lang/Nim/issues/10578#issuecomment-461635978
+const externCDecl = when defined(cpp):
+                      """extern "C" $1 $2 $3"""
+                    else:
+                      """$1 $2 $3"""
+
 template logInfo(data: string): untyped =
   let
     pos = instantiationInfo()
@@ -14,12 +20,12 @@ proc transform_char(inp: cschar): cschar =
   # replacing that with the actual 8-bit signed value: -1.
   return -1 - inp
 
-proc compute_byte(i_value: cschar; resPtr: ptr cschar) {.exportc.} =
+proc compute_byte(i_value: cschar; resPtr: ptr cschar) {.exportc, codegenDecl: externCDecl.} =
   logInfo "dpi_c.compute_byte(): received value {i_value}"
   resPtr[] = transform_char(i_value)
   logInfo "dpi_c.compute_byte(): return value {resPtr[]}"
 
-proc get_byte(i_value: cschar): cschar {.exportc.} =
+proc get_byte(i_value: cschar): cschar {.exportc, codegenDecl: externCDecl.} =
   logInfo "dpi_c.get_byte(): received {i_value}"
   result = transform_char(i_value);
   logInfo "dpi_c.get_byte(): return {result}"
@@ -30,12 +36,12 @@ proc transform_short_int(inp: cshort): cshort =
   # replacing that with the actual 16-bit signed value: -1.
   return -1 - inp
 
-proc compute_shortint(i_value: cshort; resPtr: ptr cshort) {.exportc.} =
+proc compute_shortint(i_value: cshort; resPtr: ptr cshort) {.exportc, codegenDecl: externCDecl.} =
   logInfo "dpi_c.compute_shortint(): received {i_value}"
   resPtr[] = transform_short_int(i_value)
   logInfo "dpi_c.compute_shortint(): return {resPtr[]}"
 
-proc get_shortint(i_value: cshort): cshort {.exportc.} =
+proc get_shortint(i_value: cshort): cshort {.exportc, codegenDecl: externCDecl.} =
   logInfo "dpi_c.get_shortint(): received {i_value}"
   result = transform_short_int(i_value)
   logInfo "dpi_c.get_shortint(): return {result}"
@@ -43,12 +49,12 @@ proc get_shortint(i_value: cshort): cshort {.exportc.} =
 ## int
 proc transform_int(inp: cint): cint = 23*inp
 
-proc compute_int(i_value: cint; resPtr: ptr cint) {.exportc.} =
+proc compute_int(i_value: cint; resPtr: ptr cint) {.exportc, codegenDecl: externCDecl.} =
   logInfo "dpi_c.compute_int(): received {i_value}"
   resPtr[] = transform_int(i_value)
   logInfo "dpi_c.compute_int(): return {resPtr[]}"
 
-proc get_int(i_value: cint): cint {.exportc.} =
+proc get_int(i_value: cint): cint {.exportc, codegenDecl: externCDecl.} =
   logInfo "dpi_c.get_int(): received {i_value}"
   result = transform_int(i_value)
   logInfo "dpi_c.get_int(): return {result}"
@@ -69,12 +75,12 @@ proc get_int(i_value: cint): cint {.exportc.} =
 
 proc transform_long_int(inp: clonglong): clonglong = 123*inp
 
-proc compute_longint(i_value: clonglong; resPtr: ptr clonglong) {.exportc.} =
+proc compute_longint(i_value: clonglong; resPtr: ptr clonglong) {.exportc, codegenDecl: externCDecl.} =
   logInfo "dpi_c.compute_longint(): received {i_value}"
   resPtr[] = transform_long_int(i_value)
   logInfo "dpi_c.compute_longint(): return {resPtr[]}"
 
-proc get_longint(i_value: clonglong): clonglong {.exportc.} =
+proc get_longint(i_value: clonglong): clonglong {.exportc, codegenDecl: externCDecl.} =
   logInfo "dpi_c.get_longint(): received {i_value}"
   result = transform_long_int(i_value)
   logInfo "dpi_c.get_longint(): return {result}"
@@ -82,29 +88,29 @@ proc get_longint(i_value: clonglong): clonglong {.exportc.} =
 ## real
 proc transform_double(inp: cdouble): cdouble = inp*3
 
-proc compute_real(i_value: cdouble; resPtr: ptr cdouble) {.exportc.} =
+proc compute_real(i_value: cdouble; resPtr: ptr cdouble) {.exportc, codegenDecl: externCDecl.} =
   logInfo "dpi_c.compute_real(): received {i_value}"
   resPtr[] = transform_double(i_value)
   logInfo "dpi_c.compute_real(): return {resPtr[]}"
 
-proc get_real(i_value: cdouble): cdouble {.exportc.} =
+proc get_real(i_value: cdouble): cdouble {.exportc, codegenDecl: externCDecl.} =
   logInfo "dpi_c.get_real(): received {i_value}"
   result = transform_double(i_value)
   logInfo "dpi_c.get_real(): return {result}"
 
 ## string
-proc compute_string(i_value: cstring; resPtr: ptr cstring) {.exportc.} =
+proc compute_string(i_value: cstring; resPtr: ptr cstring) {.exportc, codegenDecl: externCDecl.} =
   logInfo "dpi_c.compute_string(): received {i_value}"
   resPtr[] = "DEAF_BEAF_DRINKS_COFFEE"
   logInfo "dpi_c.compute_string(): return {resPtr[]}"
 
-proc get_string(i_value: cstring): cstring {.exportc.} =
+proc get_string(i_value: cstring): cstring {.exportc, codegenDecl: externCDecl.} =
   logInfo "dpi_c.get_string(): received {i_value}"
   result = "DEAF_BEAF_DRINKS_COFFEE"
   logInfo "dpi_c.get_string(): return {result}"
 
 ## string array
-proc compute_string_array(i_value: svOpenArrayHandle; resHandle: svOpenArrayHandle) {.exportc.} =
+proc compute_string_array(i_value: svOpenArrayHandle; resHandle: svOpenArrayHandle) {.exportc, codegenDecl: externCDecl.} =
   let
     iValPtr = cast[ptr UncheckedArray[cstring]](svGetArrayPtr(i_value))
     oValPtr = cast[ptr UncheckedArray[cstring]](svGetArrayPtr(resHandle))
@@ -120,12 +126,12 @@ proc transform_svBit(inp: svBit): svBit =
   result = (not inp) and svBit(1)
   # echo fmt"(not inp) && 8'b0000_0001 = {result}"
 
-proc compute_bit(i_value: svBit; resPtr: ptr svBit) {.exportc.} =
+proc compute_bit(i_value: svBit; resPtr: ptr svBit) {.exportc, codegenDecl: externCDecl.} =
   logInfo "dpi_c.compute_bit(): input {i_value}"
   resPtr[] = transform_svBit(i_value)
   logInfo "dpi_c.compute_bit(): result {resPtr[]}"
 
-proc get_bit(i_value: svBit): svBit {.exportc.} =
+proc get_bit(i_value: svBit): svBit {.exportc, codegenDecl: externCDecl.} =
   logInfo "dpi_c.get_bit(): input {i_value}"
   result = transform_svBit(i_value)
   logInfo "dpi_c.get_bit(): result {result}"
@@ -133,12 +139,12 @@ proc get_bit(i_value: svBit): svBit {.exportc.} =
 ## bit vector
 proc transform_svBitVecVal(inp: svBitVecVal): svBitVecVal = (inp shl 3) + 2
 
-proc compute_bit_vector(iValuePtr: ptr svBitVecVal; resPtr: ptr svBitVecVal) {.exportc.} =
+proc compute_bit_vector(iValuePtr: ptr svBitVecVal; resPtr: ptr svBitVecVal) {.exportc, codegenDecl: externCDecl.} =
   logInfo "dpi_c.compute_bit_vector(): input {iValuePtr[]} ({iValuePtr[]:#b})"
   resPtr[] = transform_svBitVecVal(iValuePtr[])
   logInfo "dpi_c.compute_bit_vector(): result {resPtr[]} ({resPtr[]:#b})"
 
-proc get_bit_vector(iValuePtr: ptr svBitVecVal): svBitVecVal {.exportc.} =
+proc get_bit_vector(iValuePtr: ptr svBitVecVal): svBitVecVal {.exportc, codegenDecl: externCDecl.} =
   logInfo "dpi_c.get_bit_vector(): input {iValuePtr[]} ({iValuePtr[]:#b})"
   result = transform_svBitVecVal(iValuePtr[])
   logInfo "dpi_c.get_bit_vector(): result {result} ({result:#b})"
@@ -162,12 +168,12 @@ proc transform_svLogic(inp: svLogic): svLogic =
                  of sv_x:
                    sv_z)
 
-proc compute_logic(i_value: svLogic; resPtr: ptr svLogic) {.exportc.} =
+proc compute_logic(i_value: svLogic; resPtr: ptr svLogic) {.exportc, codegenDecl: externCDecl.} =
   logInfo "dpi_c.compute_logic(): integer value:{i_value}, input {SvLogic(i_value)}"
   resPtr[] = transform_svLogic(i_value)
   logInfo "dpi_c.compute_logic(): result {SvLogic(resPtr[])} <- {SvLogic(i_value)}"
 
-proc get_logic(i_value: svLogic): svLogic {.exportc.} =
+proc get_logic(i_value: svLogic): svLogic {.exportc, codegenDecl: externCDecl.} =
   logInfo "dpi_c.get_logic(): input {SvLogic(i_value)}"
   result = transform_svLogic(i_value)
   logInfo "dpi_c.get_logic(): result {SvLogic(result)} <- {SvLogic(i_value)}"
@@ -179,7 +185,7 @@ proc svLogicVecVal2String(svlvvPtr: ptr svLogicVecVal; asize: cint): string =
   for i in countDown(asize-1, 0):
     result.add($SvLogic(svGetBitselLogic(svlvvPtr, i)))
 
-proc compute_logic_vector(iValuePtr: ptr svLogicVecVal; resPtr: ptr svLogicVecVal; asize: cint) {.exportc.} =
+proc compute_logic_vector(iValuePtr: ptr svLogicVecVal; resPtr: ptr svLogicVecVal; asize: cint) {.exportc, codegenDecl: externCDecl.} =
   logInfo "dpi_c.compute_logic_vector(): input {svLogicVecVal2String(iValuePtr, asize)}"
   for i in 0 ..< asize:
     let
@@ -187,7 +193,7 @@ proc compute_logic_vector(iValuePtr: ptr svLogicVecVal; resPtr: ptr svLogicVecVa
     svPutBitselLogic(resPtr, i, bit)
   logInfo "dpi_c.compute_logic_vector(): result {svLogicVecVal2String(resPtr, asize)}"
 
-proc get_logic_vector(iValuePtr: ptr svLogicVecVal; asize: cint): ptr svLogicVecVal {.exportc.} =
+proc get_logic_vector(iValuePtr: ptr svLogicVecVal; asize: cint): ptr svLogicVecVal {.exportc, codegenDecl: externCDecl.} =
   logInfo "dpi_c.get_logic_vector(): input {svLogicVecVal2String(iValuePtr, asize)}"
   for i in 0 ..< asize:
     let
@@ -196,18 +202,18 @@ proc get_logic_vector(iValuePtr: ptr svLogicVecVal; asize: cint): ptr svLogicVec
   logInfo "dpi_c.get_logic_vector(): result {svLogicVecVal2String(result, asize)}"
 
 ## reg
-proc compute_reg(i_value: svLogic; resPtr: ptr svLogic) {.exportc.} =
+proc compute_reg(i_value: svLogic; resPtr: ptr svLogic) {.exportc, codegenDecl: externCDecl.} =
   logInfo "dpi_c.compute_reg(): integer value:{i_value}, input {SvLogic(i_value)}"
   resPtr[] = transform_svLogic(i_value)
   logInfo "dpi_c.compute_reg(): result {SvLogic(resPtr[])} <- {SvLogic(i_value)}"
 
-proc get_reg(i_value: svLogic): svLogic {.exportc.} =
+proc get_reg(i_value: svLogic): svLogic {.exportc, codegenDecl: externCDecl.} =
   logInfo "dpi_c.get_reg(): input {SvLogic(i_value)}"
   result = transform_svLogic(i_value)
   logInfo "dpi_c.get_reg(): result {SvLogic(result)} <- {SvLogic(i_value)}"
 
 ## reg vector
-proc compute_reg_vector(iValuePtr: ptr svLogicVecVal; resPtr: ptr svLogicVecVal; asize: cint) {.exportc.} =
+proc compute_reg_vector(iValuePtr: ptr svLogicVecVal; resPtr: ptr svLogicVecVal; asize: cint) {.exportc, codegenDecl: externCDecl.} =
   logInfo "dpi_c.compute_reg_vector(): input {svLogicVecVal2String(iValuePtr, asize)}"
   for i in 0 ..< asize:
     let
@@ -215,7 +221,7 @@ proc compute_reg_vector(iValuePtr: ptr svLogicVecVal; resPtr: ptr svLogicVecVal;
     svPutBitselLogic(resPtr, i, bit)
   logInfo "dpi_c.compute_reg_vector(): result {svLogicVecVal2String(resPtr, asize)}"
 
-proc get_reg_vector(iValuePtr: ptr svLogicVecVal; asize: cint): ptr svLogicVecVal {.exportc.} =
+proc get_reg_vector(iValuePtr: ptr svLogicVecVal; asize: cint): ptr svLogicVecVal {.exportc, codegenDecl: externCDecl.} =
   logInfo "dpi_c.get_reg_vector(): input {svLogicVecVal2String(iValuePtr, asize)}"
   for i in 0 ..< asize:
     let
@@ -232,17 +238,17 @@ type
   Chandle = pointer # Alias Nim type "pointer" to "Chandle" just for better readability
 
 # import "DPI-C" function void compute_chandle(output chandle result);
-proc compute_chandle(chandlePtr: ptr Chandle) {.exportc.} =
+proc compute_chandle(chandlePtr: ptr Chandle) {.exportc, codegenDecl: externCDecl.} =
   chandlePtr[] = cast[Chandle](print_chandle)
   logInfo "dpi_c.compute_chandle() {repr(chandlePtr)}"
 
 # import "DPI-C" function chandle get_chandle();
-proc get_chandle(): Chandle {.exportc.} =
+proc get_chandle(): Chandle {.exportc, codegenDecl: externCDecl.} =
   result = cast[Chandle](print_chandle)
   logInfo "dpi_c.get_chandle() {repr(result)}"
 
 # import "DPI-C" function void call_chandle(input chandle i_value, output int result);
-proc call_chandle(inChandle: Chandle; oValuePtr: ptr cint) {.exportc.} =
+proc call_chandle(inChandle: Chandle; oValuePtr: ptr cint) {.exportc, codegenDecl: externCDecl.} =
   logInfo "dpi_c.call_chandle() {repr(inChandle)}"
   let
     pcp = cast[proc(): cint {.cdecl.}](inChandle) # {.cdecl.} enforces "C function type" vs "Nim proc type"
@@ -272,11 +278,11 @@ proc compute_unsized_T_array[T: SomeInteger](inDArrHandle, outDArrHandle: svOpen
   #   outTArrElemPtr[] = inTArrElemPtr[] + 3
 
 ## unsized int array
-proc compute_unsized_int_array(inDArrHandle, outDArrHandle: svOpenArrayHandle) {.exportc.} =
+proc compute_unsized_int_array(inDArrHandle, outDArrHandle: svOpenArrayHandle) {.exportc, codegenDecl: externCDecl.} =
   compute_unsized_T_array[cint](inDArrHandle, outDArrHandle)
 
 ## unsized byte array
-proc compute_unsized_byte_array(inDArrHandle, outDArrHandle: svOpenArrayHandle) {.exportc.} =
+proc compute_unsized_byte_array(inDArrHandle, outDArrHandle: svOpenArrayHandle) {.exportc, codegenDecl: externCDecl.} =
   compute_unsized_T_array[cschar](inDArrHandle, outDArrHandle)
 
 ## struct
@@ -299,5 +305,5 @@ proc transform_struct(inpPtr: ptr MyStruct): MyStruct =
   result.aBitVector = transform_svBitVecVal(result.aBitVector)
   logInfo "dpi_c: output struct = {result}"
 
-proc compute_struct(iValuePtr, oValuePtr: ptr MyStruct) {.exportc.} =
+proc compute_struct(iValuePtr, oValuePtr: ptr MyStruct) {.exportc, codegenDecl: externCDecl.} =
   oValuePtr[] = transform_struct(iValuePtr)
