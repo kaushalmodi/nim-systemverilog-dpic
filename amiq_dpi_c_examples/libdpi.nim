@@ -1,5 +1,13 @@
+from strutils import `%`
 import svdpi, strformat
 
+template logInfo(data: string): untyped =
+  let
+    pos = instantiationInfo()
+    lineInfo = "[INFO]($1:$2:) " % [pos.filename, $pos.line]
+  echo lineInfo & fmt(data)
+
+## byte
 proc transform_char(inp: cschar): cschar =
   echo fmt"transform_char in: {inp}"
   # The original C code seems to have a bug .. the C side compute_byte
@@ -9,11 +17,24 @@ proc transform_char(inp: cschar): cschar =
   return cast[cschar](255) - inp
 
 proc compute_byte(i_value: cschar, resPtr: ptr cschar) {.exportc.} =
-  echo fmt"dpi_c.compute_byte(): received value {i_value}"
+  logInfo "dpi_c.compute_byte(): received value {i_value}"
   resPtr[] = transform_char(i_value)
-  echo fmt"dpi_c.compute_byte(): return value {resPtr[]}"
+  logInfo "dpi_c.compute_byte(): return value {resPtr[]}"
 
 proc get_byte(i_value: cschar): cschar {.exportc.} =
-  echo fmt"dpi_c.get_byte(): received {i_value}"
+  logInfo "dpi_c.get_byte(): received {i_value}"
   result = transform_char(i_value);
-  echo fmt"dpi_c.get_byte(): return {result}"
+  logInfo "dpi_c.get_byte(): return {result}"
+
+## shortint
+proc transform_short_int(inp: cshort): cshort = return cast[cshort](65535) - inp
+
+proc compute_shortint(i_value: cshort, resPtr: ptr cshort) {.exportc.} =
+  logInfo "dpi_c.compute_shortint(): received {i_value}"
+  resPtr[] = transform_short_int(i_value)
+  logInfo "dpi_c.compute_shortint(): return {resPtr[]}"
+
+proc get_shortint(i_value: cshort): cshort {.exportc.} =
+  logInfo "dpi_c.get_shortint(): received {i_value}"
+  result = transform_short_int(i_value)
+  logInfo "dpi_c.get_shortint(): return {result}"

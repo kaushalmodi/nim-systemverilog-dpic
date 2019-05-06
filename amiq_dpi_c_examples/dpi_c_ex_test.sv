@@ -135,7 +135,7 @@ class dpi_c_ex_test;
     initialize();
     // --------------
     test_byte();
-//     test_shortint();
+    test_shortint();
 //     test_int();
 //     test_longint();
 //     test_real();
@@ -175,22 +175,22 @@ class dpi_c_ex_test;
     end
   endfunction : test_byte
 
-//   function void test_shortint();
-//     shortint cres, ares;
-//     shortint expected = transform_shortint(m_shortint);
+  function void test_shortint();
+    shortint cres, ares;
+    shortint expected = transform_shortint(m_shortint);
 
-//     $display($sformatf("test.test_shortint calls compute_shortint with %d", m_shortint));
-//     compute_shortint(m_shortint, cres);
-//     ares = get_shortint(m_shortint);
-//     COMPUTE_SHORTINT_ERR: assert(cres == expected) else begin
-//       $display($sformatf("compute_shortint error: expected %d received %d for input %d", expected, cres, m_shortint));
-//       $finish();
-//     end
-//     GET_SHORTINT_ERR: assert(ares == expected) else begin
-//       $display($sformatf("get_shortint error: expected %d received %d for input %d", expected, ares, m_shortint));
-//       $finish();
-//     end
-//   endfunction
+    $display($sformatf("test.test_shortint calls compute_shortint with %d", m_shortint));
+    compute_shortint(m_shortint, cres);
+    ares = get_shortint(m_shortint);
+    COMPUTE_SHORTINT_ERR: assert(cres == expected) else begin
+      $display($sformatf("compute_shortint error: expected %d received %d for input %d", expected, cres, m_shortint));
+      $finish();
+    end
+    GET_SHORTINT_ERR: assert(ares == expected) else begin
+      $display($sformatf("get_shortint error: expected %d received %d for input %d", expected, ares, m_shortint));
+      $finish();
+    end
+  endfunction : test_shortint
 
 //   function void test_int();
 //     int cres, ares;
@@ -515,9 +515,9 @@ class dpi_c_ex_test;
 //   endfunction
 
 
-//   function shortint transform_shortint(shortint in);
-//     return 65535-in;
-//   endfunction
+  function shortint transform_shortint(shortint in);
+    return 65535-in;
+  endfunction : transform_shortint
 
 //   function real transform_real(real in);
 //     return in * 3;
