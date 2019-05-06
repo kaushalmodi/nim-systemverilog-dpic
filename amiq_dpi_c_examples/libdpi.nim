@@ -204,3 +204,20 @@ proc get_reg(i_value: svLogic): svLogic {.exportc.} =
   logInfo "dpi_c.get_reg(): input {SvLogic(i_value)}"
   result = transform_svLogic(i_value)
   logInfo "dpi_c.get_reg(): result {SvLogic(result)} <- {SvLogic(i_value)}"
+
+## reg vector
+proc compute_reg_vector(iValuePtr: ptr svLogicVecVal; resPtr: ptr svLogicVecVal; asize: cint) {.exportc.} =
+  logInfo "dpi_c.compute_reg_vector(): input {svLogicVecVal2String(iValuePtr, asize)}"
+  for i in 0 ..< asize:
+    let
+      bit = transform_svLogic(svGetBitselLogic(iValuePtr, i))
+    svPutBitselLogic(resPtr, i, bit)
+  logInfo "dpi_c.compute_reg_vector(): result {svLogicVecVal2String(resPtr, asize)}"
+
+proc get_reg_vector(iValuePtr: ptr svLogicVecVal; asize: cint): ptr svLogicVecVal {.exportc.} =
+  logInfo "dpi_c.get_reg_vector(): input {svLogicVecVal2String(iValuePtr, asize)}"
+  for i in 0 ..< asize:
+    let
+      bit = transform_svLogic(svGetBitselLogic(iValuePtr, i))
+    svPutBitselLogic(result, i, bit)
+  logInfo "dpi_c.get_reg_vector(): result {svLogicVecVal2String(result, asize)}"

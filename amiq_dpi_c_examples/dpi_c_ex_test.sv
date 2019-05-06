@@ -146,7 +146,7 @@ class dpi_c_ex_test;
     test_logic();
     test_logic_vector();
     test_reg();
-//     test_reg_vector();
+    test_reg_vector();
 //     test_chandle();
 //     test_unsized_int_array();
 
@@ -361,27 +361,26 @@ class dpi_c_ex_test;
     end
   endfunction : test_reg
 
-//   function void test_reg_vector();
-//     reg_vector_t cres=0, ares=0;
-//     reg_vector_t expected=0;
-//     int i;
-//     for (i = 0; i < `REG_ARRAY_SIZE; i++) begin
-//       expected[i] = transform_reg(m_reg_a[i]);
-//     end
+  function void test_reg_vector();
+    reg_vector_t cres=0, ares=0;
+    reg_vector_t expected=0;
+    int i;
+    for (i = 0; i < `REG_ARRAY_SIZE; i++) begin
+      expected[i] = transform_reg(m_reg_a[i]);
+    end
 
-//     $display($sformatf("test.test_reg_vector calls compute_reg_vector with %08b, expect %08b", m_reg_a, expected));
-//     compute_logic_vector(m_reg_a, cres, `REG_ARRAY_SIZE);
-//     $display($sformatf("test.test_reg_vector %08b, expect %08b, received %08b", m_reg_a, expected, cres));
-//     for (i = 0; i < `REG_ARRAY_SIZE; i++) begin
-//       TEST_REG_VECTOR_ERR: assert (cres[i] === expected[i])
-//         $display($sformatf("----->test_reg_vector passed[%0d]: expected %b received %b for input %b!", i, expected[i], cres[i], m_reg_a[i]));
-//         else begin
-//           $display($sformatf("test_reg_vector error[%0d]: expected %b received %b for input %b", i, expected[i], cres[i], m_reg_a[i]));
-//           $finish();
-//         end
-//     end
-//   endfunction
-
+    $display($sformatf("test.test_reg_vector calls compute_reg_vector with %08b, expect %08b", m_reg_a, expected));
+    compute_logic_vector(m_reg_a, cres, `REG_ARRAY_SIZE);
+    $display($sformatf("test.test_reg_vector %08b, expect %08b, received %08b", m_reg_a, expected, cres));
+    for (i = 0; i < `REG_ARRAY_SIZE; i++) begin
+      TEST_REG_VECTOR_ERR: assert (cres[i] === expected[i])
+        $display($sformatf("----->test_reg_vector passed[%0d]: expected %b received %b for input %b!", i, expected[i], cres[i], m_reg_a[i]));
+        else begin
+          $display($sformatf("test_reg_vector error[%0d]: expected %b received %b for input %b", i, expected[i], cres[i], m_reg_a[i]));
+          $finish();
+        end
+    end
+  endfunction : test_reg_vector
 
 //   function void test_chandle();
 //     chandle ch = null, ares=null;
