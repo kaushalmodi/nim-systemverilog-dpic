@@ -147,7 +147,7 @@ class dpi_c_ex_test;
     test_logic_vector();
     test_reg();
     test_reg_vector();
-//     test_chandle();
+    test_chandle();
 //     test_unsized_int_array();
 
 // `ifndef XCELIUM
@@ -382,30 +382,29 @@ class dpi_c_ex_test;
     end
   endfunction : test_reg_vector
 
-//   function void test_chandle();
-//     chandle ch = null, ares=null;
-//     int cres, expected;
+  function void test_chandle();
+    chandle ch = null, ares=null;
+    int cres, expected;
 
-//     expected = get_expected_chandle_value();
+    expected = get_expected_chandle_value();
 
-//     $display("test.test_chandle calls compute_chandle");
-//     compute_chandle(ch);
-//     ares=get_chandle();
-//     $display($sformatf("test.test_chandle calls call_chandle %p", ch));
-//     call_chandle(ch, cres);
+    $display("test.test_chandle calls compute_chandle");
+    compute_chandle(ch);
+    ares=get_chandle();
+    $display($sformatf("test.test_chandle calls call_chandle %p", ch));
+    call_chandle(ch, cres);
 
-//     COMPUTE_CHANDLE_ERR: assert (cres == expected) else begin
-//       $display($sformatf("compute_chandle error: expected %0d received %0d", expected, cres));
-//       $finish();
-//     end
+    COMPUTE_CHANDLE_ERR: assert (cres == expected) else begin
+      $display($sformatf("compute_chandle error: expected %0d received %0d", expected, cres));
+      $finish();
+    end
 
-//     call_chandle(ares, cres);
-//     GET_CHANDLE_ERR: assert (cres == expected) else begin
-//       $display($sformatf("get_chandle error: expected %0d received %0d", expected, cres));
-//       $finish();
-//     end
-
-//   endfunction
+    call_chandle(ares, cres);
+    GET_CHANDLE_ERR: assert (cres == expected) else begin
+      $display($sformatf("get_chandle error: expected %0d received %0d", expected, cres));
+      $finish();
+    end
+  endfunction : test_chandle
 
 //   function void test_unsized_int_array();
 //     int_array_t expected, cres;
@@ -541,9 +540,9 @@ class dpi_c_ex_test;
     endcase
   endfunction : transform_reg
 
-//   function int get_expected_chandle_value();
-//     return 10;
-//   endfunction
+  function int get_expected_chandle_value();
+    return 10;
+  endfunction : get_expected_chandle_value
 
 //   function byte_array_t transform_byte_array(byte_array_t in);
 //     transform_byte_array=new[in.size()];

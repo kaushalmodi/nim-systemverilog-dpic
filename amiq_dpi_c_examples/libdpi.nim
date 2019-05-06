@@ -221,3 +221,30 @@ proc get_reg_vector(iValuePtr: ptr svLogicVecVal; asize: cint): ptr svLogicVecVa
       bit = transform_svLogic(svGetBitselLogic(iValuePtr, i))
     svPutBitselLogic(result, i, bit)
   logInfo "dpi_c.get_reg_vector(): result {svLogicVecVal2String(result, asize)}"
+
+## chandle
+proc print_chandle(): cint =
+  logInfo "dpi_c.print_chandle()"
+  return 10
+
+type
+  Chandle = pointer # Alias Nim type "pointer" to "Chandle" just for better readability
+
+# import "DPI-C" function void compute_chandle(output chandle result);
+proc compute_chandle(chandlePtr: ptr Chandle) {.exportc.} =
+  chandlePtr[] = cast[Chandle](print_chandle)
+  logInfo "dpi_c.compute_chandle() {repr(chandlePtr)}"
+
+# import "DPI-C" function chandle get_chandle();
+proc get_chandle(): Chandle {.exportc.} =
+  result = cast[Chandle](print_chandle)
+  logInfo "dpi_c.get_chandle() {repr(result)}"
+
+# import "DPI-C" function void call_chandle(input chandle i_value, output int result);
+proc call_chandle(inChandle: Chandle; oValuePtr: ptr cint) {.exportc.} =
+  logInfo "dpi_c.call_chandle() {repr(inChandle)}"
+  let
+    pcp = cast[proc(): cint {.cdecl.}](inChandle) # {.cdecl.} enforces "C function type" vs "Nim proc type"
+    # pcp = cast[type print_chandle](inChandle) # this works too
+  oValuePtr[] = pcp()
+  logInfo "dpi_c.call_chandle() returns {oValuePtr[]}"
