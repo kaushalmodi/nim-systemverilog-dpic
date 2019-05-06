@@ -16,7 +16,7 @@ proc transform_char(inp: cschar): cschar =
   # cast it to an 8-bit signed value to make the Nim code compile.
   return cast[cschar](255) - inp
 
-proc compute_byte(i_value: cschar, resPtr: ptr cschar) {.exportc.} =
+proc compute_byte(i_value: cschar; resPtr: ptr cschar) {.exportc.} =
   logInfo "dpi_c.compute_byte(): received value {i_value}"
   resPtr[] = transform_char(i_value)
   logInfo "dpi_c.compute_byte(): return value {resPtr[]}"
@@ -27,9 +27,9 @@ proc get_byte(i_value: cschar): cschar {.exportc.} =
   logInfo "dpi_c.get_byte(): return {result}"
 
 ## shortint
-proc transform_short_int(inp: cshort): cshort = return cast[cshort](65535) - inp
+proc transform_short_int(inp: cshort): cshort = cast[cshort](65535) - inp
 
-proc compute_shortint(i_value: cshort, resPtr: ptr cshort) {.exportc.} =
+proc compute_shortint(i_value: cshort; resPtr: ptr cshort) {.exportc.} =
   logInfo "dpi_c.compute_shortint(): received {i_value}"
   resPtr[] = transform_short_int(i_value)
   logInfo "dpi_c.compute_shortint(): return {resPtr[]}"
@@ -38,3 +38,16 @@ proc get_shortint(i_value: cshort): cshort {.exportc.} =
   logInfo "dpi_c.get_shortint(): received {i_value}"
   result = transform_short_int(i_value)
   logInfo "dpi_c.get_shortint(): return {result}"
+
+## int
+proc transform_int(inp: cint): cint = 23*inp
+
+proc compute_int(i_value: cint; resPtr: ptr cint) {.exportc.} =
+  logInfo "dpi_c.compute_int(): received {i_value}"
+  resPtr[] = transform_int(i_value)
+  logInfo "dpi_c.compute_int(): return {resPtr[]}"
+
+proc get_int(i_value: cint): cint {.exportc.} =
+  logInfo "dpi_c.get_int(): received {i_value}"
+  result = transform_int(i_value)
+  logInfo "dpi_c.get_int(): return {result}"

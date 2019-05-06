@@ -136,7 +136,7 @@ class dpi_c_ex_test;
     // --------------
     test_byte();
     test_shortint();
-//     test_int();
+    test_int();
 //     test_longint();
 //     test_real();
 //     test_string();
@@ -192,21 +192,21 @@ class dpi_c_ex_test;
     end
   endfunction : test_shortint
 
-//   function void test_int();
-//     int cres, ares;
-//     int expected = transform_int(m_int);
-//     $display($sformatf("test.test_int calls compute_int with %d", m_int));
-//     compute_int(m_int, cres);
-//     ares = get_int(m_int);
-//     COMPUTE_INT_ERR: assert(cres == expected) else begin
-//       $display($sformatf("compute_int error: expected %d received %d for input %d", expected, cres, m_int));
-//       $finish();
-//     end
-//     GET_INT_ERR: assert(ares == expected) else begin
-//       $display($sformatf("get_int error: expected %d received %d for input %d", expected, ares, m_int));
-//       $finish();
-//     end
-//   endfunction
+  function void test_int();
+    int cres, ares;
+    int expected = transform_int(m_int);
+    $display($sformatf("test.test_int calls compute_int with %d", m_int));
+    compute_int(m_int, cres);
+    ares = get_int(m_int);
+    COMPUTE_INT_ERR: assert(cres == expected) else begin
+      $display($sformatf("compute_int error: expected %d received %d for input %d", expected, cres, m_int));
+      $finish();
+    end
+    GET_INT_ERR: assert(ares == expected) else begin
+      $display($sformatf("get_int error: expected %d received %d for input %d", expected, ares, m_int));
+      $finish();
+    end
+  endfunction : test_int
 
 //   function void test_longint();
 //     longint cres, ares;
@@ -506,9 +506,9 @@ class dpi_c_ex_test;
 //     return !in;
 //   endfunction
 
-//   function int transform_int(int in);
-//     return 23*in;
-//   endfunction
+  function int transform_int(int in);
+    return 23*in;
+  endfunction
 
 //   function longint transform_longint(longint in);
 //     return 123*in;
