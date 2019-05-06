@@ -139,7 +139,7 @@ class dpi_c_ex_test;
     test_int();
     test_longint();
     test_real();
-//     test_string();
+    test_string();
 //     test_string_array();
 //     test_bit();
 //     test_bit_vector();
@@ -240,21 +240,21 @@ class dpi_c_ex_test;
     end
   endfunction : test_real
 
-//   function void test_string();
-//     string cres, ares;
-//     string expected = "DEAF_BEAF_DRINKS_COFFEE";
-//     $display($sformatf("test.test_string calls compute_string with %s", m_string));
-//     compute_string(m_string, cres);
-//     ares = get_string(m_string);
-//     COMPUTE_STRING_ERR: assert(cres == expected) else begin
-//       $display($sformatf("compute_string error: expected %s received %s for input %s", expected, cres, m_string));
-//       $finish();
-//     end
-//     GET_STRING_ERR: assert(ares == expected) else begin
-//       $display($sformatf("compute_string error: expected %s received %s for input %s", expected, ares, m_string));
-//       $finish();
-//     end
-//   endfunction
+  function void test_string();
+    string cres, ares;
+    string expected = "DEAF_BEAF_DRINKS_COFFEE";
+    $display($sformatf("test.test_string calls compute_string with %s", m_string));
+    compute_string(m_string, cres);
+    ares = get_string(m_string);
+    COMPUTE_STRING_ERR: assert(cres == expected) else begin
+      $display($sformatf("compute_string error: expected %s received %s for input %s", expected, cres, m_string));
+      $finish();
+    end
+    GET_STRING_ERR: assert(ares == expected) else begin
+      $display($sformatf("compute_string error: expected %s received %s for input %s", expected, ares, m_string));
+      $finish();
+    end
+  endfunction
 
 //   function void test_string_array();
 //     string cres[3], ares[3];

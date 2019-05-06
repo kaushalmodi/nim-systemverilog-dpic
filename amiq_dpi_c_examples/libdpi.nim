@@ -90,3 +90,14 @@ proc get_real(i_value: cdouble): cdouble {.exportc.} =
   logInfo "dpi_c.get_real(): received {i_value}"
   result = transform_double(i_value)
   logInfo "dpi_c.get_real(): return {result}"
+
+## string
+proc compute_string(i_value: cstring; resPtr: ptr cstring) {.exportc.} =
+  logInfo "dpi_c.compute_string(): received {i_value}"
+  resPtr[] = "DEAF_BEAF_DRINKS_COFFEE"
+  logInfo "dpi_c.compute_string(): return {resPtr[]}"
+
+proc get_string(i_value: cstring): cstring {.exportc.} =
+  logInfo "dpi_c.get_string(): received {i_value}"
+  result = "DEAF_BEAF_DRINKS_COFFEE"
+  logInfo "dpi_c.get_string(): return {result}"
