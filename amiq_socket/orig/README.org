@@ -1,0 +1,9 @@
+1. Open one terminal and start the Server with:
+   #+begin_example
+   python3 server.py
+   #+end_example
+
+2. Open new terminal and run the SV simulation there (needs Cadence Xcelium):
+   #+begin_example
+   bash run.sh
+   #+end_example
