@@ -140,7 +140,7 @@ class dpi_c_ex_test;
     test_longint();
     test_real();
     test_string();
-//     test_string_array();
+    test_string_array();
 //     test_bit();
 //     test_bit_vector();
 //     test_logic();
@@ -254,19 +254,19 @@ class dpi_c_ex_test;
       $display($sformatf("compute_string error: expected %s received %s for input %s", expected, ares, m_string));
       $finish();
     end
-  endfunction
+  endfunction : test_string
 
-//   function void test_string_array();
-//     string cres[3], ares[3];
-//     string expected[3] = {"DEAF_BEAF","DRINKS", "COFFEE"};
-//     $display($sformatf("test.test_string_array calls compute_string_array with %s, %s, %s", m_string_a[0], m_string_a[1], m_string_a[2]));
-//     compute_string_array(m_string_a, cres);
-//     foreach(expected[i])
-//       COMPUTE_STRING_A_ERR: assert(cres[i] == expected[i]) else begin
-//         $display($sformatf("compute_string_array error: expected %s received %s for input %s", expected[i], cres[i], m_string_a[i]));
-//         $finish();
-//       end
-//   endfunction
+  function void test_string_array();
+    string cres[3], ares[3];
+    string expected[3] = {"DEAF_BEAF","DRINKS", "COFFEE"};
+    $display($sformatf("test.test_string_array calls compute_string_array with %s, %s, %s", m_string_a[0], m_string_a[1], m_string_a[2]));
+    compute_string_array(m_string_a, cres);
+    foreach(expected[i])
+      COMPUTE_STRING_A_ERR: assert(cres[i] == expected[i]) else begin
+        $display($sformatf("compute_string_array error: expected %s received %s for input %s", expected[i], cres[i], m_string_a[i]));
+        $finish();
+      end
+  endfunction : test_string_array
 
 //   function void test_bit();
 //     bit cres, ares;

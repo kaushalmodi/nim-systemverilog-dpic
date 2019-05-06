@@ -101,3 +101,13 @@ proc get_string(i_value: cstring): cstring {.exportc.} =
   logInfo "dpi_c.get_string(): received {i_value}"
   result = "DEAF_BEAF_DRINKS_COFFEE"
   logInfo "dpi_c.get_string(): return {result}"
+
+## string array
+proc compute_string_array(i_value: svOpenArrayHandle; resHandle: svOpenArrayHandle) {.exportc.} =
+  let
+    iValPtr = cast[ptr UncheckedArray[cstring]](svGetArrayPtr(i_value))
+    oValPtr = cast[ptr UncheckedArray[cstring]](svGetArrayPtr(resHandle))
+  logInfo "dpi_c.compute_string_array(): inputs {{{iValPtr[][0]}, {iValPtr[][1]}, {iValPtr[][2]}}}"
+  for idx, val in ["DEAF_BEAF", "DRINKS", "COFFEE"]:
+    oValPtr[][idx] = val
+  logInfo "dpi_c.compute_string_array(): return value {{{oValPtr[][0]}, {oValPtr[][1]}, {oValPtr[][2]}}}"
