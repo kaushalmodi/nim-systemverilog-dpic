@@ -9,12 +9,10 @@ template logInfo(data: string): untyped =
 
 ## byte
 proc transform_char(inp: cschar): cschar =
-  echo fmt"transform_char in: {inp}"
-  # The original C code seems to have a bug .. the C side compute_byte
-  # is mapped with SV "byte" type, but the "byte" type is 8-bit
-  # signed. 255 is an invalid 8-bit signed value. So I need to force
-  # cast it to an 8-bit signed value to make the Nim code compile.
-  return cast[cschar](255) - inp
+  logInfo "transform_char in: {inp}"
+  # The original C code uses an invalid 8-bit signed value: 255. So
+  # replacing that with the actual 8-bit signed value: -1.
+  return -1 - inp
 
 proc compute_byte(i_value: cschar; resPtr: ptr cschar) {.exportc.} =
   logInfo "dpi_c.compute_byte(): received value {i_value}"
@@ -27,7 +25,10 @@ proc get_byte(i_value: cschar): cschar {.exportc.} =
   logInfo "dpi_c.get_byte(): return {result}"
 
 ## shortint
-proc transform_short_int(inp: cshort): cshort = cast[cshort](65535) - inp
+proc transform_short_int(inp: cshort): cshort =
+  # The original C code uses an invalid 16-bit signed value: 65535. So
+  # replacing that with the actual 16-bit signed value: -1.
+  return -1 - inp
 
 proc compute_shortint(i_value: cshort; resPtr: ptr cshort) {.exportc.} =
   logInfo "dpi_c.compute_shortint(): received {i_value}"
