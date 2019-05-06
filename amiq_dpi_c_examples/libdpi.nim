@@ -141,3 +141,32 @@ proc get_bit_vector(iValuePtr: ptr svBitVecVal): svBitVecVal {.exportc.} =
   logInfo "dpi_c.get_bit_vector(): input {iValuePtr[]} ({iValuePtr[]:#b})"
   result = transform_svBitVecVal(iValuePtr[])
   logInfo "dpi_c.get_bit_vector(): result {result} ({result:#b})"
+
+## logic
+type
+  SvLogic = enum
+    sv_0 = "0"
+    sv_1 = "1"
+    sv_z = "Z"
+    sv_x = "X"
+
+proc transform_svLogic(inp: svLogic): svLogic =
+  return svLogic(case SvLogic(inp)
+                 of sv_0:
+                   sv_1
+                 of sv_1:
+                   sv_x
+                 of sv_z:
+                   sv_0
+                 of sv_x:
+                   sv_z)
+
+proc compute_logic(i_value: svLogic; resPtr: ptr svLogic) {.exportc.} =
+  logInfo "dpi_c.compute_logic(): integer value:{i_value}, input {SvLogic(i_value)}"
+  resPtr[] = transform_svLogic(i_value)
+  logInfo "dpi_c.compute_logic(): result {SvLogic(resPtr[])} <- {SvLogic(i_value)}"
+
+proc get_logic(i_value: svLogic): svLogic {.exportc.} =
+  logInfo "dpi_c.get_logic(): input {SvLogic(i_value)}"
+  result = transform_svLogic(i_value)
+  logInfo "dpi_c.get_logic(): result {SvLogic(result)} <- {SvLogic(i_value)}"

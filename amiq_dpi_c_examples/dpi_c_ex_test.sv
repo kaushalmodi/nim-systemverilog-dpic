@@ -143,7 +143,7 @@ class dpi_c_ex_test;
     test_string_array();
     test_bit();
     test_bit_vector();
-//     test_logic();
+    test_logic();
 //     test_logic_vector();
 //     test_reg();
 //     test_reg_vector();
@@ -301,27 +301,25 @@ class dpi_c_ex_test;
       $finish();
     end
 `endif
-  endfunction
+  endfunction : test_bit_vector
 
-//   function void test_logic();
-//     logic cres, ares;
-//     logic expected;
-//     expected = transform_logic(m_logic);
+  function void test_logic();
+    logic cres, ares;
+    logic expected;
+    expected = transform_logic(m_logic);
 
-//     $display($sformatf("test.test_logic calls compute_logic with %b", m_logic));
-//     compute_logic(m_logic, cres);
-//     ares = get_logic(m_logic);
-//     COMPUTE_LOGIC_ERR: assert(cres === expected) else begin
-//       $display($sformatf("compute_logic error: expected %b received %b for input %b", expected, cres, m_logic));
-//       $finish();
-//     end
-//     GET_LOGIC_ERR: assert(ares === expected) else begin
-//       $display($sformatf("compute_logic error: expected %b received %b for input %b", expected, ares, m_logic));
-//       $finish();
-//     end
-
-//   endfunction
-
+    $display($sformatf("test.test_logic calls compute_logic with %b", m_logic));
+    compute_logic(m_logic, cres);
+    ares = get_logic(m_logic);
+    COMPUTE_LOGIC_ERR: assert(cres === expected) else begin
+      $display($sformatf("compute_logic error: expected %b received %b for input %b", expected, cres, m_logic));
+      $finish();
+    end
+    GET_LOGIC_ERR: assert(ares === expected) else begin
+      $display($sformatf("compute_logic error: expected %b received %b for input %b", expected, ares, m_logic));
+      $finish();
+    end
+  endfunction : test_logic
 
 //   function void test_logic_vector();
 //     logic_vector_t cres=0, ares=0;
@@ -526,14 +524,14 @@ class dpi_c_ex_test;
     return (in << 3) + 2;
   endfunction
 
-//   function logic transform_logic(logic in);
-//     case (in)
-//       1'b0: return 1'b1;
-//       1'b1: return 1'bx;
-//       1'bz: return 1'b0;
-//       1'bx: return 1'bz;
-//     endcase
-//   endfunction
+  function logic transform_logic(logic in);
+    case (in)
+      1'b0: return 1'b1;
+      1'b1: return 1'bx;
+      1'bz: return 1'b0;
+      1'bx: return 1'bz;
+    endcase
+  endfunction : transform_logic
 
 //   function reg transform_reg(reg in);
 //     case (in)
