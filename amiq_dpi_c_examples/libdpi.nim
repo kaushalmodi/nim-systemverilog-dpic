@@ -111,3 +111,20 @@ proc compute_string_array(i_value: svOpenArrayHandle; resHandle: svOpenArrayHand
   for idx, val in ["DEAF_BEAF", "DRINKS", "COFFEE"]:
     oValPtr[][idx] = val
   logInfo "dpi_c.compute_string_array(): return value {{{oValPtr[][0]}, {oValPtr[][1]}, {oValPtr[][2]}}}"
+
+## bit
+proc transform_svBit(inp: svBit): svBit =
+  # echo fmt"inp = {inp}"
+  # echo fmt"not inp = {not inp}"
+  result = (not inp) and svBit(1)
+  # echo fmt"(not inp) && 8'b0000_0001 = {result}"
+
+proc compute_bit(i_value: svBit; resPtr: ptr svBit) {.exportc.} =
+  logInfo "dpi_c.compute_bit(): input {i_value}"
+  resPtr[] = transform_svBit(i_value)
+  logInfo "dpi_c.compute_bit(): result {resPtr[]}"
+
+proc get_bit(i_value: svBit): svBit {.exportc.} =
+  logInfo "dpi_c.get_bit(): input {i_value}"
+  result = transform_svBit(i_value)
+  logInfo "dpi_c.get_bit(): result {result}"

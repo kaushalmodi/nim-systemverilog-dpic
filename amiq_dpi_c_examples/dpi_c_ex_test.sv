@@ -141,7 +141,7 @@ class dpi_c_ex_test;
     test_real();
     test_string();
     test_string_array();
-//     test_bit();
+    test_bit();
 //     test_bit_vector();
 //     test_logic();
 //     test_logic_vector();
@@ -268,21 +268,21 @@ class dpi_c_ex_test;
       end
   endfunction : test_string_array
 
-//   function void test_bit();
-//     bit cres, ares;
-//     bit expected = transform_bit(m_bit);
-//     $display($sformatf("test.test_bit calls compute_bit with %b", m_bit));
-//     compute_bit(m_bit, cres);
-//     ares = get_bit(m_bit);
-//     COMPUTE_BIT_ERR: assert(cres == expected) else begin
-//       $display($sformatf("compute_bit error: expected %b received %b for input %b", expected, cres, m_bit));
-//       $finish();
-//     end
-//     GET_BIT_ERR: assert(ares == expected) else begin
-//       $display($sformatf("get_bit error: expected %b received %b for input %b", expected, ares, m_bit));
-//       $finish();
-//     end
-//   endfunction
+  function void test_bit();
+    bit cres, ares;
+    bit expected = transform_bit(m_bit);
+    $display($sformatf("test.test_bit calls compute_bit with %b", m_bit));
+    compute_bit(m_bit, cres);
+    ares = get_bit(m_bit);
+    COMPUTE_BIT_ERR: assert(cres == expected) else begin
+      $display($sformatf("compute_bit error: expected %b received %b for input %b", expected, cres, m_bit));
+      $finish();
+    end
+    GET_BIT_ERR: assert(ares == expected) else begin
+      $display($sformatf("get_bit error: expected %b received %b for input %b", expected, ares, m_bit));
+      $finish();
+    end
+  endfunction : test_bit
 
 //   function void test_bit_vector();
 //     bit_vector_t cres, ares;
@@ -502,9 +502,9 @@ class dpi_c_ex_test;
     return 255-in;
   endfunction : transform_byte
 
-//   function bit transform_bit(bit in);
-//     return !in;
-//   endfunction
+  function bit transform_bit(bit in);
+    return !in;
+  endfunction : transform_bit
 
   function int transform_int(int in);
     return 23*in;
