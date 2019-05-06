@@ -1,30 +1,30 @@
 /******************************************************************************
-* (C) Copyright 2019 AMIQ Consulting
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-* http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*
-* MODULE:      BLOG
-* PROJECT:     How to Map SystemVerilog Data Types to C, Using DPI-C
-* Description: This is a code snippet from the Blog article mentioned on PROJECT
-* Link:        https://www.amiq.com/consulting/2019/01/30/how-to-map-systemverilog-data-types-to-c-using-dpi-c/
-*******************************************************************************/
+ * (C) Copyright 2019 AMIQ Consulting
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * MODULE:      BLOG
+ * PROJECT:     How to Map SystemVerilog Data Types to C, Using DPI-C
+ * Description: This is a code snippet from the Blog article mentioned on PROJECT
+ * Link:        https://www.amiq.com/consulting/2019/01/30/how-to-map-systemverilog-data-types-to-c-using-dpi-c/
+ *******************************************************************************/
 
 `ifndef __dpi_c_ex_svh
-`define __dpi_c_ex_svh
+  `define __dpi_c_ex_svh
 
-`define BIT_ARRAY_SIZE 16
-`define LOGIC_ARRAY_SIZE 8
-`define REG_ARRAY_SIZE 8
+  `define BIT_ARRAY_SIZE 16
+  `define LOGIC_ARRAY_SIZE 8
+  `define REG_ARRAY_SIZE 8
 
 typedef bit[`BIT_ARRAY_SIZE - 1 : 0] bit_vector_t;
 typedef logic[`LOGIC_ARRAY_SIZE-1:0] logic_vector_t;
@@ -34,11 +34,11 @@ typedef byte byte_array_t[];
 typedef int int_array_t[];
 
 typedef struct {
-	byte aByte;
-	int anInt;
-	bit aBit;
-	longint aLongInt;
-	bit[`BIT_ARRAY_SIZE-1:0] aBitVector;
+  byte aByte;
+  int anInt;
+  bit aBit;
+  longint aLongInt;
+  bit[`BIT_ARRAY_SIZE-1:0] aBitVector;
 } dpi_c_ex_s;
 
 
@@ -69,9 +69,9 @@ import "DPI-C" function bit get_bit(input bit i_value);
 
 import "DPI-C" function void compute_bit_vector(input bit[`BIT_ARRAY_SIZE - 1 : 0] i_val, output bit[`BIT_ARRAY_SIZE - 1 : 0] result);
 
-`ifndef QUESTA
-   import "DPI-C" function bit[`BIT_ARRAY_SIZE - 1 : 0] get_bit_vector(input bit[`BIT_ARRAY_SIZE - 1 : 0] i_val);
-`endif
+  `ifndef QUESTA
+import "DPI-C" function bit[`BIT_ARRAY_SIZE - 1 : 0] get_bit_vector(input bit[`BIT_ARRAY_SIZE - 1 : 0] i_val);
+  `endif
 
 import "DPI-C" function void compute_logic(input logic i_value, output logic result);
 import "DPI-C" function logic get_logic(input logic i_value);
