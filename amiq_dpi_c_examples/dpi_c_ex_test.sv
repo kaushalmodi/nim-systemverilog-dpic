@@ -137,7 +137,7 @@ class dpi_c_ex_test;
     test_byte();
     test_shortint();
     test_int();
-//     test_longint();
+    test_longint();
 //     test_real();
 //     test_string();
 //     test_string_array();
@@ -208,21 +208,21 @@ class dpi_c_ex_test;
     end
   endfunction : test_int
 
-//   function void test_longint();
-//     longint cres, ares;
-//     longint expected = transform_longint(m_longint);
-//     $display($sformatf("test.test_longint calls compute_longint with %d", m_longint));
-//     compute_longint(m_longint, cres);
-//     ares = get_longint(m_longint);
-//     COMPUTE_LONGINT_ERR: assert (cres == expected) else begin
-//       $display($sformatf("compute_longint error: expected %d received %d for input %d", expected, cres, m_longint));
-//       $finish();
-//     end
-//     GET_LONGINT_ERR: assert (ares == expected) else begin
-//       $display($sformatf("get_longint error: expected %d received %d for input %d", expected, ares, m_longint));
-//       $finish();
-//     end
-//   endfunction
+  function void test_longint();
+    longint cres, ares;
+    longint expected = transform_longint(m_longint);
+    $display($sformatf("test.test_longint calls compute_longint with %d", m_longint));
+    compute_longint(m_longint, cres);
+    ares = get_longint(m_longint);
+    COMPUTE_LONGINT_ERR: assert (cres == expected) else begin
+      $display($sformatf("compute_longint error: expected %d received %d for input %d", expected, cres, m_longint));
+      $finish();
+    end
+    GET_LONGINT_ERR: assert (ares == expected) else begin
+      $display($sformatf("get_longint error: expected %d received %d for input %d", expected, ares, m_longint));
+      $finish();
+    end
+  endfunction : test_longint
 
 //   function void test_real();
 //     real cres, ares;
@@ -508,12 +508,11 @@ class dpi_c_ex_test;
 
   function int transform_int(int in);
     return 23*in;
-  endfunction
+  endfunction : transform_int
 
-//   function longint transform_longint(longint in);
-//     return 123*in;
-//   endfunction
-
+  function longint transform_longint(longint in);
+    return 123*in;
+  endfunction : transform_longint
 
   function shortint transform_shortint(shortint in);
     return 65535-in;
