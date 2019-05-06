@@ -277,3 +277,26 @@ proc compute_unsized_int_array(inDArrHandle, outDArrHandle: svOpenArrayHandle) {
 ## unsized byte array
 proc compute_unsized_byte_array(inDArrHandle, outDArrHandle: svOpenArrayHandle) {.exportc.} =
   compute_unsized_T_array[cschar](inDArrHandle, outDArrHandle)
+
+## struct
+type
+  MyStruct = object
+    aChar: cschar
+    anInt: cint
+    aBit: svBit
+    aLongInt: clonglong
+    aBitVector: svBitVecVal
+
+proc transform_struct(inpPtr: ptr MyStruct): MyStruct =
+  logInfo "dpi_c: input struct = {inpPtr[]}"
+
+  copyMem(addr result, inpPtr, sizeof(MyStruct))
+  result.aBit = transform_svBit(result.aBit)
+  result.aChar = transform_char(result.aChar)
+  result.anInt = transform_int(result.anInt)
+  result.aLongInt = transform_long_int(result.aLongInt)
+  result.aBitVector = transform_svBitVecVal(result.aBitVector)
+  logInfo "dpi_c: output struct = {result}"
+
+proc compute_struct(iValuePtr, oValuePtr: ptr MyStruct) {.exportc.} =
+  oValuePtr[] = transform_struct(iValuePtr)

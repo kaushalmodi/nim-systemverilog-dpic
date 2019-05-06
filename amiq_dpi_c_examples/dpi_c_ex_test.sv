@@ -158,9 +158,9 @@ class dpi_c_ex_test;
     test_unsized_byte_array();
 `endif
 
-    // `ifdef XCELIUM
-    //     test_struct();
-    // `endif
+`ifdef XCELIUM
+    test_struct();
+`endif
   endfunction : test
 
   function void test_byte();
@@ -446,57 +446,57 @@ class dpi_c_ex_test;
       end
   endfunction : test_unsized_byte_array
 
-  //   function void test_struct();
-  //     dpi_c_ex_s cres, expected;
-  //     int cres_handle_value;
+  function void test_struct();
+    dpi_c_ex_s cres, expected;
+    int cres_handle_value;
 
-  //     expected = transform_struct(m_struct);
+    expected = transform_struct(m_struct);
 
-  //     $display($sformatf("test.test_struct calls compute_struct with %s", struct2string(m_struct)));
+    $display($sformatf("test.test_struct calls compute_struct with %s", struct2string(m_struct)));
 
-  //     compute_struct(m_struct, cres);
+    compute_struct(m_struct, cres);
 
-  //     $display($sformatf("test.test_struct compute_struct returned %s", struct2string(cres)));
+    $display($sformatf("test.test_struct compute_struct returned %s", struct2string(cres)));
 
-  //     COMPUTE_STRUCT_ERR: assert(
-  //                                cres.aBit == expected.aBit &&
-  //                                cres.aByte == expected.aByte &&
-  //                                cres.anInt == expected.anInt &&
-  //                                cres.aLongInt == expected.aLongInt &&
-  //                                cres.aBitVector == expected.aBitVector
-  //                                ) else begin
-  //       $display($sformatf("compute_struct error (bit): expected %b received %b for input %b", expected.aBit, cres.aBit, m_struct.aBit));
-  //       $display($sformatf("compute_struct error (byte): expected %d received %d for input %d", expected.aByte, cres.aByte, m_struct.aByte));
-  //       $display($sformatf("compute_struct error (int): expected %d received %d for input %d", expected.anInt, cres.anInt, m_struct.anInt));
-  //       $display($sformatf("compute_struct error (int2): expected %d received %d for input %d", expected.aLongInt, cres.aLongInt, m_struct.aLongInt));
-  //       $display($sformatf("compute_struct error (bit vector): expected %d received %d for input %d", expected.aBitVector, cres.aBitVector, m_struct.aBitVector));
-  //       $finish();
-  //     end
-  //   endfunction
+    COMPUTE_STRUCT_ERR: assert(
+                               cres.aBit == expected.aBit &&
+                               cres.aByte == expected.aByte &&
+                               cres.anInt == expected.anInt &&
+                               cres.aLongInt == expected.aLongInt &&
+                               cres.aBitVector == expected.aBitVector
+                               ) else begin
+      $display($sformatf("compute_struct error (bit): expected %b received %b for input %b", expected.aBit, cres.aBit, m_struct.aBit));
+      $display($sformatf("compute_struct error (byte): expected %d received %d for input %d", expected.aByte, cres.aByte, m_struct.aByte));
+      $display($sformatf("compute_struct error (int): expected %d received %d for input %d", expected.anInt, cres.anInt, m_struct.anInt));
+      $display($sformatf("compute_struct error (int2): expected %d received %d for input %d", expected.aLongInt, cres.aLongInt, m_struct.aLongInt));
+      $display($sformatf("compute_struct error (bit vector): expected %d received %d for input %d", expected.aBitVector, cres.aBitVector, m_struct.aBitVector));
+      $finish();
+    end
+  endfunction : test_struct
 
-  //   function string array2string(byte anarray[]);
-  //     array2string="";
-  //     foreach(anarray[i])
-  //       array2string = $sformatf("%s %2x", array2string, anarray[i]);
-  //   endfunction
+  function dpi_c_ex_s transform_struct(dpi_c_ex_s in);
+    transform_struct.aBit = transform_bit(m_bit);
+    transform_struct.aByte = transform_byte(m_byte);
+    transform_struct.anInt = transform_int(m_int);
+    transform_struct.aLongInt = transform_longint(m_longint);
+    transform_struct.aBitVector = transform_bit_vector(m_bit_a);
+  endfunction : transform_struct
 
-  //   function string struct2string(dpi_c_ex_s astruct);
-  //     return $sformatf("struct={aBit=%1b, aByte=%2x, anInt=%0X, aLongInt=%016x, aBitVector:%016x}",
-  //                      astruct.aBit,
-  //                      astruct.aByte,
-  //                      astruct.anInt,
-  //                      astruct.aLongInt,
-  //                      astruct.aBitVector
-  //                      );
-  //   endfunction
+  function string struct2string(dpi_c_ex_s astruct);
+    return $sformatf("struct={aBit=%1b, aByte=%2x, anInt=%0X, aLongInt=%016x, aBitVector:%016x}",
+                     astruct.aBit,
+                     astruct.aByte,
+                     astruct.anInt,
+                     astruct.aLongInt,
+                     astruct.aBitVector
+                     );
+  endfunction : struct2string
 
-  //   function dpi_c_ex_s transform_struct(dpi_c_ex_s in);
-  //     transform_struct.aBit = transform_bit(m_bit);
-  //     transform_struct.aByte = transform_byte(m_byte);
-  //     transform_struct.anInt = transform_int(m_int);
-  //     transform_struct.aLongInt = transform_longint(m_longint);
-  //     transform_struct.aBitVector = transform_bit_vector(m_bit_a);
-  //   endfunction
+  // function string array2string(byte anarray[]);
+  //   array2string="";
+  //   foreach(anarray[i])
+  //     array2string = $sformatf("%s %2x", array2string, anarray[i]);
+  // endfunction : array2string
 
   function byte transform_byte(byte in);
     return 255-in;
