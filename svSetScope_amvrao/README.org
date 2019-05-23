@@ -1,0 +1,8 @@
+* To run ~libdpi.nim~ + ~tb.sv~
+#+begin_src nim
+make
+#+end_src
+* To run ~libdpi.cpp~ (original) + ~tb.sv~
+#+begin_example
+make cpplibdpi nc
+#+end_example
