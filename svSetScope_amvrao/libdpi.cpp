@@ -1,4 +1,5 @@
 // http://amvrao.blogspot.com/2017/08/good-uses-of-system-verilog-dpi.html
+// https://www.edaplayground.com/x/34Wg
 
 #include <iostream>
 #include <svdpi.h>
