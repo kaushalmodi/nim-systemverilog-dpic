@@ -3,23 +3,21 @@
 import svdpi
 import std/[strformat]
 
-const
-  maxInstances = 100
+type
+  ScopeInfo = object
+    startAddress: cint
+    endAddress: cint
+    scopeName: string
 
 var
-  currentPointer: cint = 0
-  startAddress: array[maxInstances, cint]
-  endAddress: array[maxInstances, cint]
-  scopes: array[maxInstances, string]
+  scopes: seq[ScopeInfo]
 
 proc sv_write_reg(address, value: cint) {.importc.}
 
-proc findAddressPointer(address: cint): cint =
-  # echo &"[findAddressPointer] address = {address}, currentPointer = {currentPointer}"
-  result = -1.cint
-  for i in 0.cint .. currentPointer:
-    if ((address >= startAddress[i]) and (address <= endAddress[i])):
-      # echo &"[findAddressPointer] match found in instance {i}"
+proc findAddressPointer(address: cint): int =
+  result = -1
+  for i in 0 .. scopes.len:
+    if ((address >= scopes[i].startAddress) and (address <= scopes[i].endAddress)):
       return i
 
 proc nim_write_reg(address, value: cint) {.exportc.} =
@@ -30,22 +28,22 @@ proc nim_write_reg(address, value: cint) {.exportc.} =
     return
 
   let
-    currentScopeName = scopes[addrPtr]
-  echo &"[nim_write_reg] Address {address} found in instance {addrPtr}; scope = {currentScopeName}"
+    currentScopeName = scopes[addrPtr].scopeName
+  echo &"[nim_write_reg] Address {address} found in scope = {currentScopeName}"
   # set the scope to the specific instance.
   discard svSetScope(svGetScopeFromName(currentScopeName.cstring))
   sv_write_reg(address, value)
   echo ""
 
 proc registerMe(startAddr, endAddr: cint) {.exportc.} =
-  # echo &"Current pointer = {currentPointer}"
-  startAddress[currentPointer] = startAddr
-  endAddress[currentPointer] = endAddr
-  # Get Scope....
-  scopes[currentPointer] = $svGetNameFromScope(svGetScope())
-  echo &"[Scope {scopes[currentPointer]}] Registering addresses {startAddr} to {endAddr}\n"
-  currentPointer += 1.cint
-  # echo &"scopes debug: {scopes[0 .. 2]}"
+  let
+    currentScopeName = $svGetNameFromScope(svGetScope())
+  scopes.add(ScopeInfo(startAddress: startAddr,
+                       endAddress: endAddr,
+                       scopeName: currentScopeName))
+  echo &"[Scope {currentScopeName}] Registering addresses {startAddr} to {endAddr}"
+  # echo &"scopes = {scopes}"
+  echo ""
 
 #[
 **Original C++ code**
