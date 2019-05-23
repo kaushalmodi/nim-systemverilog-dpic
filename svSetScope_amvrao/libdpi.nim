@@ -3,18 +3,23 @@
 import svdpi
 import std/[strformat]
 
+const
+  maxInstances = 100
+
 var
   currentPointer: cint = 0
-  startAddress: array[100, cint]
-  endAddress: array[100, cint]
-  scopes: array[100, cstring]
+  startAddress: array[maxInstances, cint]
+  endAddress: array[maxInstances, cint]
+  scopes: array[maxInstances, string]
 
 proc sv_write_reg(address, value: cint) {.importc.}
 
 proc findAddressPointer(address: cint): cint =
+  # echo &"[findAddressPointer] address = {address}, currentPointer = {currentPointer}"
   result = -1.cint
-  for i in 0.cint ..< currentPointer:
+  for i in 0.cint .. currentPointer:
     if ((address >= startAddress[i]) and (address <= endAddress[i])):
+      # echo &"[findAddressPointer] match found in instance {i}"
       return i
 
 proc nim_write_reg(address, value: cint) {.exportc.} =
@@ -24,17 +29,23 @@ proc nim_write_reg(address, value: cint) {.exportc.} =
     echo &"Error: Invalid address found: {address}"
     return
 
+  let
+    currentScopeName = scopes[addrPtr]
+  echo &"[nim_write_reg] Address {address} found in instance {addrPtr}; scope = {currentScopeName}"
   # set the scope to the specific instance.
-  discard svSetScope(svGetScopeFromName(scopes[addrPtr]))
+  discard svSetScope(svGetScopeFromName(currentScopeName.cstring))
   sv_write_reg(address, value)
+  echo ""
 
 proc registerMe(startAddr, endAddr: cint) {.exportc.} =
-  # Get Scope....
+  # echo &"Current pointer = {currentPointer}"
   startAddress[currentPointer] = startAddr
   endAddress[currentPointer] = endAddr
-  scopes[currentPointer] = svGetNameFromScope(svGetScope())
+  # Get Scope....
+  scopes[currentPointer] = $svGetNameFromScope(svGetScope())
   echo &"[Scope {scopes[currentPointer]}] Registering addresses {startAddr} to {endAddr}\n"
   currentPointer += 1.cint
+  # echo &"scopes debug: {scopes[0 .. 2]}"
 
 #[
 **Original C++ code**
