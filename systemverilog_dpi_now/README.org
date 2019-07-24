@@ -1,0 +1,14 @@
+#+title: SystemVerilog DPI Now
+#+author: Rich Edelman
+#+email: rich_edelman@mentor.com
+
+The examples in the [[examples_orig/][*examples_orig* directory]] are authored by Rich
+Edelman and I take no ownership of those.
+
+In the other sub-directories in this directory, I (Kaushal Modi) have
+translated the C code from the ~examples_orig/~ directory to Nim to
+demonstrate how it can be interfaced with SystemVerilog via DPI-C.
+
+Those examples are associated with his DVCon 2005 paper and
+presentation "Using SystemVerilog Now with DPI". The PDF of those were
+provided by Rich Edelman and they can be found [[_paper_and_presentation][here]].
