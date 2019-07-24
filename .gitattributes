@@ -1,3 +1,6 @@
 amiq_dpi_c_examples/orig/* linguist-vendored
 amiq_socket/orig/* linguist-vendored
 systemverilog_dpi_now/examples_orig/* linguist-vendored
+inp_arr_outp_nested_struct_matlab/matlab_export/* linguist-vendored
+inp_outp_both_nested_struct_matlab/matlab_export/* linguist-vendored
+struct_from_matlab/matlab_export/* linguist-vendored
