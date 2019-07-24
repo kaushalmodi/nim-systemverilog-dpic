@@ -1,0 +1,184 @@
+#+title: Nim + SystemVerilog + DPI-C
+#+author: Kaushal Modi
+
+This repo contains SystemVerilog DPI-C examples that I found in the
+wild, translated to Nim, and then many examples of my own that show
+the Nim/SystemVerilog interface via DPI-C.
+* Translations of C/C++ to Nim that interfaces with SystemVerilog
+Jump to these sub-directories to see how I translated the existing
+C/C++ examples to Nim:
+
+- [[testbench_in__DPI_C/README.org][DPI-C examples from testbench.in]]
+- [[systemverilog_dpi_now/README.org][DPI-C examples from Rich Edelman's DVCon 2005 paper]]
+- [[amiq_dpi_c_examples/README.org][DPI-C examples from a blog post by Amiq]]
+* Presentation (CDNLive Silicon Valley 2019)
+I presented my approach of using Nim to interface with SystemVerilog
+via DPI-C at CDNLive Silicon Valley 2019. Below you can find the
+slides and abstract of that.
+** Slides
+https://www.slideshare.net/KaushalModi4/nim-and-dpic-and-systemverilog
+** Abstract
+*** Introduction
+This paper suggests a new systems language Nim (https://nim-lang.org)
+for writing foreign code to interface via DPI-C with
+SystemVerilog. Note that the same old DPI-C is used here because one
+of Nim compile targets is C (along with C++ and JavaScript).
+
+The paper further goes into the details of the benefits of using Nim
+vs C and even Python.
+*** Why a new language?
+There are many examples of using C code to interface with
+SystemVerilog via DPI-C. While C is a time-proven language, it is not
+as fast to code in, compared to the language Nim presented in this
+paper.
+
+Nim is expressive and requires almost zero boilerplate code. Even
+though Nim is a strongly typed language, it can infer the type at many
+places.
+
+C does not have exception handling natively. But Nim can handle
+exceptions gracefully and compiles that logic internally to C.
+
+While Nim is expressive, it is also a systems language. The user can
+control if garbage collection should be done. By using Nim, one also
+does not have to give up on direct pointer-based operations like in C.
+
+Nim has an in-built documentation generator. The documentation is
+derived from variable and procedure doc-strings written in Markdown or
+RST. The doc-strings also allow embedding "live code" which serve as
+mini tests. This allows generating API documentation /plus/ mini
+regression testing using a single ~nim doc ..~ command.
+**** Why not Python?
+- The Python-C interface is not as seamless in comparison. Nim has a
+  one-to-one mapping between Nim-types and C-types. For example, here
+  is a little Nim wrapper ~svdpi.nim~ (http://ix.io/1PkY/nim). This is
+  all that's needed to bind the headers in ~svdpi.h~ to Nim. After
+  that, the header functions like ~svBitVec32~, ~svGetArrElemPtr1~,
+  etc. start working verbatim in Nim.
+- Python is neither a static-typed nor a compiled language. So usually
+  issues and bugs in the code reveal at run-time and not at compile
+  time.
+- Python is slower to run than C. As Nim compiles to C, Nim and C
+  speeds are the same.
+*** A bit about Nim
+- Nim has a very strong FFI with C. It also has C-specific data-types
+  (~cint~, ~cfloat~, ~clonglong~, and so on).
+- As Nim compiles to C, you don't lose the speed of C, and you can
+  still use the existing C code (user-written or libraries) along with
+  new Nim code.
+- Expressive! Use expressions instead of statements. (see
+  Appendix). The benefit is that logic in head easily translates to
+  code.
+- The ~nim~ binary does the code compilation but also has a mini
+  build-chain built into it. So a command like this is all it takes to
+  compile a ~.nim~ file and the imported C/Nim libraries in there to a
+  ~.so~: ~nim c --app:lib --out:libdpi.so libdpi.nim~.
+- Its syntax is Pythonic --- indentation-based, brace-free and
+  semicolon-free.
+*** Summary
+Today we see a lot more Python coders than hard-core C coders. A fresh
+systems language like Nim will be easy to adopt, where the
+verification engineer can easily access static-typing (but that which
+is not as over-bearing), use exception handling for graceful errors,
+quickly generate documentation, do regression testing of the Nim code,
+and so much more.
+*** Appendix
+**** "Hello World" from Nim
+***** Nim code
+#+begin_src nim
+# libdpi.nim
+proc hello() {.exportc.} =
+  echo "Hello from Nim!"
+#+end_src
+***** SV code
+#+begin_src systemverilog
+// tb.sv
+program top;
+
+  import "DPI-C" hello=task hello();
+
+  initial begin
+    hello();
+  end
+
+endprogram : top
+#+end_src
+***** Commands
+Commands to compile Nim + SV code blocks above:
+#+begin_example
+nim c --app:lib --out:libdpi.so libdpi.nim
+xrun -sv -64bit tb.sv
+#+end_example
+***** Output
+#+begin_example
+xcelium> run
+Hello from Nim!
+Simulation complete via implicit call to $finish(1) at time 0 FS + 1
+./tb.sv:3 program top;
+#+end_example
+**** Exception Handling
+***** Nim code
+#+begin_src nim
+# libdpi.nim
+import std/[strformat]
+import svdpi
+
+type
+  MyError = object of Exception
+
+proc handle_exception(a: cint)  =
+  if a <= 1:
+    echo fmt"a is {a}"
+  else:
+    raise newException(MyError, fmt"a is > 1! (value = {a})")
+
+proc test_exception(a: cint) {.exportc.} =
+  try:
+    handle_exception(a)
+  except:
+    echo fmt"[Error] {getCurrentException().name}: {getCurrentException().msg}"
+#+end_src
+***** SV code
+#+begin_src systemverilog
+// tb.sv
+program top;
+
+  import "DPI-C" function void test_exception(input int a);
+
+  initial begin
+    test_exception(-1);
+    test_exception(2);
+    test_exception(0);
+    $finish;
+  end
+
+endprogram : top
+#+end_src
+***** Commands
+Commands to compile Nim + SV code blocks above:
+#+begin_example
+nim c --app:lib --out:libdpi.so libdpi.nim
+xrun -sv -64bit tb.sv
+#+end_example
+***** Output
+#+begin_example
+xcelium> run
+a is -1
+[Error] MyError: a is > 1! (value = 2)
+a is 0
+Simulation complete via $finish(1) at time 0 FS + 1
+./tb.sv:11     $finish;
+#+end_example
+**** Expressiveness
+#+begin_src nim
+proc foo(a: int): int =
+  result = if a < 10:
+             a + 10
+           elif a > 10:
+             a - 10
+           else:
+             0
+echo foo(1)   # -> 11
+echo foo(10)  # -> 0
+echo foo(100) # -> 90
+#+end_src
