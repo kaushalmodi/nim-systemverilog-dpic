@@ -1,0 +1,13 @@
+#+title: DPI-C Examples from testbench.in translated to Nim
+#+author: Kaushal Modi
+
+Source: http://www.testbench.in/DP_00_INDEX.html
+
+This directory contains all the C examples from the above reference
+translated to Nim.
+
+This directory demonstrates how equivalent Nim code can be written to
+do the exact same interfacing with SystemVerilog via DPI-C.
+
+While translating the examples, few fixes in them were also made to
+ensure that those examples actually run.
