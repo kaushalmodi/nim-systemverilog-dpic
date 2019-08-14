@@ -19,7 +19,7 @@ package here_pkg;
   //   If negative, this value is not embedded in the string returned by hereDebug.
   //   Else, this value is prefixed to the returned string by hereDebug.
   //     Ideally, if this value is set, it should be set to $realtime.
-  import "DPI-C" context hereDebug = function string here_debug_str(input int init_val, int enable_sticky, real real_val);
+  import "DPI-C" context hereDebug = function string here_debug_str(input int init_val = -1, int enable_sticky = -1, real real_val = -1.0);
 
   function void here_debug(input int init_val = -1, int enable_sticky = -1, real real_val = -1.0);
     string str;
