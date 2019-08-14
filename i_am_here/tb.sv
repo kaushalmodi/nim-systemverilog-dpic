@@ -1,4 +1,4 @@
-// Time-stamp: <2019-08-14 09:13:14 kmodi>
+// Time-stamp: <2019-08-14 09:28:00 kmodi>
 
 `timescale 1ns/1ns
 
@@ -19,13 +19,15 @@ package here_pkg;
   //   If negative, this value is not embedded in the string returned by hereDebug.
   //   Else, this value is prefixed to the returned string by hereDebug.
   //     Ideally, if this value is set, it should be set to $realtime.
-  import "DPI-C" context hereDebug = function string here_debug_str(input int init_val = -1, int enable_sticky = -1, real real_val = -1.0);
+  import "DPI-C" context hereDebug = function string here_debug_str(input int init_val = -1,
+                                                                    input int enable_sticky = -1,
+                                                                    input real real_val = -1.0);
 
-  function void here_debug(input int init_val = -1, int enable_sticky = -1, real real_val = -1.0);
+  function void here_debug(input int init_val = -1, int enable_sticky = -1, real real_val = -1.0, string scope = $sformatf("%m"));
     string str;
     begin
       str = here_debug_str(init_val, enable_sticky, real_val);
-      if (str != "") `uvm_info("HERE", $sformatf("%s", str), UVM_MEDIUM)
+      if (str != "") `uvm_info("HERE", $sformatf("%s [%s]", str, scope), UVM_MEDIUM)
     end
   endfunction : here_debug
 
@@ -57,7 +59,7 @@ module top;
       here_debug(, , 0.66);      // 0.0 ns         (4) enable=0, counter=0
     join
 
-    here_debug();
+    here_debug(,,,$sformatf("%m"));
     here_debug();
     here_debug(100);
     here_debug();
@@ -96,12 +98,13 @@ virtual class my_base_test extends uvm_test;
 
   function new(string name = "my_base_test", uvm_component parent = null);
     super.new(name, parent);
+    `uvm_info("HERE2", $sformatf("%s", here_debug_str()), UVM_MEDIUM)
   endfunction : new
 
   virtual function void build_phase(uvm_phase phase);
     begin
       super.build_phase(phase);
-      here_debug();
+      here_debug(,,,$sformatf("%m"));
     end
   endfunction : build_phase
 endclass : my_base_test
@@ -111,7 +114,7 @@ class my_test extends my_base_test;
 
   function new(string name = "my_test", uvm_component parent = null);
     super.new(name, parent);
-    here_debug();
+    here_debug(,,,$sformatf("%m"));
   endfunction : new
 
   virtual task run_phase(uvm_phase phase);
@@ -119,7 +122,9 @@ class my_test extends my_base_test;
       super.run_phase(phase);
       phase.raise_objection(this, $sformatf("%s: At the beginning of run phase", get_type_name()));
 
-      here_debug();
+      #5;
+
+      here_debug(,,,$sformatf("%m"));
 
       `uvm_info("HELLO", "Hello", UVM_MEDIUM)
       #10;
