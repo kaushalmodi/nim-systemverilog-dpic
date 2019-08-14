@@ -1,4 +1,4 @@
-// Time-stamp: <2019-08-14 09:04:19 kmodi>
+// Time-stamp: <2019-08-14 09:13:14 kmodi>
 
 `timescale 1ns/1ns
 
@@ -15,13 +15,17 @@ package here_pkg;
   //   Else if enable_sticky is 0, the here debug state gets disabled.
   //   Else if enable_sticky is positive, the here debug state gets enabled.
   //     The enable state auto-initializes to 1 if not set using enable_sticky.
+  // real_val:
+  //   If negative, this value is not embedded in the string returned by hereDebug.
+  //   Else, this value is prefixed to the returned string by hereDebug.
+  //     Ideally, if this value is set, it should be set to $realtime.
   import "DPI-C" context hereDebug = function string here_debug_str(input int init_val, int enable_sticky, real real_val);
 
-  function void here_debug(input int init_val = -1, int enable_sticky = -1, real real_val = $realtime);
+  function void here_debug(input int init_val = -1, int enable_sticky = -1, real real_val = -1.0);
     string str;
     begin
       str = here_debug_str(init_val, enable_sticky, real_val);
-      if (str != "") $display("%s", str);
+      if (str != "") `uvm_info("HERE", $sformatf("%s", str), UVM_MEDIUM)
     end
   endfunction : here_debug
 
@@ -97,6 +101,7 @@ virtual class my_base_test extends uvm_test;
   virtual function void build_phase(uvm_phase phase);
     begin
       super.build_phase(phase);
+      here_debug();
     end
   endfunction : build_phase
 endclass : my_base_test
@@ -106,12 +111,15 @@ class my_test extends my_base_test;
 
   function new(string name = "my_test", uvm_component parent = null);
     super.new(name, parent);
+    here_debug();
   endfunction : new
 
   virtual task run_phase(uvm_phase phase);
     begin
       super.run_phase(phase);
       phase.raise_objection(this, $sformatf("%s: At the beginning of run phase", get_type_name()));
+
+      here_debug();
 
       `uvm_info("HELLO", "Hello", UVM_MEDIUM)
       #10;
