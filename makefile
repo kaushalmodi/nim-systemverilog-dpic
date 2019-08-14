@@ -1,4 +1,4 @@
-# Time-stamp: <2019-05-02 09:51:45 kmodi>
+# Time-stamp: <2019-08-14 09:06:16 kmodi>
 # Author    : Kaushal Modi
 
 FILES   ?= tb.sv
@@ -58,6 +58,9 @@ nc:
 	+incdir+./ \
 	$(NOWARNS) \
 	$(NC_SWITCHES)
+
+ncuvm:
+	$(MAKE) nc NC_SWITCHES="-uvm -uvm -uvmhome CDNS-1.2 -clean"
 
 # libdpi.c -> $(DEFAULT_SV_LIB)
 # -I$(XCELIUM_ROOT)/../include for "svdpi.h"

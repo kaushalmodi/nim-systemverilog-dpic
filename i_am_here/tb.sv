@@ -1,7 +1,11 @@
-// Time-stamp: <2019-08-14 08:58:54 kmodi>
+// Time-stamp: <2019-08-14 09:04:19 kmodi>
 
-program top;
+`timescale 1ns/1ns
 
+`include "uvm_macros.svh"
+import uvm_pkg::*;
+
+package here_pkg;
   // init_val:
   //   If negative, the here counter increments from the previous value.
   //   Else, the here counter gets set to the passed value.
@@ -20,6 +24,18 @@ program top;
       if (str != "") $display("%s", str);
     end
   endfunction : here_debug
+
+endpackage : here_pkg
+
+module top;
+
+  import here_pkg::*;
+
+  initial begin
+    // Print the simulation time in ns by default
+    $timeformat(-9, 0, "ns", 11);  // units, precision, suffix, min field width
+    run_test("my_test");
+  end
 
   initial begin
     fork
@@ -64,8 +80,43 @@ program top;
     here_debug();
     here_debug();
     here_debug();
+  end // initial begin
 
-    $finish;
-  end
+endmodule : top
 
-endprogram : top
+// This is a virtual class; this class cannot be created and thus also should
+// not have the factory registration (`uvm_component_utils)
+virtual class my_base_test extends uvm_test;
+
+  import here_pkg::*;
+
+  function new(string name = "my_base_test", uvm_component parent = null);
+    super.new(name, parent);
+  endfunction : new
+
+  virtual function void build_phase(uvm_phase phase);
+    begin
+      super.build_phase(phase);
+    end
+  endfunction : build_phase
+endclass : my_base_test
+
+class my_test extends my_base_test;
+  `uvm_component_utils(my_test)
+
+  function new(string name = "my_test", uvm_component parent = null);
+    super.new(name, parent);
+  endfunction : new
+
+  virtual task run_phase(uvm_phase phase);
+    begin
+      super.run_phase(phase);
+      phase.raise_objection(this, $sformatf("%s: At the beginning of run phase", get_type_name()));
+
+      `uvm_info("HELLO", "Hello", UVM_MEDIUM)
+      #10;
+
+      phase.drop_objection(this);
+    end
+  endtask : run_phase
+endclass : my_test
