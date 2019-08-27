@@ -1,4 +1,4 @@
-// Time-stamp: <2019-08-27 19:23:40 kmodi>
+// Time-stamp: <2019-08-27 19:47:02 kmodi>
 
 program top;
 
@@ -9,7 +9,8 @@ program top;
     real scalar_real;
     int scalar_int;
     int arr_int[MAX];
-    bit arr_bit[MAX];
+    // bit arr_bit[MAX]; // xmvlog: *E,UNUSAG (tb.sv,16|62): unsupported element in unpacked struct datatype in formal argument.
+    byte unsigned arr_bit[MAX];
   } my_struct_s;
 
   import "DPI-C" function void print_object(input my_struct_s s);
