@@ -1,4 +1,4 @@
-// Time-stamp: <2019-08-14 09:32:47 kmodi>
+// Time-stamp: <2019-08-14 09:38:06 kmodi>
 
 `timescale 1ns/1ns
 
@@ -113,6 +113,8 @@ class my_test extends my_base_test;
       #5;
 
       here_debug(,,$sformatf("%m"));
+
+      $stacktrace;
 
       `uvm_info("HELLO", "Hello", UVM_MEDIUM)
       #10;
