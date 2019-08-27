@@ -1,14 +1,13 @@
-import svdpi
-
 const
   Max = 10
 
 type
   MyObject = object
-    scalar_bit: byte
-    scalar_real: cdouble
-    scalar_int: cint
-    arr_int: array[Max, cint]
+    scalarBit: byte
+    scalarReal: cdouble
+    scalarInt: cint
+    arrInt: array[Max, cint]
+    arrBit: array[Max, byte]
 
 proc print_object(obj: ptr MyObject) {.exportc.} =
   echo "Printing the whole object:"
