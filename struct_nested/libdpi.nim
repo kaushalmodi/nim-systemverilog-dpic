@@ -7,6 +7,7 @@ type
     scalarReal: cdouble
     scalarInt: cint
     arrInt: array[Max, cint]
+    arrBit: array[Max, byte]
   LevelTwo = object
     scalarBit: byte
     scalarReal: cdouble
@@ -39,7 +40,8 @@ proc populateLevelOne(objPtr: ptr LevelOne) {.exportc.} =
     o3 = LevelThree(scalarBit: 0,
                     scalarReal: 34.56,
                     scalarInt: 33_00,
-                    arrInt: [30.cint, 77, 18, 72, 34, 25, 82, 15, 07, 03])
+                    arrInt: [30.cint, 77, 18, 72, 34, 25, 82, 15, 07, 03],
+                    arrBit: [1.byte, 0, 1, 0, 1, 1, 1, 0, 1, 1 ])
     o2 = LevelTwo(scalarBit: 1,
                   scalarReal: 23.45,
                   scalarInt: 22_00,

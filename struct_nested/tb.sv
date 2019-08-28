@@ -1,4 +1,4 @@
-// Time-stamp: <2019-04-30 22:51:57 kmodi>
+// Time-stamp: <2019-08-27 20:04:42 kmodi>
 
 program top;
 
@@ -9,6 +9,8 @@ program top;
     real scalar_real;
     int scalar_int;
     int arr_int[MAX];
+    // bit arr_bit [MAX];          // This fails SV compilation
+    byte unsigned arr_bit [MAX];
   } level_three_s;
 
   typedef struct {
@@ -39,7 +41,8 @@ program top;
       s3 = '{scalar_bit : 1,
              scalar_real : 3.4,
              scalar_int : 300,
-             arr_int : '{ 51, 58, 64, 53, 74, 54, 35, 27, 01, 38 }};
+             arr_int : '{ 51, 58, 64, 53, 74, 54, 35, 27, 01, 38 },
+             arr_bit : '{ 1, 0, 1, 0, 1, 1, 1, 0, 1, 1 }};
 
       s2 = '{scalar_bit : 0,
              scalar_real : 2.3,
