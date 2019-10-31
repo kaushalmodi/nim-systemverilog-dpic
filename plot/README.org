@@ -1,0 +1,13 @@
+The ~libdpi.nim~ in this test bench requires a nimble package ~nimetry~ to be installed.
+
+To install it, first run:
+
+#+begin_example
+nimble install nimetry
+#+end_example
+
+Then run:
+
+#+begin_example
+make
+#+end_example

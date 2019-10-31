@@ -36,3 +36,7 @@ libdpi.json
 *rtw.mk
 *.tmw
 *.mat
+.bpad/
+.simvision/
+bpad*.err
+waves.shm/
