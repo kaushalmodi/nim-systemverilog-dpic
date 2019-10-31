@@ -1,13 +1,12 @@
 The ~libdpi.nim~ in this test bench requires a nimble package ~nimetry~ to be installed.
 
-To install it, first run:
-
+* Install ~nimetry~
 #+begin_example
 nimble install nimetry
 #+end_example
-
-Then run:
-
+* Build + Run
 #+begin_example
 make
 #+end_example
+* Generated Plot
+[[./plot.png][./plot.png]]
