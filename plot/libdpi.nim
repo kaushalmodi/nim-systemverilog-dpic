@@ -31,7 +31,7 @@ proc plot(numElems: cuint; arrPtr: svOpenArrayHandle; optionsPtr: ptr PlotOption
     arrLen = svLength(arrPtr, 1).cuint
     options = optionsPtr[]
     width = setDefaultIfNotSet(options.widthPixels, 720)
-    height = setDefaultIfNotSet(options.widthPixels, 480)
+    height = setDefaultIfNotSet(options.heightPixels, 480)
     plotFile = setDefaultIfNotSet($options.filePath, "plot.png")
   doAssert numElems <= arrLen
   # echo options
