@@ -1,36 +1,59 @@
-import std/[strformat]
+import std/[strformat, os]
 import svdpi, nimetry
 
-type
-  XyData = tuple
-    cnt: cuint
-    sin: cdouble
-  XyDataF = tuple
-    x: float
-    y: float
+const
+  srcDir = currentSourcePath.parentDir() # dir containing this .nim file
 
-proc plot(numElems: cuint; arrPtr: svOpenArrayHandle; fileName: cstring){.exportc.} =
-  var
-    data: seq[XyDataF]
-    p: Plot = newPlot(720, 480)
+type
+  PlotOptions = object
+    widthPixels: cuint
+    heightPixels: cuint
+    title: cstring
+    filePath: cstring
+    xMin: cdouble
+    xMax: cdouble
+    yMin: cdouble
+    yMax: cdouble
+    xTic: cdouble
+    yTic: cdouble
+
+proc setDefaultIfNotSet[T](val: T; defaultVal: T): T =
+  result = val
+  when T is string:
+    if val == "":
+      return defaultVal
+  else:
+    if val == 0:
+      return defaultVal
+
+proc plot(numElems: cuint; arrPtr: svOpenArrayHandle; optionsPtr: ptr PlotOptions){.exportc.} =
   let
     arrLen = svLength(arrPtr, 1).cuint
+    options = optionsPtr[]
+    width = setDefaultIfNotSet(options.widthPixels, 720)
+    height = setDefaultIfNotSet(options.widthPixels, 480)
+    plotFile = setDefaultIfNotSet($options.filePath, "plot.png")
   doAssert numElems <= arrLen
+  # echo options
+  var
+    data: seq[XY]
+    p: Plot = newPlot(width.int, height.int)
   for i in 0.cint ..< numElems.cint:
     let
-      arrElemPtr = cast[ptr XyData](svGetArrElemPtr1(arrPtr, i))
-    # echo &"{i}: {arrElemPtr[]}"
-    data.add((arrElemPtr[].cnt.float, arrElemPtr[].sin.float))
+      arrElemPtr = cast[ptr XY](svGetArrElemPtr1(arrPtr, i))
+    data.add((arrElemPtr[]))
 
-  p.setX(0, data[data.high].x+1)
-  p.setY(-1.0, 1.0)
+  p.setX(options.xMin, options.xMax)
+  p.setY(options.yMin, options.yMax)
 
-  p.setXtic(200)
-  p.setYtic(0.1)
+  p.setXtic(options.xTic.float)
+  p.setYtic(options.yTic.float)
 
   p.addPlot(data, Scatter, rgba(255, 0, 0, 255))
 
-  p.setFontTtf("DejaVuSans.ttf")
-  p.setTitle("Plot cnt vs sin")
+  p.setFontTtf(srcDir / "DejaVuSans.ttf")
+  if $options.title != "":
+    p.setTitle($options.title)
 
-  p.save($fileName)
+  echo &"Saving plot to {plotFile} .."
+  p.save(plotFile)
