@@ -49,7 +49,7 @@ proc plot(numElems: cuint; arrPtr: svOpenArrayHandle; optionsPtr: ptr PlotOption
   p.setXtic(options.xTic.float)
   p.setYtic(options.yTic.float)
 
-  p.addPlot(data, Scatter, rgba(255, 0, 0, 255))
+  p.addPlot(data, Line)
 
   p.setFontTtf(srcDir / "DejaVuSans.ttf")
   if $options.title != "":

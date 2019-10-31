@@ -1,4 +1,4 @@
-// Time-stamp: <2019-10-31 09:09:49 kmodi>
+// Time-stamp: <2019-10-31 09:33:32 kmodi>
 
 `timescale 1ns/1ps
 
@@ -50,7 +50,7 @@ module top;
   initial begin
     plot_options_s options;
 
-    #5ns;
+    #3ns;
 
     options = '{ width_pixels: 720, // optional
                  height_pixels: 480, // optional
