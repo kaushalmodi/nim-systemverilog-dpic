@@ -1,12 +1,24 @@
-The ~libdpi.nim~ in this test bench requires a nimble package ~nimetry~ to be installed.
-
-* Install ~nimetry~
+* Generating plots
+** Using ~ggplotnim~ + ~ginger~
+*** Install dependent packages
+#+begin_example
+nimble install https://github.com/Vindaar/ginger@#head
+nimble install https://github.com/Vindaar/ggplotnim@#addDocs
+#+end_example
+*** Build + Run
+#+begin_example
+make ggplot
+#+end_example
+*** Generated Plot
+[[./plot_ggplot.png][./plot_ggplot.png]]
+** Using ~nimetry~
+*** Install dependent packages
 #+begin_example
 nimble install nimetry
 #+end_example
-* Build + Run
+*** Build + Run
 #+begin_example
 make
 #+end_example
-* Generated Plot
+*** Generated Plot
 [[./plot.png][./plot.png]]

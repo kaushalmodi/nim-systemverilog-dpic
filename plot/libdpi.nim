@@ -4,9 +4,8 @@ when not defined(useGgplot):
   import nimetry
 else:
   import ggplotnim
-
-const
-  srcDir = currentSourcePath.parentDir() # dir containing this .nim file
+  type
+    XY* = (float, float)
 
 type
   PlotOptions = object
@@ -36,11 +35,13 @@ proc plot(numElems: cuint; arrPtr: svOpenArrayHandle; optionsPtr: ptr PlotOption
     options = optionsPtr[]
     width = setDefaultIfNotSet(options.widthPixels, 720)
     height = setDefaultIfNotSet(options.heightPixels, 480)
-    # `ggplotnim` currently supports `png`, `svg` and `pdf` (and vega as proof of concept)
-    plotFile = setDefaultIfNotSet($options.filePath, "plot.png")
   doAssert numElems <= arrLen
   # echo options
   when not defined(useGgplot):
+    const
+      srcDir = currentSourcePath.parentDir() # dir containing this .nim file
+    let
+      plotFile = setDefaultIfNotSet($options.filePath, "plot.png")
     var
       data: seq[XY]
       p: Plot = newPlot(width.int, height.int)
@@ -63,7 +64,10 @@ proc plot(numElems: cuint; arrPtr: svOpenArrayHandle; optionsPtr: ptr PlotOption
 
     echo &"Saving plot to {plotFile} .."
     p.save(plotFile)
-  else:
+  else: # ggplotnim
+    let
+      # `ggplotnim` currently supports `png`, `svg` and `pdf` (and vega as proof of concept)
+      plotFile = setDefaultIfNotSet($options.filePath, "plot_ggplot.png")
     var
       # need the data as two sequences
       x: seq[float]
@@ -107,5 +111,5 @@ proc plot(numElems: cuint; arrPtr: svOpenArrayHandle; optionsPtr: ptr PlotOption
     ggplot(df, aes("x", "y")) +
       geom_line() +
       ggtitle($options.title) +
-      ggsave(plotFile, width = width, height = height)
+      ggsave(plotFile, width = width.float, height = height.float)
     # and "it should just work ™". Since I can't run your code you have to trust me :P

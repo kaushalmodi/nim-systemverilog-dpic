@@ -1,4 +1,4 @@
-// Time-stamp: <2019-10-31 09:33:32 kmodi>
+// Time-stamp: <2019-11-04 11:42:53 kmodi>
 
 `timescale 1ns/1ps
 
@@ -52,10 +52,11 @@ module top;
 
     #3ns;
 
-    options = '{ width_pixels: 720, // optional
+    options = '{
+                 width_pixels: 720, // optional
                  height_pixels: 480, // optional
                  title: "Sine tone", // optional
-                 file_path: "plot.png", // optional
+                 // file_path: "plot.png", // optional
                  x_min: 0,
                  x_max: cnt+1,
                  y_min: -1.0,
