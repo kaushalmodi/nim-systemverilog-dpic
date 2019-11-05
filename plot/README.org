@@ -2,8 +2,7 @@
 ** Using ~ggplotnim~ + ~ginger~
 *** Install dependent packages
 #+begin_example
-nimble install https://github.com/Vindaar/ginger@#head
-nimble install https://github.com/Vindaar/ggplotnim@#addDocs
+nimble install ggplotnim
 #+end_example
 *** Build + Run
 #+begin_example
