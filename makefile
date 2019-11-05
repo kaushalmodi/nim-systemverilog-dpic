@@ -1,4 +1,4 @@
-# Time-stamp: <2019-11-05 10:13:50 kmodi>
+# Time-stamp: <2019-11-05 11:56:54 kmodi>
 # Author    : Kaushal Modi
 
 FILES   ?= tb.sv
@@ -59,6 +59,9 @@ nc:
 	+incdir+./ \
 	$(NOWARNS) \
 	$(NC_SWITCHES)
+
+ncgdb:
+	$(MAKE) nc NC_SWITCHES="-g -gdb -clean"
 
 ncuvm:
 	$(MAKE) nc NC_SWITCHES="-uvm -uvm -uvmhome CDNS-1.2 -clean"
