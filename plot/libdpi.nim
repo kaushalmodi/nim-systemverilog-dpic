@@ -32,12 +32,9 @@ proc plot(numElems: cuint; arrPtr: svOpenArrayHandle; optionsPtr: ptr PlotOption
     options = optionsPtr[]
     width = setDefaultIfNotSet(options.widthPixels, 720)
     height = setDefaultIfNotSet(options.heightPixels, 480)
+    title = $options.title
   var
-    title, plotFile: string
-  title.GC_ref()
-  plotFile.GC_ref()
-  title = $options.title
-  plotFile = $options.filePath
+    plotFile = $options.filePath
   doAssert numElems <= arrLen
   # echo options
   when not defined(useGgplot):
@@ -60,11 +57,11 @@ proc plot(numElems: cuint; arrPtr: svOpenArrayHandle; optionsPtr: ptr PlotOption
 
     p.addPlot(data, Line)
 
+    echo "Here1"
     p.setFontTtf(srcDir / "DejaVuSans.ttf")
+    echo "Here2"
     if title != "":
       p.setTitle(title)
 
-    # echo &"Saving plot to {plotFile} .."
+    echo &"Saving plot to {plotFile} .."
     p.save(plotFile)
-  title.GC_unref()
-  plotFile.GC_unref()
