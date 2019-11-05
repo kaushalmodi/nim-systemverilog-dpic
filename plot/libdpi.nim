@@ -8,7 +8,10 @@ else:
     XY* = (float, float)
 
 type
-  PlotOptions = object
+  # Araq recommended to always use the {.bycopy.} pragma for mapping
+  # Nim types to SV types (especially the ones related to cstring):
+  # https://gitter.im/nim-lang/Nim?at=5dc1a48d2a6494729ca24f89.
+  PlotOptions {.bycopy.} = object
     widthPixels: cuint
     heightPixels: cuint
     title: cstring
