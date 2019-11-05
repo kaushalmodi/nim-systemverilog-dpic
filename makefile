@@ -1,4 +1,4 @@
-# Time-stamp: <2019-08-14 09:06:16 kmodi>
+# Time-stamp: <2019-11-05 10:13:50 kmodi>
 # Author    : Kaushal Modi
 
 FILES   ?= tb.sv
@@ -38,7 +38,8 @@ NIM_DEFINES ?= -d:release
 clean:
 	rm -rf *~ core simv* urg* *.log *.history \#*.* *.dump .simvision/ waves.shm/ \
 	core.* simv* csrc* *.tmp *.vpd *.key log temp .vcs* DVE* *~ \
-	INCA_libs xcelium.d *.o ./.nimcache sigusrdump.out
+	INCA_libs xcelium.d *.o ./.nimcache sigusrdump.out \
+	.bpad/ bpad*.err
 
 # libdpi.nim -> libdpi.c -> $(DEFAULT_SV_LIB)
 # --gc:none is needed else Nim tries to free memory allocated for
