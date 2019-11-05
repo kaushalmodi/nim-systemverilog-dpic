@@ -37,7 +37,7 @@ NIM_RELEASE ?= -d:release
 NIM_DEFINES ?=
 NIM_SWITCHES ?=
 
-.PHONY: clean nim libdpi nimgdb nc ncgdb nvuvm clibdpi cpplibdpi $(SUBDIRS) all
+.PHONY: clean nim libdpi nc nvuvm clibdpi cpplibdpi $(SUBDIRS) all
 
 clean:
 	rm -rf *~ core simv* urg* *.log *.history \#*.* *.dump .simvision/ waves.shm/ \
@@ -64,9 +64,6 @@ endif
 	  libdpi.nim
 libdpi: nim
 
-nimgdb:
-	$(MAKE) nim GDB=1
-
 nc:
 	ln -sf $(NIM_SO) $(DEFAULT_SV_LIB)
 ifeq ($(GDB), 1)
@@ -80,9 +77,6 @@ endif
 	  +incdir+./ \
 	  $(NOWARNS) \
 	  $(NC_SWITCHES)
-
-ncgdb:
-	$(MAKE) nc GDB=1
 
 ncuvm:
 	$(MAKE) nc NC_SWITCHES="-uvm -uvm -uvmhome CDNS-1.2 -clean"
