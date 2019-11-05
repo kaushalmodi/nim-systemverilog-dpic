@@ -8,7 +8,10 @@ else:
     XY* = (float, float)
 
 type
-  PlotOptions = object
+  # Araq recommended to always use the {.bycopy.} pragma for mapping
+  # Nim types to SV types (especially the ones related to cstring):
+  # https://gitter.im/nim-lang/Nim?at=5dc1a48d2a6494729ca24f89.
+  PlotOptions {.bycopy.} = object
     widthPixels: cuint
     heightPixels: cuint
     title: cstring
@@ -35,13 +38,18 @@ proc plot(numElems: cuint; arrPtr: svOpenArrayHandle; optionsPtr: ptr PlotOption
     options = optionsPtr[]
     width = setDefaultIfNotSet(options.widthPixels, 720)
     height = setDefaultIfNotSet(options.heightPixels, 480)
+  var
+    title, plotFile: string
+  title.GC_ref()
+  plotFile.GC_ref()
+  title = $options.title
+  plotFile = $options.filePath
   doAssert numElems <= arrLen
   # echo options
   when not defined(useGgplot):
     const
       srcDir = currentSourcePath.parentDir() # dir containing this .nim file
-    let
-      plotFile = setDefaultIfNotSet($options.filePath, "plot.png")
+    plotFile = setDefaultIfNotSet(plotFile, "plot.png")
     var
       data: seq[XY]
       p: Plot = newPlot(width.int, height.int)
@@ -59,15 +67,14 @@ proc plot(numElems: cuint; arrPtr: svOpenArrayHandle; optionsPtr: ptr PlotOption
     p.addPlot(data, Line)
 
     p.setFontTtf(srcDir / "DejaVuSans.ttf")
-    if $options.title != "":
-      p.setTitle($options.title)
+    if title != "":
+      p.setTitle(title)
 
     echo &"Saving plot to {plotFile} .."
     p.save(plotFile)
   else: # ggplotnim
-    let
-      # `ggplotnim` currently supports `png`, `svg` and `pdf` (and vega as proof of concept)
-      plotFile = setDefaultIfNotSet($options.filePath, "plot_ggplot.png")
+    # `ggplotnim` currently supports `png`, `svg` and `pdf` (and vega as proof of concept)
+    plotFile = setDefaultIfNotSet(plotFile, "plot_ggplot.png")
     var
       # need the data as two sequences
       x: seq[float]
@@ -113,3 +120,5 @@ proc plot(numElems: cuint; arrPtr: svOpenArrayHandle; optionsPtr: ptr PlotOption
       ggtitle($options.title) +
       ggsave(plotFile, width = width.float, height = height.float)
     # and "it should just work ™". Since I can't run your code you have to trust me :P
+  title.GC_unref()
+  plotFile.GC_unref()
