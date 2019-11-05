@@ -1,4 +1,4 @@
-# Time-stamp: <2019-11-05 12:06:39 kmodi>
+# Time-stamp: <2019-11-05 12:51:45 kmodi>
 
 .DEFAULT_GOAL := default
 
@@ -10,7 +10,7 @@ include $(GIT_ROOT)/makefile
 default: libdpi nc
 
 gcdbg:
-	$(MAKE) libdpi NIM_GC= NIM_DEFINES=--debugger:native
+	$(MAKE) libdpi NIM_GC= NIM_DEFINES="--debugger:native --gcc.options.debug=\"-O0 -g3 -ggdb3\""
 	$(MAKE) ncgdb
 
 ggplot:
