@@ -1,5 +1,7 @@
-# Time-stamp: <2019-11-05 14:11:10 kmodi>
+# Time-stamp: <2019-11-05 14:19:27 kmodi>
 # Author    : Kaushal Modi
+
+UVM ?= 0
 
 FILES   ?= tb.sv
 DEFINES	= DEFINE_PLACEHOLDER
@@ -7,7 +9,8 @@ DEFINES	= DEFINE_PLACEHOLDER
 #     being used. I know it already.
 # SPDUSD: Don't warn about unused include dirs.
 NOWARNS = -nowarn DSEM2009 -nowarn DSEMEL -nowarn SPDUSD
-NC_SWITCHES = -clean
+NC_SWITCHES ?=
+NC_CLEAN ?= 1
 
 # Subdirs contains a list of all directories containing a "Makefile".
 SUBDIRS = $(shell find . -name "Makefile" | sed 's|/Makefile||')
@@ -37,7 +40,7 @@ NIM_RELEASE ?= -d:release
 NIM_DEFINES ?=
 NIM_SWITCHES ?=
 
-.PHONY: clean nim libdpi nc nvuvm clibdpi cpplibdpi $(SUBDIRS) all
+.PHONY: clean nim libdpi nc clibdpi cpplibdpi $(SUBDIRS) all
 
 clean:
 	rm -rf *~ core simv* urg* *.log *.history \#*.* *.dump .simvision/ waves.shm/ \
@@ -66,8 +69,14 @@ libdpi: nim
 
 nc:
 	ln -sf $(NIM_SO) $(DEFAULT_SV_LIB)
+ifeq ($(UVM), 1)
+	$(eval NC_SWITCHES += -uvm -uvmhome CDNS-1.2)
+endif
 ifeq ($(GDB), 1)
-	$(eval NC_SWITCHES := -g -gdb -clean)
+	$(eval NC_SWITCHES += -g -gdb)
+endif
+ifeq ($(NC_CLEAN), 1)
+	$(eval NC_SWITCHES += -clean)
 endif
 	xrun -sv $(NC_ARCH_FLAGS) \
 	  -timescale 1ns/10ps \
@@ -77,9 +86,6 @@ endif
 	  +incdir+./ \
 	  $(NOWARNS) \
 	  $(NC_SWITCHES)
-
-ncuvm:
-	$(MAKE) nc NC_SWITCHES="-uvm -uvm -uvmhome CDNS-1.2 -clean"
 
 # libdpi.c -> $(DEFAULT_SV_LIB)
 # -I$(XCELIUM_ROOT)/../include for "svdpi.h"
