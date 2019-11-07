@@ -41,7 +41,7 @@ proc get_shortint(i_value: cshort): cshort {.exportc.} =
   logInfo "dpi_c.get_shortint(): return {result}"
 
 ## int
-proc transform_int(inp: cint): cint = 23*inp
+proc transform_int(inp: cint): cint = cint(inp/23.cint)
 
 proc compute_int(i_value: cint; resPtr: ptr cint) {.exportc.} =
   logInfo "dpi_c.compute_int(): received {i_value}"
@@ -54,20 +54,7 @@ proc get_int(i_value: cint): cint {.exportc.} =
   logInfo "dpi_c.get_int(): return {result}"
 
 ## longint
-# The original C code has some bug .. it prints:
-#  test.test_longint calls compute_longint with   2809549300312324577
-#  [INFO](libdpi.c:75:) dpi_c.compute_longint(): received -133154335   <-- incorrect received value
-#  [INFO](libdpi.c:77:) dpi_c.compute_longint(): return 801885979
-#  [INFO](libdpi.c:81:) dpi_c.get_longint(): received -133154335
-#  [INFO](libdpi.c:83:) dpi_c.get_longint(): return 801885979
-# Whereas Nim correctly prints:
-#  int calls compute_longint with   2809549300312324577
-#  [INFO](libdpi.nim:59:) dpi_c.compute_longint(): received 2809549300312324577
-#  [INFO](libdpi.nim:61:) dpi_c.compute_longint(): return -4913573462065557733
-#  [INFO](libdpi.nim:64:) dpi_c.get_longint(): received 2809549300312324577
-#  [INFO](libdpi.nim:66:) dpi_c.get_longint(): return -4913573462065557733
-
-proc transform_long_int(inp: clonglong): clonglong = 123*inp
+proc transform_long_int(inp: clonglong): clonglong = clonglong(inp.float/123)
 
 proc compute_longint(i_value: clonglong; resPtr: ptr clonglong) {.exportc.} =
   logInfo "dpi_c.compute_longint(): received {i_value}"

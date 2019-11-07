@@ -507,11 +507,11 @@ class dpi_c_ex_test;
   endfunction : transform_bit
 
   function int transform_int(int in);
-    return 23*in;
+    return in/23;
   endfunction : transform_int
 
   function longint transform_longint(longint in);
-    return 123*in;
+    return in/123;
   endfunction : transform_longint
 
   function shortint transform_shortint(shortint in);
