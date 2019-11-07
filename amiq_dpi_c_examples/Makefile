@@ -8,7 +8,7 @@ include $(GIT_ROOT)/makefile
 NIM_GC = boehm
 
 # Compiles to C
-default: libdpi nc
+default: nim nc
 
 # Compiles to C++
 cpp:

@@ -5,4 +5,4 @@
 GIT_ROOT = $(shell git rev-parse --show-toplevel)
 include $(GIT_ROOT)/makefile
 
-default: libdpi nc
+default: nim nc

@@ -6,7 +6,7 @@ GIT_ROOT = $(shell git rev-parse --show-toplevel)
 include $(GIT_ROOT)/makefile
 
 # Compiles to C
-default: libdpi nc
+default: nim nc
 
 # Compiles to C++
 cpp:

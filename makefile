@@ -45,7 +45,7 @@ NIM_DEFINES ?=
 NIM_SWITCHES ?=
 NIM_THREADS ?= 0
 
-.PHONY: clean nim libdpi nc clibdpi cpplibdpi $(SUBDIRS) all valg
+.PHONY: clean nim nc clibdpi cpplibdpi $(SUBDIRS) all valg
 
 clean:
 	rm -rf *~ core simv* urg* *.log *.history \#*.* *.dump .simvision/ waves.shm/ \
@@ -83,7 +83,6 @@ endif
 	  $(NIM_SWITCHES) \
 	  --hint[Processing]:off \
 	  libdpi.nim
-libdpi: nim
 
 nc:
 	ln -sf $(NIM_SO) $(DEFAULT_SV_LIB)

@@ -6,4 +6,4 @@ GIT_ROOT = $(shell git rev-parse --show-toplevel)
 include $(GIT_ROOT)/makefile
 
 default:
-	@$(MAKE) libdpi nc FILES="module_1.sv module_2.sv"
+	@$(MAKE) nim nc FILES="module_1.sv module_2.sv"
