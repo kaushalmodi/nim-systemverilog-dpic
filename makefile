@@ -1,4 +1,4 @@
-# Time-stamp: <2019-11-07 15:06:10 kmodi>
+# Time-stamp: <2019-11-07 15:20:16 kmodi>
 # Author    : Kaushal Modi
 
 UVM ?= 0
@@ -37,8 +37,8 @@ DEFAULT_SV_LIB ?= libdpi.so
 # Possible values of NIM_COMPILES_TO: c, cpp
 NIM_COMPILES_TO ?= c
 # https://gitter.im/nim-lang/Nim?at=5dc437b67477946bad45d5aa
-NIM_GC ?= --gc:boehm
-NIM_RELEASE ?= -d:release
+# NIM_GC ?= boehm
+# NIM_GC ?= destructors
 NIM_GC ?=
 NIM_RELEASE ?= 1
 NIM_DEFINES ?=
