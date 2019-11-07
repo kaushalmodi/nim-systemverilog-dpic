@@ -1,4 +1,4 @@
-# Time-stamp: <2019-11-07 11:02:28 kmodi>
+# Time-stamp: <2019-11-07 14:52:25 kmodi>
 
 .DEFAULT_GOAL := default
 
@@ -10,9 +10,3 @@ default: nim nc
 
 gdb:
 	$(MAKE) GDB=1
-
-gcnone:
-	$(MAKE) NIM_GC=--gc:none
-
-gcdefault:
-	$(MAKE) NIM_GC=

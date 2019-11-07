@@ -1,11 +1,11 @@
-# Time-stamp: <2019-05-06 12:10:58 kmodi>
+# Time-stamp: <2019-11-07 14:50:40 kmodi>
 
 .DEFAULT_GOAL := default
 
-NIM_GC = --gc:regions
-
 GIT_ROOT = $(shell git rev-parse --show-toplevel)
 include $(GIT_ROOT)/makefile
+
+NIM_GC = boehm
 
 # Compiles to C
 default: libdpi nc

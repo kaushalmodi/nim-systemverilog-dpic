@@ -1,11 +1,12 @@
-# Time-stamp: <2019-11-05 13:59:40 kmodi>
+# Time-stamp: <2019-11-07 14:54:05 kmodi>
 
 .DEFAULT_GOAL := default
 
 GIT_ROOT = $(shell git rev-parse --show-toplevel)
 
-NIM_GC = --gc:regions
 include $(GIT_ROOT)/makefile
+
+NIM_GC = regions
 
 default: nim nc
 

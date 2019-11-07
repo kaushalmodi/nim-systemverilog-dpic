@@ -1,4 +1,4 @@
-# Time-stamp: <2019-11-07 11:02:39 kmodi>
+# Time-stamp: <2019-11-07 14:53:06 kmodi>
 # Author    : Kaushal Modi
 
 UVM ?= 0
@@ -39,6 +39,8 @@ NIM_COMPILES_TO ?= c
 # https://gitter.im/nim-lang/Nim?at=5dc437b67477946bad45d5aa
 NIM_GC ?= --gc:boehm
 NIM_RELEASE ?= -d:release
+NIM_GC ?=
+NIM_RELEASE ?= 1
 NIM_DEFINES ?=
 NIM_SWITCHES ?=
 NIM_THREADS ?= 0
@@ -60,18 +62,25 @@ clean:
 nim:
 	@find . \( -name libdpi.o -o -name $(NIM_SO) \) -delete
 ifeq ($(GDB), 1)
-	$(eval NIM_RELEASE :=)
+	$(eval NIM_RELEASE := 0)
 	$(eval NIM_SWITCHES += --debugger:native --gcc.options.debug="-O0 -g3 -ggdb3")
 endif
 ifeq ($(NIM_THREADS), 1)
 	$(eval NIM_SWITCHES += --threads:on)
 endif
+ifeq ($(NIM_RELEASE), 1)
+	$(eval NIM_DEFINES += -d:release)
+endif
 ifeq ($(VALG), 1)
 	$(eval NIM_DEFINES += -d:useSysAssert -d:useGcAssert)
 endif
+ifneq ($(NIM_GC),"")
+	$(eval NIM_SWITCHES += --gc:$(NIM_GC))
+endif
 	$(NIM) $(NIM_COMPILES_TO) --out:$(NIM_SO) --app:lib \
 	  --nimcache:./.nimcache \
-	  $(NIM_ARCH_FLAGS) $(NIM_GC) $(NIM_RELEASE) $(NIM_DEFINES) $(NIM_SWITCHES) \
+	  $(NIM_ARCH_FLAGS) $(NIM_DEFINES) \
+	  $(NIM_SWITCHES) \
 	  --hint[Processing]:off \
 	  libdpi.nim
 libdpi: nim
