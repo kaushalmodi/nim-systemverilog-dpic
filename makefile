@@ -74,7 +74,7 @@ endif
 ifeq ($(VALG), 1)
 	$(eval NIM_DEFINES += -d:useSysAssert -d:useGcAssert)
 endif
-ifneq ($(NIM_GC),"")
+ifneq ($(NIM_GC),)
 	$(eval NIM_SWITCHES += --gc:$(NIM_GC))
 endif
 	$(NIM) $(NIM_COMPILES_TO) --out:$(NIM_SO) --app:lib \
