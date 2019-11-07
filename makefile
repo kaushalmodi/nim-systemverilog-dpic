@@ -1,4 +1,4 @@
-# Time-stamp: <2019-11-05 14:19:27 kmodi>
+# Time-stamp: <2019-11-06 16:41:12 kmodi>
 # Author    : Kaushal Modi
 
 UVM ?= 0
@@ -16,6 +16,7 @@ NC_CLEAN ?= 1
 SUBDIRS = $(shell find . -name "Makefile" | sed 's|/Makefile||')
 
 GDB ?= 0 # When set to 1, enable gdb support for both nim and xrun
+VALG ?= 0 # When set to 1, enable valgrind
 
 NIM ?= nim
 
@@ -74,6 +75,9 @@ ifeq ($(UVM), 1)
 endif
 ifeq ($(GDB), 1)
 	$(eval NC_SWITCHES += -g -gdb)
+endif
+ifeq ($(VALG), 1)
+	$(eval NC_SWITCHES += -valgrind)
 endif
 ifeq ($(NC_CLEAN), 1)
 	$(eval NC_SWITCHES += -clean)
