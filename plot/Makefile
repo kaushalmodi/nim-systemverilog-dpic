@@ -1,20 +1,16 @@
-# Time-stamp: <2019-11-07 14:54:05 kmodi>
+# Time-stamp: <2019-11-07 16:24:36 kmodi>
 
 .DEFAULT_GOAL := default
 
 GIT_ROOT = $(shell git rev-parse --show-toplevel)
+NIM_GC = regions
+# Thu Nov 07 16:23:47 EST 2019 - kmodi
+# default, boehm, destructors GC do not work
 
 include $(GIT_ROOT)/makefile
-
-NIM_GC = regions
 
 default: nim nc
 
 ggplot:
 	$(MAKE) nim NIM_DEFINES="-d:useGgplot"
 	$(MAKE) nc
-
-dbg1:
-	$(MAKE) NIM_GC= GDB=1
-dbg2:
-	$(MAKE) ggplot NIM_GC= GDB=1
