@@ -1,4 +1,4 @@
-# Time-stamp: <2019-04-26 17:48:17 kmodi>
+# Time-stamp: <2019-11-07 15:06:35 kmodi>
 
 .DEFAULT_GOAL := default
 
@@ -9,6 +9,4 @@ include $(GIT_ROOT)/makefile
 default: nim nc
 
 # Compiles to C++
-cpp:
-	$(MAKE) libdpi NIM_COMPILES_TO=cpp
-	$(MAKE) nc
+cpp: nimcpp nc

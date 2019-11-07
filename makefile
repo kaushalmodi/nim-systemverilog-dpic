@@ -1,4 +1,4 @@
-# Time-stamp: <2019-11-07 14:53:06 kmodi>
+# Time-stamp: <2019-11-07 15:06:10 kmodi>
 # Author    : Kaushal Modi
 
 UVM ?= 0
@@ -45,7 +45,7 @@ NIM_DEFINES ?=
 NIM_SWITCHES ?=
 NIM_THREADS ?= 0
 
-.PHONY: clean nim nc clibdpi cpplibdpi $(SUBDIRS) all valg
+.PHONY: clean nim nimcpp nc clibdpi cpplibdpi $(SUBDIRS) all valg
 
 clean:
 	rm -rf *~ core simv* urg* *.log *.history \#*.* *.dump .simvision/ waves.shm/ \
@@ -83,6 +83,9 @@ endif
 	  $(NIM_SWITCHES) \
 	  --hint[Processing]:off \
 	  libdpi.nim
+
+nimcpp:
+	$(MAKE) nim NIM_COMPILES_TO=cpp
 
 nc:
 	ln -sf $(NIM_SO) $(DEFAULT_SV_LIB)
