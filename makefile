@@ -1,4 +1,4 @@
-# Time-stamp: <2019-11-07 10:39:55 kmodi>
+# Time-stamp: <2019-11-07 11:02:39 kmodi>
 # Author    : Kaushal Modi
 
 UVM ?= 0
@@ -41,8 +41,9 @@ NIM_GC ?= --gc:boehm
 NIM_RELEASE ?= -d:release
 NIM_DEFINES ?=
 NIM_SWITCHES ?=
+NIM_THREADS ?= 0
 
-.PHONY: clean nim libdpi nc clibdpi cpplibdpi $(SUBDIRS) all
+.PHONY: clean nim libdpi nc clibdpi cpplibdpi $(SUBDIRS) all valg
 
 clean:
 	rm -rf *~ core simv* urg* *.log *.history \#*.* *.dump .simvision/ waves.shm/ \
@@ -60,7 +61,10 @@ nim:
 	@find . \( -name libdpi.o -o -name $(NIM_SO) \) -delete
 ifeq ($(GDB), 1)
 	$(eval NIM_RELEASE :=)
-	$(eval NIM_SWITCHES := --debugger:native --gcc.options.debug="-O0 -g3 -ggdb3")
+	$(eval NIM_SWITCHES += --debugger:native --gcc.options.debug="-O0 -g3 -ggdb3")
+endif
+ifeq ($(NIM_THREADS), 1)
+	$(eval NIM_SWITCHES += --threads:on)
 endif
 	$(NIM) $(NIM_COMPILES_TO) --out:$(NIM_SO) --app:lib \
 	  --nimcache:./.nimcache \
@@ -113,6 +117,9 @@ $(SUBDIRS):
 
 all: $(SUBDIRS)
 
+valg:
+	$(MAKE) nim GDB=1
+	$(MAKE) nc VALG=1
 
 # Run "make ARCH=32" to build 32-bit libdpi_32.so and run 32-bit xrun.
 # Run "make" to build 64-bit libdpi_64.so and run 64-bit xrun.
