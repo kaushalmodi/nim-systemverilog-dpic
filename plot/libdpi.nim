@@ -51,7 +51,7 @@ proc plot(numElems: cuint; arrPtr: svOpenArrayHandle; optionsPtr: ptr PlotOption
     for i in 0.cint ..< numElems.cint:
       let
         arrElemPtr = cast[ptr XY](svGetArrElemPtr1(arrPtr, i))
-      data.add((arrElemPtr[]))
+      data.add(arrElemPtr[])
 
     p.setX(options.xMin, options.xMax)
     p.setY(options.yMin, options.yMax)
