@@ -1,0 +1,63 @@
+# https://support.cadence.com/apex/ArticleAttachmentPortal?id=a1Od0000000nTMlEAM&pageName=ArticleContent
+
+Untar the attached testcase and run command line as :
+
+irun -sysc model.vhd top.vhd model.cpp -v93 -gnu -top top:a -access +rwc
+
+Following error message is reported on ncsim :
+
+ncsim> run
+0 ns inPort = U, outPort = U
+ncsim: *E,SIGUSR: Unix Signal SIGSEGV raised from user application code.
+
+To further debug, add the -g option to compile c/c++/systemc code as debuggable.
+
+Also add the simulation option -gdb to run simulation under gdb and it should stop on gdb prompt.
+
+irun -sysc model.vhd top.vhd model.cpp -v93 -gnu -top top:a -access +rwc -g -gdb
+
+(gdb)
+irun binary automatically sets the required breakpoints on "nc_signal_raised".
+You can check the breakpoints with following command on gdb prompt :
+
+(gdb) info break
+Num Type Disp Enb Address What
+1 breakpoint keep y 0x087d372b <nc_signal_raised+6>
+handle SIGSEGV SIGBUS SIGFPE stop print
+continue
+2 breakpoint keep y 0x08c81246 <ncdbg_fatal+6>
+3 breakpoint keep y 0x087d3722 <scDebugEntry+3>
+breakpoint already hit 1 time
+4 breakpoint keep y 0x08c81206 <ncdbg_libs_loaded+6>
+You may need to set an additional breakpoint on the "serror" function in gdb to catch the SIGUSR exception.
+
+(gdb) break serror
+
+Now run the command "continue" couple of times and you will see the following information :
+
+(gdb) continue
+Continuing.
+The SystemC(r) Code included in this Product is Copyright 1996 - 2006 by all Contributors. All rights reserved.
+The SystemC Code included in this Product has been modified by Cadence Design Systems, Inc. and CoWare, Inc. All such modifications are Copyright (c) 2004-2010 Cadence Design Systems, Inc. and Copyright (c) 2004 CoWare, Inc. All Rights Reserved.
+SystemC(r) is a registered trademark of Open SystemC Initiative, Inc. in the United States and other countries and is used with permission.
+ncsim> run
+0 ns inPort = U, outPort = U
+ncsim: *E,SIGUSR: Unix Signal SIGSEGV raised from user application code.
+Breakpoint 1, 0x087d372b in nc_signal_raised ()
+Program received signal SIGSEGV, Segmentation fault.
+0xf74677d6 in model::run (this=0xb0bef28) at /net/rlno-omprakas/export/home/omprakas/wk/OUMSACHCHA/CRASH/debug_ncsim/model.h:22
+22 * makeSEGV = 10;
+
+(gdb)
+Now print the value of pointer makeSEGV as :
+
+(gdb) print * makeSEGV
+Cannot access memory at address 0x0
+So, the root cause is "attempt to access memory at address 0x0" which is at line number 22 of model.h file.
+Now run the gdb command "list" and you will see the code as :
+
+(gdb) list
+17 void run()
+18 {
+19 // int cad; //SOLUTION OF SIGSUR
+20 // int * makeSEGV = & cad; //SOLUTION OF SIGUSR
