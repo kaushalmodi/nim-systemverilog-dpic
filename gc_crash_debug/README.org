@@ -1,0 +1,17 @@
+The default Nim gc causes a crash when the compiled libdpi.so is run in the Xcelium simulator.
+Fix is to use the Boehm GC instead using the ~--gc:boehm~ switch.
+
+Detailed discussion at https://gitter.im/nim-lang/Nim?at=5dc437b67477946bad45d5aa.
+
+* Run with Boehm GC
+#+begin_example
+make
+#+end_example
+* Run with default GC
+#+begin_example
+make gcdefault
+#+end_example
+* Run with no GC
+#+begin_example
+make gcnone
+#+end_example
