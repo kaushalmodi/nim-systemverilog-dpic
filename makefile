@@ -66,6 +66,9 @@ endif
 ifeq ($(NIM_THREADS), 1)
 	$(eval NIM_SWITCHES += --threads:on)
 endif
+ifeq ($(VALG), 1)
+	$(eval NIM_DEFINES += -d:useSysAssert -d:useGcAssert)
+endif
 	$(NIM) $(NIM_COMPILES_TO) --out:$(NIM_SO) --app:lib \
 	  --nimcache:./.nimcache \
 	  $(NIM_ARCH_FLAGS) $(NIM_GC) $(NIM_RELEASE) $(NIM_DEFINES) $(NIM_SWITCHES) \
@@ -118,7 +121,7 @@ $(SUBDIRS):
 all: $(SUBDIRS)
 
 valg:
-	$(MAKE) nim GDB=1
+	$(MAKE) nim GDB=1 VALG=1
 	$(MAKE) nc VALG=1
 
 # Run "make ARCH=32" to build 32-bit libdpi_32.so and run 32-bit xrun.
