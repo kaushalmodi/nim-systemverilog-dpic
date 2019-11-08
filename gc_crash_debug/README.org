@@ -1,17 +1,36 @@
-The default Nim gc causes a crash when the compiled libdpi.so is run in the Xcelium simulator.
-Fix is to use the Boehm GC instead using the ~--gc:boehm~ switch.
+The default Nim gc causes a crash when the compiled libdpi.so is run
+in the Xcelium simulator.
 
-Detailed discussion at https://gitter.im/nim-lang/Nim?at=5dc437b67477946bad45d5aa.
+This is because the default Nim GC and even the Boehm GC
+conservatively tracks the stack. But xmsim switches the stack in and
+out in a "non-traditional C fashion" when calling DPI-C functions and
+returning from those. This causes the crash when the Nim GC or (at
+times) Boehm GC is run.
 
-* Run with Boehm GC
+"Fix" is to disable GC completely. When ~--gc:destructors~ becomes
+stable, may be switch to using that because that GC scheme does not
+rely on the stack.
+
+* Run with no GC
 #+begin_example
-make
+make NIM_GC=none
 #+end_example
 * Run with default GC
 #+begin_example
-make gcdefault
+make NIM_GC=
 #+end_example
-* Run with no GC
+* Run with Boehm GC
 #+begin_example
-make gcnone
+make NIM_GC=boehm
 #+end_example
+* Run with Destructors GC
+#+begin_example
+make NIM_GC=destructors
+#+end_example
+* Discussions
+- https://gitter.im/nim-lang/Nim?at=5dc437b67477946bad45d5aa.
+- https://gitter.im/nim-lang/Nim?at=5dc585e7ea7d147cb3422610
+  #+begin_quote
+  Araq: they claim it's a C interface, but it isn't. anyway, your only
+  option then is --gc:none until --gc:destructors is ready
+  #+end_quote

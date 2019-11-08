@@ -1,4 +1,4 @@
-# Time-stamp: <2019-11-07 15:20:16 kmodi>
+# Time-stamp: <2019-11-08 10:24:59 kmodi>
 # Author    : Kaushal Modi
 
 UVM ?= 0
@@ -36,10 +36,8 @@ endif
 DEFAULT_SV_LIB ?= libdpi.so
 # Possible values of NIM_COMPILES_TO: c, cpp
 NIM_COMPILES_TO ?= c
-# https://gitter.im/nim-lang/Nim?at=5dc437b67477946bad45d5aa
-# NIM_GC ?= boehm
-# NIM_GC ?= destructors
-NIM_GC ?=
+# See ./gc_crash_debug/README.org on why --gc:none is the default.
+NIM_GC ?= none
 NIM_RELEASE ?= 1
 NIM_DEFINES ?=
 NIM_SWITCHES ?=
