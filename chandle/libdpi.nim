@@ -12,7 +12,7 @@ proc getAdderProcHandle(): Chandle {.exportc.} =
   ## Return pointer to a "C function type".
   result = cast[Chandle](adder)
 
-proc callAdderProc(ch: Chandle; chArgsPtr: svOpenArrayHandle): cint {.exportc.} =
+proc callProc(ch: Chandle; chArgsPtr: svOpenArrayHandle): cint {.exportc.} =
   ## Call the C function pointed by ``ch`` with args referenced by ``chArgsPtr``.
   let
     procInst = cast[type adder](ch)
