@@ -1,5 +1,5 @@
+import std/[strformat]
 import svdpi
-import strformat
 
 proc FROM_SV_TASK(in1, in2: cint; out1: var cint): cint {.importc, discardable.}
 
