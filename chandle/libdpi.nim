@@ -3,6 +3,9 @@ import svdpi
 type
   # Alias Nim type "pointer" to "Chandle" just for better readability.
   Chandle = pointer
+  NimProc = enum
+    nimAdder
+    nimSubber
 
 proc adder[T](args: openArray[T]): T =
   var
@@ -16,32 +19,54 @@ proc adder[T](args: openArray[T]): T =
       result = result + arg
     inc(idx)
 
-proc getAdderProcHandle[T](): Chandle =
-  ## Return pointer to a "C function type".
-  return cast[Chandle](adder[T])
+proc subber[T](args: openArray[T]): T =
+  when T is cstring:
+    echo "[Error] The subber proc does not support string args"
+    return
+  else:
+    doAssert args.len >= 1
+    result = args[0]
+    for arg in args[1 .. args.high]:
+      result = result - arg
 
-proc callProc[T](ch: Chandle; chArgsPtr: svOpenArrayHandle): T =
+proc getProcHandle[T](procEnum: NimProc): Chandle =
+  ## Return pointer to a "C function type".
+  case procEnum
+  of nimSubber:
+    result = cast[Chandle](subber[T])
+  of nimAdder:
+    result = cast[Chandle](adder[T])
+
+proc callProc[T](ch: Chandle; procEnum: NimProc; chArgsPtr: svOpenArrayHandle): T =
   ## Call the C function pointed by ``ch`` with args referenced by ``chArgsPtr``.
   let
-    procInst = cast[type adder[T]](ch)
+    procInst = case procEnum
+               # Put the proc that has side effects (echo stmt in subber) first
+               # so that procInst var gets declared as a proc var with
+               # side effects.
+               # https://stackoverflow.com/questions/53726458/nim-aliasing-procedures-with-side-effects#comment94308638_53726458
+               of nimSubber:
+                 cast[type subber[T]](ch)
+               of nimAdder:
+                 cast[type adder[T]](ch)
     args = svSVDynArr1ToSeq[T](chArgsPtr)
   return procInst(args)
 
 ## Exported Procs
-proc getAdderProcHandleInt(): Chandle {.exportc.} =
-  getAdderProcHandle[cint]()
+proc getProcHandleInt(procEnum: NimProc): Chandle {.exportc.} =
+  getProcHandle[cint](procEnum)
 
-proc callProcInt(ch: Chandle; chArgsPtr: svOpenArrayHandle): cint {.exportc.} =
-  callProc[cint](ch, chArgsPtr)
+proc callProcInt(ch: Chandle; procEnum: NimProc; chArgsPtr: svOpenArrayHandle): cint {.exportc.} =
+  callProc[cint](ch, procEnum, chArgsPtr)
 
-proc getAdderProcHandleFloat(): Chandle {.exportc.} =
-  getAdderProcHandle[cdouble]()
+proc getProcHandleFloat(procEnum: NimProc): Chandle {.exportc.} =
+  getProcHandle[cdouble](procEnum)
 
-proc callProcFloat(ch: Chandle; chArgsPtr: svOpenArrayHandle): cdouble {.exportc.} =
-  callProc[cdouble](ch, chArgsPtr)
+proc callProcFloat(ch: Chandle; procEnum: NimProc; chArgsPtr: svOpenArrayHandle): cdouble {.exportc.} =
+  callProc[cdouble](ch, procEnum, chArgsPtr)
 
-proc getAdderProcHandleString(): Chandle {.exportc.} =
-  getAdderProcHandle[cstring]()
+proc getProcHandleString(procEnum: NimProc): Chandle {.exportc.} =
+  getProcHandle[cstring](procEnum)
 
-proc callProcString(ch: Chandle; chArgsPtr: svOpenArrayHandle): cstring {.exportc.} =
-  callProc[cstring](ch, chArgsPtr)
+proc callProcString(ch: Chandle; procEnum: NimProc; chArgsPtr: svOpenArrayHandle): cstring {.exportc.} =
+  callProc[cstring](ch, procEnum, chArgsPtr)
