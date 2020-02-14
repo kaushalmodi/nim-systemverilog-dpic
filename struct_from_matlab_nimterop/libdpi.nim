@@ -22,14 +22,14 @@ proc get_mean_func_1_out(arrPtr: svOpenArrayHandle): OutputObj =
   mean_func_1(inp1, out1)
   return out1[]
 
-proc get_mean(arrPtr: svOpenArrayHandle): cdouble {.exportc.} =
+proc get_mean(arrPtr: svOpenArrayHandle): cdouble {.exportc, dynlib.} =
   return get_mean_func_1_out(arrPtr).mean
 
-proc get_max(arrPtr: svOpenArrayHandle): cint {.exportc.} =
+proc get_max(arrPtr: svOpenArrayHandle): cint {.exportc, dynlib.} =
   return get_mean_func_1_out(arrPtr).max
 
-proc get_min(arrPtr: svOpenArrayHandle): cint {.exportc.} =
+proc get_min(arrPtr: svOpenArrayHandle): cint {.exportc, dynlib.} =
   return get_mean_func_1_out(arrPtr).min
 
-proc get_params(arrPtr: svOpenArrayHandle; params: OutputObjRef) {.exportc.} =
+proc get_params(arrPtr: svOpenArrayHandle; params: OutputObjRef) {.exportc, dynlib.} =
   params[] = get_mean_func_1_out(arrPtr)

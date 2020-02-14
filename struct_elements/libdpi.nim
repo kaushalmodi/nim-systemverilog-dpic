@@ -9,14 +9,14 @@ type
     arrInt: array[Max, cint]
     arrBit: array[Max, byte]
 
-proc print_object(objPtr: ptr MyObject) {.exportc.} =
+proc print_object(objPtr: ptr MyObject) {.exportc, dynlib.} =
   echo "Printing the whole object:"
   echo $objPtr[]
   echo "Printing the object while looping through each key:"
   for key, val in objPtr[].fieldPairs:
     echo "  ", $key, " = ", $val
 
-proc get_object(objPtr: ptr MyObject) {.exportc.} =
+proc get_object(objPtr: ptr MyObject) {.exportc, dynlib.} =
   var
     obj = MyObject(scalarBit: 1,
                    scalarReal: 2.3,

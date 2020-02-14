@@ -7,7 +7,7 @@ let
   configFile = getCurrentDir() / "config.json"
   cfg = json.parseFile(configFile)
 
-proc dump_cfg() {.exportc.} =
+proc dump_cfg() {.exportc, dynlib.} =
   echo fmt"Config read from {configFile}:"
   echo cfg.pretty()
 

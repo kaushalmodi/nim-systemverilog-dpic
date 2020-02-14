@@ -12,7 +12,7 @@ type
 
 proc pci_transaction(cmd: var PciCmd) {.importc.}
 
-proc c_test(): cint {.exportc.} =
+proc c_test(): cint {.exportc, dynlib.} =
   var
     cmd: PciCmd
 

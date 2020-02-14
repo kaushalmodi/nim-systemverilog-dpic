@@ -4,7 +4,7 @@ import svdpi
 var
   hereCounter: cint = 0
 
-proc hereDebug(initVal: cint; realVal: cdouble): cstring {.exportc.} =
+proc hereDebug(initVal: cint; realVal: cdouble): cstring {.exportc, dynlib.} =
   if initVal >= 0:
     hereCounter = initVal
   let

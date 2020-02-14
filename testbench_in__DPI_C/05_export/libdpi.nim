@@ -1,12 +1,12 @@
 proc export_func() {.importc.}
 proc export_task() {.importc.}
 
-proc import_func() {.exportc.} =
+proc import_func() {.exportc, dynlib.} =
   echo "Nim: Before calling export function"
   export_func()
   echo "Nim: After calling export function"
 
-proc import_task(): cint {.exportc.} =
+proc import_task(): cint {.exportc, dynlib.} =
   echo "Nim: Before calling export task"
   export_task()
   echo "Nim: After calling export task"

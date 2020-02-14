@@ -6,10 +6,10 @@ proc vl_task(inp1, inp2: cint, vl_answer: var cint) {.importc.}
 const
   Max = 10
 
-proc c_task(inp1, inp2: cint; c_answer: var cint) {.exportc.} =
+proc c_task(inp1, inp2: cint; c_answer: var cint) {.exportc, dynlib.} =
   c_answer = inp1 * inp2
 
-proc c_compare(inp1, inp2: cint) {.exportc.} =
+proc c_compare(inp1, inp2: cint) {.exportc, dynlib.} =
   var
     c_answer, vl_answer: cint
 
@@ -19,7 +19,7 @@ proc c_compare(inp1, inp2: cint) {.exportc.} =
   if c_answer != vl_answer:
     echo fmt"Error: MISMATCH ({inp1}, {inp2}) vl<{vl_answer}> != c<{c_answer}>"
 
-proc c_test(): cint {.exportc.} =
+proc c_test(): cint {.exportc, dynlib.} =
 
   echo "Running .."
   for inp1 in 0 ..< Max:

@@ -21,7 +21,7 @@ endprogram
 #+end_src
 ** ~libdpi.nim~
 #+begin_src nim
-proc hello() {.exportc.} =
+proc hello() {.exportc, dynlib.} =
   echo "Hello from Nim!"
 #+end_src
 * Datatype Translation

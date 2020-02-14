@@ -1,4 +1,4 @@
-proc imported_func(){.exportc.} =
+proc imported_func(){.exportc, dynlib.} =
   # https://gitter.im/nim-lang/Nim?at=5dc584763f4ea333f2c5345d
   when defined(gcToggle):
     GC_disable()

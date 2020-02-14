@@ -2,7 +2,7 @@ import svdpi
 import strformat
 
 # Open array example
-proc pass_int_array(dyn_arr: svOpenArrayHandle) {.exportc.} =
+proc pass_int_array(dyn_arr: svOpenArrayHandle) {.exportc, dynlib.} =
   echo fmt" Array:"
   echo fmt"  Dimensions = {svDimensions(dyn_arr)}"
   echo fmt"  Size in bytes = {svSizeOfArray(dyn_arr)}"
@@ -37,7 +37,7 @@ proc pass_int_array(dyn_arr: svOpenArrayHandle) {.exportc.} =
 # Packed vectors example
 # The packed vectors are always passed by reference from the SV side.
 # http://geekwentfreak.com/posts/eda/SystemVerilog_C_pass_datatypes/
-proc add_lpv(aPtr, bPtr, cPtr: ptr svLogicVecVal) {.exportc.} =
+proc add_lpv(aPtr, bPtr, cPtr: ptr svLogicVecVal) {.exportc, dynlib.} =
   let
     a = aPtr[].aval
     b = bPtr[].aval
@@ -52,7 +52,7 @@ proc add_lpv(aPtr, bPtr, cPtr: ptr svLogicVecVal) {.exportc.} =
 # svLogicVecVal from the SV side. But as per Araq, using "var array"
 # is the correct approach, and not "ref array".
 # - https://irclogs.nim-lang.org/21-01-2019.html#18:20:35
-proc get_nums_var_arg(nums: var array[10, svLogicVecVal]) {.exportc.} =
+proc get_nums_var_arg(nums: var array[10, svLogicVecVal]) {.exportc, dynlib.} =
   echo fmt"packed logic array length = {nums.len}"
   for i in 0 .. nums.high:
     nums[i].aval = uint32(i+10)
@@ -62,7 +62,7 @@ proc get_nums_var_arg(nums: var array[10, svLogicVecVal]) {.exportc.} =
     echo fmt"Nim: nums[{i}] = {nums[i]}"
 
 # Even though not recommended, the "ref array" approach works:
-proc get_nums_ref_arg1(numsRef: ref array[10, svLogicVecVal]) {.exportc.} =
+proc get_nums_ref_arg1(numsRef: ref array[10, svLogicVecVal]) {.exportc, dynlib.} =
   echo fmt"packed logic array length = {numsRef[].len}"
   for i in 0 .. numsRef[].high:
     numsRef[][i].aval = uint32(i+10)
@@ -71,7 +71,7 @@ proc get_nums_ref_arg1(numsRef: ref array[10, svLogicVecVal]) {.exportc.} =
 
 # Above can be alternatively written as below too; again: not
 # recommended.
-proc get_nums_ref_arg2(numsRef: ref array[10, svLogicVecVal]) {.exportc.} =
+proc get_nums_ref_arg2(numsRef: ref array[10, svLogicVecVal]) {.exportc, dynlib.} =
   var
     nums = numsRef[]
   echo fmt"packed logic array length = {nums.len}"

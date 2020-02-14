@@ -5,7 +5,7 @@ type
     scalar_int: cint
     dyn_arr_int_handle: svOpenArrayHandle
 
-proc print_object(obj: ptr MyObject) {.exportc.} =
+proc print_object(obj: ptr MyObject) {.exportc, dynlib.} =
   echo fmt"obj.scalar_int = {obj[].scalar_int}"
   let
     handle = obj[].dyn_arr_int_handle

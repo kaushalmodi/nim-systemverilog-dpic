@@ -19,7 +19,7 @@ proc timer_restart(rp: RusageP) =
     stderr.writeLine("timer_restart()")
     quit 1
 
-proc timer_start(): RusageP {.exportc.} =
+proc timer_start(): RusageP {.exportc, dynlib.} =
   ## Create a new Rusage object, fill it in, and return a pointer to it.
   let
     rp = timer_new()
@@ -27,7 +27,7 @@ proc timer_start(): RusageP {.exportc.} =
   return rp
 
 #                    ∨∨∨-- This "var" is needed because the argument of timer_split is inout in SV.
-proc timer_split(rp: var RusageP): clonglong {.exportc.} =
+proc timer_split(rp: var RusageP): clonglong {.exportc, dynlib.} =
   ## Returns the number of useconds since either the start of the
   ## timer (rp[]) or the last split time.
   ##

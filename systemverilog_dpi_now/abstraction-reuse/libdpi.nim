@@ -6,10 +6,10 @@ proc t_add(z: var cuint; a, b: cuint) {.importc.}
 var
   hw_matches, total_tries: cuint
 
-proc c_task(inp1, inp2: cuint; c_answer: var cuint) {.exportc.} =
+proc c_task(inp1, inp2: cuint; c_answer: var cuint) {.exportc, dynlib.} =
   c_answer = (inp1 + inp2) and 0x0f # limit output to 4-bits
 
-proc c_compare(inp1, inp2: cuint) {.exportc.} =
+proc c_compare(inp1, inp2: cuint) {.exportc, dynlib.} =
   var
     c_answer, vl_hw_answer: cuint
 
@@ -21,7 +21,7 @@ proc c_compare(inp1, inp2: cuint) {.exportc.} =
   else:
     echo fmt"Error: MISMATCH hw({inp1}, {inp2}) vl<{vl_hw_answer}> != c<{c_answer}>"
 
-proc c_test(): cint {.exportc.} =
+proc c_test(): cint {.exportc, dynlib.} =
   hw_matches = 0
   total_tries = 0
 

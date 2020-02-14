@@ -21,7 +21,7 @@ proc getScopeIndex(address: cint): int =
     if ((address >= scopes[i].startAddress) and (address <= scopes[i].endAddress)):
       return i
 
-proc nim_write_reg(address, value: cint) {.exportc.} =
+proc nim_write_reg(address, value: cint) {.exportc, dynlib.} =
   let
     idx = getScopeIndex(address)
   if idx == -1:
@@ -34,7 +34,7 @@ proc nim_write_reg(address, value: cint) {.exportc.} =
   sv_write_reg(address, value)
   echo ""
 
-proc registerMe(startAddr, endAddr: cint) {.exportc.} =
+proc registerMe(startAddr, endAddr: cint) {.exportc, dynlib.} =
   scopes.add(ScopeInfo(startAddress: startAddr,
                        endAddress: endAddr,
                        name: $svGetNameFromScope(svGetScope())))

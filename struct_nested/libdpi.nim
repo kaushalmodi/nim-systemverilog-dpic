@@ -32,10 +32,10 @@ proc printObj(obj: auto; indent = "", keyPrefix = "") =
     else:
       echo indent & $key & " : " & $val
 
-proc printLevelOne(objPtr: ptr LevelOne) {.exportc.} =
+proc printLevelOne(objPtr: ptr LevelOne) {.exportc, dynlib.} =
   printObj(objPtr[])
 
-proc populateLevelOne(objPtr: ptr LevelOne) {.exportc.} =
+proc populateLevelOne(objPtr: ptr LevelOne) {.exportc, dynlib.} =
   var
     o3 = LevelThree(scalarBit: 0,
                     scalarReal: 34.56,

@@ -9,7 +9,7 @@ type
 
 proc export_func(x: array[3, svBitVec32]) {.importc.}
 
-proc import_func() {.exportc.} =
+proc import_func() {.exportc, dynlib.} =
   ## Converts data from ``nimObj`` to an array.
   ## ``export_func`` is called which converts that array to struct.
   let
@@ -21,7 +21,7 @@ proc import_func() {.exportc.} =
   echo fmt"Nim: arr = {arr}"
   export_func(arr)
 
-proc send_arr_struct_pkd(dyn_arr: svOpenArrayHandle) {.exportc.} =
+proc send_arr_struct_pkd(dyn_arr: svOpenArrayHandle) {.exportc, dynlib.} =
   let
     lowerIndex1 = svLow(dyn_arr, 1)
     upperIndex1 = svHigh(dyn_arr, 1)
@@ -40,9 +40,9 @@ proc send_arr_struct_pkd(dyn_arr: svOpenArrayHandle) {.exportc.} =
 # and map the SV function "send_arr_struct_unpkd" to the same "send_arr_struct_pkd" proc above.
 #
 # But the below will work instead. Interesting ..
-proc send_arr_struct_unpkd(dyn_arr: svOpenArrayHandle) {.exportc.} =
+proc send_arr_struct_unpkd(dyn_arr: svOpenArrayHandle) {.exportc, dynlib.} =
   echo "** Unpacked struct **"
   send_arr_struct_pkd(dyn_arr)
 
-proc send_union(fa, fu: ptr svBitVecVal) {.exportc.} =
+proc send_union(fa, fu: ptr svBitVecVal) {.exportc, dynlib.} =
   echo fmt"  Nim: fa = {fa[]:x}, fu = {fu[]:x}"

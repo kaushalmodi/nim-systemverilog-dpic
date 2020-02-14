@@ -3,7 +3,7 @@ import svdpi
 
 proc dpisv_RegRead32(offset: cuint, data: ptr cuint): cint {.importc.}
 
-proc doTest(offset: cuint, data: ptr cuint): cint {.exportc.} =
+proc doTest(offset: cuint, data: ptr cuint): cint {.exportc, dynlib.} =
   let
     gScope = svGetScopeFromName("reftb_dpi.tbench_i")
   discard svSetScope(gScope)

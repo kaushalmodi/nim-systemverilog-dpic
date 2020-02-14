@@ -7,7 +7,7 @@ let
   configFile = getCurrentDir() / "config.toml"
   cfg = parsetoml.parseFile(configFile).getTable()
 
-proc dump_cfg() {.exportc.} =
+proc dump_cfg() {.exportc, dynlib.} =
   echo fmt"Config read from {configFile}:"
   parsetoml.dump(cfg)
 

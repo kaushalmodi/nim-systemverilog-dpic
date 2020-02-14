@@ -32,7 +32,7 @@ proc setDefaultIfNotSet[T](val: T; defaultVal: T): T =
     if val == 0:
       return defaultVal
 
-proc plot(numElems: cuint; arrPtr: svOpenArrayHandle; optionsPtr: ptr PlotOptions){.exportc.} =
+proc plot(numElems: cuint; arrPtr: svOpenArrayHandle; optionsPtr: ptr PlotOptions){.exportc, dynlib.} =
   let
     arrLen = svLength(arrPtr, 1).cuint
     options = optionsPtr[]

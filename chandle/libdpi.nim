@@ -53,20 +53,20 @@ proc callProc[T](ch: Chandle; procEnum: NimProc; chArgsPtr: svOpenArrayHandle): 
   return procInst(args)
 
 ## Exported Procs
-proc getProcHandleInt(procEnum: NimProc): Chandle {.exportc.} =
+proc getProcHandleInt(procEnum: NimProc): Chandle {.exportc, dynlib.} =
   getProcHandle[cint](procEnum)
 
-proc callProcInt(ch: Chandle; procEnum: NimProc; chArgsPtr: svOpenArrayHandle): cint {.exportc.} =
+proc callProcInt(ch: Chandle; procEnum: NimProc; chArgsPtr: svOpenArrayHandle): cint {.exportc, dynlib.} =
   callProc[cint](ch, procEnum, chArgsPtr)
 
-proc getProcHandleFloat(procEnum: NimProc): Chandle {.exportc.} =
+proc getProcHandleFloat(procEnum: NimProc): Chandle {.exportc, dynlib.} =
   getProcHandle[cdouble](procEnum)
 
-proc callProcFloat(ch: Chandle; procEnum: NimProc; chArgsPtr: svOpenArrayHandle): cdouble {.exportc.} =
+proc callProcFloat(ch: Chandle; procEnum: NimProc; chArgsPtr: svOpenArrayHandle): cdouble {.exportc, dynlib.} =
   callProc[cdouble](ch, procEnum, chArgsPtr)
 
-proc getProcHandleString(procEnum: NimProc): Chandle {.exportc.} =
+proc getProcHandleString(procEnum: NimProc): Chandle {.exportc, dynlib.} =
   getProcHandle[cstring](procEnum)
 
-proc callProcString(ch: Chandle; procEnum: NimProc; chArgsPtr: svOpenArrayHandle): cstring {.exportc.} =
+proc callProcString(ch: Chandle; procEnum: NimProc; chArgsPtr: svOpenArrayHandle): cstring {.exportc, dynlib.} =
   callProc[cstring](ch, procEnum, chArgsPtr)

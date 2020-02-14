@@ -3,7 +3,7 @@ from osproc import execCmdEx
 from strutils import strip, split, removeSuffix
 from strformat import fmt
 
-proc nim_eval_string(code: cstring) {.exportc.} =
+proc nim_eval_string(code: cstring) {.exportc, dynlib.} =
   ## Evaluate the Nim code passed as string.
   let
     user = if getEnv("USER")=="":

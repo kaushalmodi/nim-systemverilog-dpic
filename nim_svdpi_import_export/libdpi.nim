@@ -11,13 +11,13 @@ template add(a, b: cint; c: ptr cint) {.dirty.} =
   c[] = a + b
   sv_print_scope(c[])
 
-proc addFunction(a, b: cint; c: ptr cint) {.exportc.} =
+proc addFunction(a, b: cint; c: ptr cint) {.exportc, dynlib.} =
   ## Nim proc mapped to function on SV side.
   ## c is an output on SV side, so it becomes a ptr here.
   add(a, b, c)
   echo &"  Nim: {scopeName}.addFunction({a}, {b}, {c[]})"
 
-proc addTask(a, b: cint; c: ptr cint): cint {.exportc.} =
+proc addTask(a, b: cint; c: ptr cint): cint {.exportc, dynlib.} =
   ## Nim proc mapped to task on SV side.
   add(a, b, c)
   sv_consume_time(100)

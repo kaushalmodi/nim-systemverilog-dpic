@@ -87,7 +87,7 @@ and so much more.
 ***** Nim code
 #+begin_src nim
 # libdpi.nim
-proc hello() {.exportc.} =
+proc hello() {.exportc, dynlib.} =
   echo "Hello from Nim!"
 #+end_src
 ***** SV code
@@ -132,7 +132,7 @@ proc handle_exception(a: cint)  =
   else:
     raise newException(MyError, fmt"a is > 1! (value = {a})")
 
-proc test_exception(a: cint) {.exportc.} =
+proc test_exception(a: cint) {.exportc, dynlib.} =
   try:
     handle_exception(a)
   except:

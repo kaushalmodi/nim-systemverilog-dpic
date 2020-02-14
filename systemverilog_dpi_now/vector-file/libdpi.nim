@@ -5,7 +5,7 @@ import strformat
 
 proc vl_task(inp1, inp2: cint; result: var cint) {.importc.}
 
-proc c_test(): cint {.exportc.} =
+proc c_test(): cint {.exportc, dynlib.} =
   const
     lineMax: cint = 1024
     fileName = "compressed.txt.gz"

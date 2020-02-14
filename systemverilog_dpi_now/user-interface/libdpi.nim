@@ -3,7 +3,7 @@ import draw/[draw, nim_mandel]
 
 proc hw_sync(cnt: cint) {.importc, gcsafe, noSideEffect.}
 
-proc c_mandel(width, height: cint; xstart, xend, ystart, yend: float; repeat_cnt, end_pause: cint): cint {.exportc.} =
+proc c_mandel(width, height: cint; xstart, xend, ystart, yend: float; repeat_cnt, end_pause: cint): cint {.exportc, dynlib.} =
   let
     xScale = 1.0
     yScale = 1.0

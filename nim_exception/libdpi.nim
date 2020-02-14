@@ -9,7 +9,7 @@ proc handle_exception(a: cint)  =
   else:
     raise newException(MyError, fmt"a is > 1! (value = {a})")
 
-proc test_exception(a: cint) {.exportc.} =
+proc test_exception(a: cint) {.exportc, dynlib.} =
   try:
     handle_exception(a)
   except:

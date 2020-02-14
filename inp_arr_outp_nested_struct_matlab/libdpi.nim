@@ -17,5 +17,5 @@ proc get_mean_func_2_out(inStruct: InpStructWrapper): OutputObj =
   mean_func(inp1, out1)
   return out1[]
 
-proc get_params(inStruct: ref InpStructWrapper; outStruct: ref OutputObj) {.exportc.} =
+proc get_params(inStruct: ref InpStructWrapper; outStruct: ref OutputObj) {.exportc, dynlib.} =
   outStruct[] = get_mean_func_2_out(inStruct[])
