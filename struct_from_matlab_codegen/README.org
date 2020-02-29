@@ -1,0 +1,21 @@
+#+title: Matlab --Codegen--> .c and .h files + .nim --nim--> Profit
+
+1. Open the [[./struct_from_matlab.m]] file in this folder in MATLAB.
+   - I have tested this with MATLAB 2019a on RHEL 6.8.
+2. Run this in the MATLAB command line:
+   #+begin_example
+   codegen -config:lib -c struct_from_matlab
+   #+end_example
+3. The ~.c~ and ~.h~ files will be created in [[./codegen/lib/struct_from_matlab/]].
+4. The committed [[./struct_from_matlab.nim]] has the ~MyObj~ type already
+   written out to match the ~myStruct~ struct in
+   [[./codegen/lib/struct_from_matlab/struct_from_matlab_types.h]].
+5. Compile that Nim code:
+   #+begin_example
+   nim c -r struct_from_matlab.nim
+   #+end_example
+6. You should see this output:
+   #+begin_example
+   x = (someInt16Arr: [0, 0, 0, 0, 300], someDouble: 1.3, someInt32Arr: [0, 0, 0, 0, 0, 0, 0, 200, 0, 0], someFloat: 7.900000095367432, someStr: abc)
+   y = (someInt16Arr: [0, 0, 0, 0, 0], someDouble: 0.0, someInt32Arr: [100, 0, 0, 0, 0, 0, 0, 0, 0, 0], someFloat: 4.400000095367432, someStr: def)
+   #+end_example
