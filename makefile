@@ -42,6 +42,7 @@ NIM_RELEASE ?= 1
 NIM_DEFINES ?=
 NIM_SWITCHES ?=
 NIM_THREADS ?= 0
+NIM_DBG_DLL ?= 0
 
 .PHONY: clean nim nimcpp nc clibdpi cpplibdpi $(SUBDIRS) all valg
 
@@ -68,6 +69,9 @@ ifeq ($(NIM_THREADS), 1)
 endif
 ifeq ($(NIM_RELEASE), 1)
 	$(eval NIM_DEFINES += -d:release)
+endif
+ifeq ($(NIM_DBG_DLL), 1)
+	$(eval NIM_DEFINES += -d:nimDebugDlOpen)
 endif
 ifeq ($(VALG), 1)
 	$(eval NIM_DEFINES += -d:useSysAssert -d:useGcAssert)
