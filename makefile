@@ -1,4 +1,4 @@
-# Time-stamp: <2019-11-08 10:24:59 kmodi>
+# Time-stamp: <2020-03-13 00:02:37 kmodi>
 # Author    : Kaushal Modi
 
 UVM ?= 0
@@ -61,8 +61,10 @@ clean:
 nim:
 	@find . \( -name libdpi.o -o -name $(NIM_SO) \) -delete
 ifeq ($(GDB), 1)
-	$(eval NIM_RELEASE := 0)
-	$(eval NIM_SWITCHES += --debugger:native --gcc.options.debug="-O0 -g3 -ggdb3")
+	$(eval NIM_SWITCHES += --debugger:native)
+	$(eval NIM_SWITCHES += --listCmd)
+	$(eval NIM_SWITCHES += --gcc.options.debug="-O0 -g3 -ggdb3")
+	$(eval NIM_SWITCHES += --gcc.cpp.options.debug="-O0 -g3 -ggdb3")
 endif
 ifeq ($(NIM_THREADS), 1)
 	$(eval NIM_SWITCHES += --threads:on)
