@@ -11,6 +11,11 @@ C/C++ examples to Nim:
 - [[testbench_in__DPI_C/README.org][DPI-C examples from testbench.in]]
 - [[systemverilog_dpi_now/README.org][DPI-C examples from Rich Edelman's DVCon 2005 paper]]
 - [[amiq_dpi_c_examples/README.org][DPI-C examples from a blog post by Amiq]]
+* Limitations of types in DPI-C
+- Use ~real~ (~double~ in C) instead of ~shortreal~ (~float~ in
+  C). DPI-C (or Xcelium) does have a good support for ~shortreal~ with
+  DPI-C (not allowed as function return type, not allowed in structs,
+  etc.).
 * Presentation (CDNLive Silicon Valley 2019)
 I presented my approach of using Nim to interface with SystemVerilog
 via DPI-C at CDNLive Silicon Valley 2019. Below you can find the
