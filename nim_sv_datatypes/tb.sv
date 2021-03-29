@@ -1,4 +1,4 @@
-// Time-stamp: <2019-03-18 22:19:41 kmodi>
+// Time-stamp: <2021-03-29 16:17:50 kmodi>
 
 program top;
 
@@ -40,6 +40,7 @@ program top;
 
   // * Sending SystemVerilog variables to C
   import "DPI-C" print_object = function void print_struct(input animal_s in);
+  import "DPI-C" print_tuple = function void print_struct2tuple(input animal_s in);
 
   initial begin
     hello_func();
@@ -88,6 +89,7 @@ program top;
       a.species = "H. sapiens";
       a.age = 23;
       print_struct(a);
+      print_struct2tuple(a);
     end
 
   end

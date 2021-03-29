@@ -83,4 +83,7 @@ type
 # below question on SO helped me understand this:
 # https://stackoverflow.com/questions/50351848/passing-c-structs-through-systemverilog-dpi-c-layer
 proc print_object(animalAddr: ptr Animal) {.exportc, dynlib.} =
-  echo fmt"Received {animalAddr[]} from SV."
+  echo &"Received {animalAddr[]} from SV."
+
+proc print_tuple(animalAddr: ptr (cstring, cstring, cint)) {.exportc, dynlib.} =
+  echo &"Received {animalAddr[]} from SV."
