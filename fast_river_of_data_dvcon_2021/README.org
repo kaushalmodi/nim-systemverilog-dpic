@@ -1,0 +1,8 @@
+#+title: Making Your DPI-C Interface a Fast River of Data
+#+author: Rich Edelman
+
+The Nim examples in this directory are port of the C examples in Rich
+Edelman's paper "Making Your DPI-C Interface a Fast River of Data" in
+DVCon 2021.
+
+[[https://verificationacademy.com/conferences/dvcon-2021/making-your-dpi-c-interface-a-fast-river-of-data][Presentation video, paper and slides]]
