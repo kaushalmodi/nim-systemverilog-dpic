@@ -1,12 +1,23 @@
 import std/[strformat, strutils]
 import svdpi
 
+func svPackedDataNElems(width: cint): cint =
+  return (width + 31) shr 5
+
 const
   numElems = 3
 
 type
-  MyStruct = object
-    b: uint8       # 1 byte
+  MyStruct = object # 88 bytes
+    twoBits: array[svPackedDataNElems(2), svBitVecVal]     # 4 bytes
+    twoLogics: array[svPackedDataNElems(2), svLogicVecVal] # 8 bytes
+    sevenBits: array[svPackedDataNElems(7), svBitVecVal]     # 4 bytes
+    sevenLogics: array[svPackedDataNElems(7), svLogicVecVal] # 8 bytes
+    thirtytwoBits: array[svPackedDataNElems(32), svBitVecVal]     # 4 bytes
+    thirtytwoLogics: array[svPackedDataNElems(32), svLogicVecVal] # 8 bytes
+    sixtyfiveBits: array[svPackedDataNElems(65), svBitVecVal]     # 12 bytes
+    sixtyfiveLogics: array[svPackedDataNElems(65), svLogicVecVal] # 24 bytes
+    b: uint8       # 1 byte -> 2 bytes, because looks like any field takes up a minimum of 2 bytes in memory.
     si: cshort     # 2 bytes
     i: cint        # 4 bytes
     li: clonglong  # 8 bytes
@@ -14,7 +25,8 @@ type
     sa: array[numElems, MyStruct]
 
 const
-  sizeMyStruct = sizeof(MyStruct)
+  # FIXME sizeof does not work with svLogicVecVal.. need to investigate
+  sizeMyStruct = 88 # sizeof(MyStruct)
 
 proc f_array_of_struct_nim(ioPtr: ptr WrapStruct): cint {.exportc, dynlib.} =
   echo &"f_array_of_struct_nim: size of MyStruct = {sizeMyStruct} bytes"
