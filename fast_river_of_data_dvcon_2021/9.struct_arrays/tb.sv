@@ -1,16 +1,10 @@
-// Time-stamp: <2021-05-03 13:57:11 kmodi>
+// Time-stamp: <2021-05-03 16:42:20 kmodi>
 
 program top;
 
-  typedef struct packed {
-    // bit [1:0] two_bits;
-    // reg [1:0] two_regs;
-    // bit [6:0] seven_bits;
-    // reg [6:0] seven_regs;
-    // bit [31:0] thirtytwo_bits;
-    // reg [31:0] thirtytwo_regs;
-    // bit [64:0] sixtyfive_bits;
-    // reg [64:0] sixtyfive_regs;
+  parameter NUM_ELEMS = 3;
+
+  typedef struct {
     byte b;
     shortint si;
     int i;
@@ -18,7 +12,7 @@ program top;
   } my_struct_s;
 
   typedef struct {
-    my_struct_s sa[10];
+    my_struct_s sa[NUM_ELEMS];
   } struct_wrap_t;
 
   // Mon May 03 12:40:05 EDT 2021 - kmodi
@@ -40,17 +34,21 @@ program top;
     int counter;
 
     foreach (io.sa[x]) begin
-      // io.sa[x].two_regs = 1 + counter++;
-      // io.sa[x].two_bits = 1 + counter++;
-      io.sa[x].b = 10 + counter++;
-      io.sa[x].si = 100 + counter++;
-      io.sa[x].i = 1_000 + counter++;
-      io.sa[x].li = 10_000 + counter++;
-      $display("SV top (before Nim call), io.sa[%0d] = %p", x, io.sa[x]);
+      io.sa[x].b = 8'h33 + counter++;
+      io.sa[x].si = 16'haa_55 + counter++;
+      io.sa[x].i = 32'h1234_5678 + counter++;
+      io.sa[x].li = 64'ha5a5_b6b6_c7c7_d8d8 + counter++;
+      $display("SV top (before Nim call), io.sa[%0d].b  = %20d | 0x%x", x, io.sa[x].b, io.sa[x].b);
+      $display("SV top (before Nim call), io.sa[%0d].si = %20d | 0x%x", x, io.sa[x].si, io.sa[x].si);
+      $display("SV top (before Nim call), io.sa[%0d].i  = %20d | 0x%x", x, io.sa[x].i, io.sa[x].i);
+      $display("SV top (before Nim call), io.sa[%0d].li = %20d | 0x%x", x, io.sa[x].li, io.sa[x].li);
     end
     void'(f_array_of_struct_nim(io));
     foreach (io.sa[x]) begin
-      $display("SV top (after Nim call), io.sa[%0d] = %p", x, io.sa[x]);
+      $display("SV top (after Nim call), io.sa[%0d].b  = %20d | 0x%x", x, io.sa[x].b, io.sa[x].b);
+      $display("SV top (after Nim call), io.sa[%0d].si = %20d | 0x%x", x, io.sa[x].si, io.sa[x].si);
+      $display("SV top (after Nim call), io.sa[%0d].i  = %20d | 0x%x", x, io.sa[x].i, io.sa[x].i);
+      $display("SV top (after Nim call), io.sa[%0d].li = %20d | 0x%x", x, io.sa[x].li, io.sa[x].li);
     end
   end
 
