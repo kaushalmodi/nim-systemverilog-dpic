@@ -1,0 +1,5 @@
+#+title: Recording signals from Nim side in SV
+
+Here's an example of how the Nim-side recorded signals look in Cadence SimVision:
+
+[[./waves.png][./waves.png]]
