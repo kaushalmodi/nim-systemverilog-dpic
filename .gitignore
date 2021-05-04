@@ -40,3 +40,7 @@ libdpi.json
 .simvision/
 bpad*.err
 waves.shm/
+*.ndi
+stdlib_*nim.c
+stdlib_*nim.cpp
+*.nimble@spkgs@*

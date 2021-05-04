@@ -1,0 +1,15 @@
+xcelium> run
+f_scopetest_nim: Switched from top to top
+In top.f_scopetest_sv
+
+origScopeName = top
+f_scopetest_nim: Switched from top to top.u_other_module
+In top.u_other_module.f_scopetest_sv
+
+origScopeName = top.u_other_module
+f_scopetest_nim: Switched from top.u_other_module to top.u_other_module
+In top.u_other_module.f_scopetest_sv
+
+origScopeName = top.u_other_module
+xmsim: *W,RNQUIE: Simulation is complete.
+xcelium> exit

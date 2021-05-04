@@ -1,0 +1,12 @@
+xcelium> run
+In top.f_scopetest_sv
+
+origScopeName = top
+In top.u_other_module.f_scopetest_sv
+
+origScopeName = top
+In top.f_scopetest_sv
+
+origScopeName = top
+xmsim: *W,RNQUIE: Simulation is complete.
+xcelium> exit
