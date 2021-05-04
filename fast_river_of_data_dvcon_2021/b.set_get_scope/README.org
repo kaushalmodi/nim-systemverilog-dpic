@@ -1,6 +1,0 @@
-#+title: set/get SV scope
-
-I am having an issue using the ~svdpi.h~ ~svGetNameFromScope~.
-It looks like this function is not returning the intended scope name.
-
-The issue is reproduce in both C and Nim.
