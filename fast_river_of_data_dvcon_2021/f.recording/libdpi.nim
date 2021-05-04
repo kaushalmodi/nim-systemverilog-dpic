@@ -1,10 +1,10 @@
-# Time-stamp: <2021-05-04 10:36:12 kmodi>
+# Time-stamp: <2021-05-04 12:12:59 kmodi>
 
-import std/[random]
+import std/[strformat, random]
 import svdpi
 
 var
-  rs = initRand(1) # Init the RNG with some arbitrary fixed seed
+  rs: Rand
   recordingEnabled = true
 
 type
@@ -27,6 +27,10 @@ template withScope(scopeName: untyped, body: untyped) =
 
 proc disable_recording() {.exportc, dynlib.} =
   recordingEnabled = false
+
+proc init_rand(seed: cint) {.exportc, dynlib.} =
+  echo &"Random seed = {seed}"
+  rs = initRand(seed.int) # Init the RNG with the seed provided from the SV side
 
 proc run_nim_code1(): cint {.exportc, dynlib.} =
   var

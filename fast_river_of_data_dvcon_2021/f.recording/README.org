@@ -3,3 +3,11 @@
 Here's an example of how the Nim-side recorded signals look in Cadence SimVision:
 
 [[./waves.png][./waves.png]]
+
+* Specifying fixed seeds
+Specifying a seed for SV run with also fix the seed for Nim RNG.
+
+Here's an example run:
+#+begin_example
+make NC_SWITCHES+="-seed 123"
+#+end_example

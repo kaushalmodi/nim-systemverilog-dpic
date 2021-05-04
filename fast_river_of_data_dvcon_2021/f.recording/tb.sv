@@ -1,4 +1,4 @@
-// Time-stamp: <2021-05-04 10:27:53 kmodi>
+// Time-stamp: <2021-05-04 12:17:31 kmodi>
 
 `timescale 1ns/1ns
 
@@ -32,6 +32,7 @@ module top();
   import "DPI-C" context task run_nim_code1();
   import "DPI-C" context task run_nim_code2();
   import "DPI-C" function void disable_recording();
+  import "DPI-C" function void init_rand(input int seed);
   export "DPI-C" task tictoc;
 
   reg clk;
@@ -47,6 +48,12 @@ module top();
     clk = 0;
   end
   always #1ns clk = !clk;
+
+  initial begin
+    // Running the SV test with a specific seed with generate a fixed
+    // seed passed on to the Nim side too.
+    init_rand($urandom_range(1_000_000));
+  end
 
   initial begin
     $timeformat(-9, 3, "ns");  // units, precision, suffix
