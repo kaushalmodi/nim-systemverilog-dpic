@@ -1,0 +1,2 @@
+* Dependency
+- Do ~nimble install svdpi~ to ensure that svdpi 0.4.0 or newer is installed.

@@ -1,9 +1,6 @@
 import std/[strformat, strutils]
 import svdpi
 
-func svPackedDataNElems(width: cint): cint =
-  return (width + 31) shr 5
-
 const
   numElems = 3
 
@@ -25,8 +22,7 @@ type
     sa: array[numElems, MyStruct]
 
 const
-  # FIXME sizeof does not work with svLogicVecVal.. need to investigate
-  sizeMyStruct = 88 # sizeof(MyStruct)
+  sizeMyStruct = sizeof(MyStruct)
 
 proc f_array_of_struct_nim(ioPtr: ptr WrapStruct): cint {.exportc, dynlib.} =
   echo &"f_array_of_struct_nim: size of MyStruct = {sizeMyStruct} bytes"
