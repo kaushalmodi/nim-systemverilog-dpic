@@ -1,0 +1,24 @@
+This example has been rewritten for 1D dynamic arrays because Cadence
+Xcelium does not support 2D arrays on the DPI-C interface.
+
+Attempting to do so gives this error during compilation.
+
+#+begin_example
+  import "DPI-C" function int f_openarray_2d_nim(input openarray_2d_t i,
+                                                                      |
+xmvlog: *E,UNFRAG (tb.sv,7|70): unsupported datatype in formal argument.
+                                                 output openarray_2d_t o,
+                                                                       |
+xmvlog: *E,UNFRAG (tb.sv,8|71): unsupported datatype in formal argument.
+                                                 inout openarray_2d_t io);
+                                                                       |
+xmvlog: *E,UNFRAG (tb.sv,9|71): unsupported datatype in formal argument.
+#+end_example
+
+.. where ~openarray_2d_t~ was:
+
+#+begin_src systemverilog
+typedef int openarray_2d_t[][];
+#+end_src
+
+Failed attempt to make 2D dynamic arrays work with Xcelium is in [[./tb.2d_doesnt_work.sv]].
