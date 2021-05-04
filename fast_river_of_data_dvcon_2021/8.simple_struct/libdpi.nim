@@ -1,4 +1,4 @@
-import std/[strformat, strutils]
+import std/[strformat]
 import svdpi
 
 type
