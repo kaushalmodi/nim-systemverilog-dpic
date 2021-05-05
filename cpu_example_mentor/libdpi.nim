@@ -77,6 +77,7 @@ const
 type
   Mem = array[memSize, int]
   OpCode = enum
+    opIllegal = (0x0, "ILLEGAL")
     opSKZ = (0x1, "SKZ")            # SKZ   SKip  if accumulator is Zero
     opADD = (0x2, "ADD")            # ADD   ADD   m[address] to accumulator
     opSUB = (0x3, "SUB")            # SUB   SUB   m[address] with accumulator
@@ -141,10 +142,7 @@ proc C_risc(id: int): int {.exportc, dynlib.} =
     mem: Mem
     acc = 0      # Accumulator
     pc = 0       # Program Counter
-    pcs = pc     # Program Counter Save for debug
-    tmp: int     # Temporary Memory Data
     ir: int
-    op: OpCode
     maddr: int  # Memory address register
 
   let
@@ -153,15 +151,18 @@ proc C_risc(id: int): int {.exportc, dynlib.} =
   initMem(&"orig/pgm/pgm32.dat.{id}", memPtr)
 
   while true:
-    pcs = pc
+    let
+      pcs = pc     # Program Counter Save for debug
     read(memPtr, pc, addr ir)
+    inc pc
     #---------------------------------------
     #| op   |         maddr                |
     #---------------------------------------
     # 31 28  27                           0
-    op = OpCode(0xF and (ir shr 28))
-    maddr = 0x0FFFFFFF and ir
-    inc pc
+    maddr = 0x0FFFFFFF and ir # Latch address
+
+    let
+      op = OpCode(0xF and (ir shr 28))
 
     case op
     of opHLT:
@@ -184,9 +185,11 @@ proc C_risc(id: int): int {.exportc, dynlib.} =
     of opLDI:
       read(memPtr, maddr, addr maddr)
     of opADD, opSUB, opXOR, opLDA:
+      var
+        tmp: int     # Temporary Memory Data
       read(memPtr, maddr, addr tmp)
       acc = alu(acc, tmp, op)
     else:
-      io_printf &"CPU {id} bad opcode, PC = {pcs.toHex(8)}, IR = {ir.toHex(8)}\n"
+      io_printf &"CPU {id} bad opcode ({op.int}), PC = {pcs.toHex(8)}, IR = {ir.toHex(8)}\n"
       return 0
     io_printf &"CPU: {id} {op:<5} PC:{pcs.toHex(8)} IR:{ir.toHex(8)} ACC:{acc.toHex(8)}\n"
