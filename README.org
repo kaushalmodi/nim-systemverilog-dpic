@@ -8,6 +8,7 @@ the Nim/SystemVerilog interface via DPI-C.
 Jump to these sub-directories to see how I translated the existing
 C/C++ examples to Nim:
 
+- [[fast_river_of_data_dvcon_2021/README.org][DPI-C examples from DVCon 2021 paper on DPI-C]]
 - [[testbench_in__DPI_C/README.org][DPI-C examples from testbench.in]]
 - [[systemverilog_dpi_now/README.org][DPI-C examples from Rich Edelman's DVCon 2005 paper]]
 - [[amiq_dpi_c_examples/README.org][DPI-C examples from a blog post by Amiq]]
