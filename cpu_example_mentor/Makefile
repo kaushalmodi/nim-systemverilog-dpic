@@ -1,4 +1,4 @@
-# Time-stamp: <2021-05-05 17:11:19 kmodi>
+# Time-stamp: <2021-05-05 17:51:05 kmodi>
 
 .DEFAULT_GOAL := default
 
@@ -7,8 +7,7 @@ FILES ?= orig/*.sv orig/*.v
 NIM_GC ?= arc
 
 # For veriuser.h
-NIM_SWITCHES += --gcc.options="-I$(XCELIUM_ROOT)/../include"
-NIM_SWITCHES += --gcc.cpp.options="-I$(XCELIUM_ROOT)/../include"
+NIM_SWITCHES += --passC="-I$(XCELIUM_ROOT)/../include"
 
 include $(GIT_ROOT)/makefile
 
