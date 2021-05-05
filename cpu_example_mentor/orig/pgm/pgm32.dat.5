@@ -1,0 +1,21 @@
+         // // Fibinacci Series
+         // // All local memory
+70000010 // 0            	JMP Start
+@10          // @0x10
+50000051 // 10           Start:	LDA B
+60000052 // 11           	STA Temp
+20000050 // 12           	ADD A
+60000051 // 13           	STA B
+50000052 // 14           	LDA Temp
+60000050 // 15           	STA A
+40000053 // 16           	XOR limit
+10000000 // 17           	SKZ	// skip if fn1 == limit
+70000010 // 18           	JMP Start
+e0000000 // 19           	HLT	// good halt
+70000010 // 1a           	JMP Start // should never get here
+         // 
+@50          // @0x50
+1        // 50           A:	1
+1        // 51           B:	1
+2        // 52           Temp:	1+1
+90       // 53           limit:	144	// 0x90

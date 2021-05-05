@@ -1,0 +1,139 @@
+70000009 // 0            	JMP Start
+1        // 1            DSP_Begin:	1
+ffffffffffffffff // 2            DSP_End:	-1
+4        // 3            A:	4
+3        // 4            Ai:	3
+3        // 5            B:	3
+2        // 6            Bi:	2
+6        // 7            X:	(4*3)-(3*2)
+12       // 8            Xi:	(4*3)+(3*2)
+         // 
+8000000d // 9            Start:	JSR Test // Do Test 3 times
+8000000d // a            	JSR Test
+8000000d // b            	JSR Test
+e0000000 // c            	HLT
+         // 
+0        // d            Test:	0
+50000003 // e            	LDA A	// setup DSP1
+60000201 // f            	STA DSP1_A
+50000004 // 10           	LDA Ai
+60000202 // 11           	STA DSP1_Ai
+50000005 // 12           	LDA B
+60000203 // 13           	STA DSP1_B
+50000006 // 14           	LDA Bi
+60000204 // 15           	STA DSP1_Bi
+50000001 // 16           	LDA DSP_Begin
+60000200 // 17           	STA DSP1_Flag // Start DSP1
+         // 
+50000003 // 18           	LDA A	// setup DSP2
+60000211 // 19           	STA DSP2_A
+50000004 // 1a           	LDA Ai
+60000212 // 1b           	STA DSP2_Ai
+50000005 // 1c           	LDA B
+60000213 // 1d           	STA DSP2_B
+50000006 // 1e           	LDA Bi
+60000214 // 1f           	STA DSP2_Bi
+50000001 // 20           	LDA DSP_Begin
+60000210 // 21           	STA DSP2_Flag // Start DSP2
+         // 
+50000003 // 22           	LDA A	// setup DSP3
+60000221 // 23           	STA DSP3_A
+50000004 // 24           	LDA Ai
+60000222 // 25           	STA DSP3_Ai
+50000005 // 26           	LDA B
+60000223 // 27           	STA DSP3_B
+50000006 // 28           	LDA Bi
+60000224 // 29           	STA DSP3_Bi
+50000001 // 2a           	LDA DSP_Begin
+60000220 // 2b           	STA DSP3_Flag // Start DSP3
+         // 
+50000003 // 2c           	LDA A	// setup DSP4
+60000231 // 2d           	STA DSP4_A
+50000004 // 2e           	LDA Ai
+60000232 // 2f           	STA DSP4_Ai
+50000005 // 30           	LDA B
+60000233 // 31           	STA DSP4_B
+50000006 // 32           	LDA Bi
+60000234 // 33           	STA DSP4_Bi
+50000001 // 34           	LDA DSP_Begin
+60000230 // 35           	STA DSP4_Flag // Start DSP4
+         // 
+50000200 // 36           Wait1:	LDA DSP1_Flag
+40000002 // 37           	XOR DSP_End
+10000000 // 38           	SKZ	// skip if done
+70000036 // 39           	JMP Wait1
+50000205 // 3a           	LDA DSP1_X	// check results
+40000007 // 3b           	XOR X
+10000000 // 3c           	SKZ
+e0000000 // 3d           	HLT	// Bad result
+50000206 // 3e           	LDA DSP1_Xi	// check results
+40000008 // 3f           	XOR Xi
+10000000 // 40           	SKZ
+e0000000 // 41           	HLT	// Bad result
+         // 
+         // 
+50000210 // 42           Wait2:	LDA DSP2_Flag
+40000002 // 43           	XOR DSP_End
+10000000 // 44           	SKZ	// skip if done
+70000042 // 45           	JMP Wait2
+50000215 // 46           	LDA DSP2_X	// check results
+40000007 // 47           	XOR X
+10000000 // 48           	SKZ
+e0000000 // 49           	HLT	// Bad result
+50000216 // 4a           	LDA DSP2_Xi	// check results
+40000008 // 4b           	XOR Xi
+10000000 // 4c           	SKZ
+e0000000 // 4d           	HLT	// Bad result
+         // 
+         // 
+50000220 // 4e           Wait3:	LDA DSP3_Flag
+40000002 // 4f           	XOR DSP_End
+10000000 // 50           	SKZ	// skip if done
+7000004e // 51           	JMP Wait3
+50000225 // 52           	LDA DSP3_X	// check results
+40000007 // 53           	XOR X
+10000000 // 54           	SKZ
+e0000000 // 55           	HLT	// Bad result
+50000226 // 56           	LDA DSP3_Xi	// check results
+40000008 // 57           	XOR Xi
+10000000 // 58           	SKZ
+e0000000 // 59           	HLT	// Bad result
+9000000d // 5a           	JMI Test // Do it all over again
+e0000000 // 5b           	HLT // Should not reach here
+         // 
+@200          // @0x200
+0        // 200          DSP1_Flag:	0
+0        // 201          DSP1_A:		0
+0        // 202          DSP1_Ai:	0
+0        // 203          DSP1_B:		0
+0        // 204          DSP1_Bi:	0
+0        // 205          DSP1_X:		0
+0        // 206          DSP1_Xi:	0
+         // 
+@210          // @0x210
+0        // 210          DSP2_Flag:	0
+0        // 211          DSP2_A:		0
+0        // 212          DSP2_Ai:	0
+0        // 213          DSP2_B:		0
+0        // 214          DSP2_Bi:	0
+0        // 215          DSP2_X:		0
+0        // 216          DSP2_Xi:	0
+         // 
+@220          // @0x220
+0        // 220          DSP3_Flag:	0
+0        // 221          DSP3_A:		0
+0        // 222          DSP3_Ai:	0
+0        // 223          DSP3_B:		0
+0        // 224          DSP3_Bi:	0
+0        // 225          DSP3_X:		0
+0        // 226          DSP3_Xi:	0
+         // 
+@230          // @0x230
+0        // 230          DSP4_Flag:	0
+0        // 231          DSP4_A:		0
+0        // 232          DSP4_Ai:	0
+0        // 233          DSP4_B:		0
+0        // 234          DSP4_Bi:	0
+0        // 235          DSP4_X:		0
+0        // 236          DSP4_Xi:	0
+         // 

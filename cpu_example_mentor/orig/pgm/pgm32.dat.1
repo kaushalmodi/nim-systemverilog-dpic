@@ -1,0 +1,69 @@
+         // // program local, data shared
+70000009 // 0            	JMP Start
+1        // 1            One:	1
+ffffffff // 2            NegOne:	-1
+14       // 3            Timeout:	20
+0        // 4            Local_A:	0
+0        // 5            Local_B:	0
+0        // 6            Local_X:	0
+0        // 7            Real:	0
+0        // 8            Imag:	0
+50000003 // 9            Start:	LDA Timeout
+30000001 // a            	SUB One
+10000000 // b            	SKZ
+7000000a // c            	JMP Start+1
+50000200 // d            Wait:   LDA DSP_Flag
+40000001 // e            	XOR One
+10000000 // f            	SKZ
+7000000d // 10           	JMP Wait
+         // 
+50000201 // 11           	LDA DSP_A
+60000004 // 12           	STA Local_A
+50000203 // 13           	LDA DSP_B
+60000005 // 14           	STA Local_B
+40000005 // 15           	XOR Local_B	// ACC = 0
+80000027 // 16           	JSR Mult	// A * B
+60000007 // 17           	STA Real
+50000202 // 18           	LDA DSP_Ai
+60000004 // 19           	STA Local_A
+50000204 // 1a           	LDA DSP_Bi
+60000005 // 1b           	STA Local_B
+40000005 // 1c           	XOR Local_B	// ACC = 0
+80000027 // 1d           	JSR Mult	// Ai * Bi
+60000008 // 1e           	STA Imag
+20000007 // 1f           	ADD Real	// (A*B) + (Ai*Bi)
+60000206 // 20           	STA DSP_Xi
+50000007 // 21           	LDA Real
+30000008 // 22           	SUB Imag	// (A*B) - (Ai*Bi)
+60000205 // 23           	STA DSP_X
+         // 
+50000002 // 24           	LDA NegOne
+60000200 // 25           	STA DSP_Flag
+7000000d // 26           	JMP Wait
+         // 
+0        // 27           Mult:	0		// X = A * B 
+60000006 // 28           	STA Local_X
+50000004 // 29           	LDA Local_A
+10000000 // 2a           	SKZ 
+7000002e // 2b           	JMP Continue
+50000006 // 2c           	LDA Local_X	// Done
+90000027 // 2d           	JMI Mult	// Return
+         // Continue:
+30000001 // 2e           	SUB One
+60000004 // 2f           	STA Local_A
+50000006 // 30           	LDA Local_X
+20000005 // 31           	ADD Local_B
+70000028 // 32           	JMP Mult+1
+         // 
+@200          // @0x200
+0        // 200          DSP_Flag:      0
+0        // 201          DSP_A:         0
+0        // 202          DSP_Ai:        0
+0        // 203          DSP_B:         0
+0        // 204          DSP_Bi:        0
+0        // 205          DSP_X:         0
+0        // 206          DSP_Xi:        0
+         // 
+         // 
+         // 
+         // 

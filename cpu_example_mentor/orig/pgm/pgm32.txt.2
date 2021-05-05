@@ -1,0 +1,48 @@
+// DSP 2 code
+	JMP Start
+One:	1
+NegOne:	-1
+Timeout:	-10
+Local_A:	0
+Local_B:	0
+Local_X:	0
+
+Start:	LDA Timeout // Wait for initialization
+	ADD One
+	SKZ
+	JMP Start+1
+Wait:   LDA DSP_Flag
+	XOR One
+	SKZ	// check for flag == 1
+	JMP Wait
+	LDA DSP_A	// Get A and B operands
+	STA Local_A
+	LDA DSP_B
+	STA Local_B
+	XOR Local_B // Make Zero 
+Loop:	STA Local_X // 
+
+	LDA Local_A
+	SKZ 
+	JMP Continue
+	LDA Local_X // Done - save Result
+	STA DSP_X
+	LDA NegOne  
+	STA DSP_Flag
+	JMP Wait
+Continue:	// Add next partial sum
+	ADD NegOne
+	STA Local_A
+	LDA Local_X
+	ADD Local_B
+	JMP Loop
+@0x210
+DSP_Flag:	0
+DSP_A:		0
+DSP_B:		0
+DSP_X:		0
+
+
+
+
+

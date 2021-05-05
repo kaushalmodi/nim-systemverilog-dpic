@@ -1,0 +1,69 @@
+// program local, data shared
+	JMP Start
+One:	1
+NegOne:	-1
+Timeout:	20
+Local_A:	0
+Local_B:	0
+Local_X:	0
+Real:	0
+Imag:	0
+Start:	LDA Timeout
+	SUB One
+	SKZ
+	JMP Start+1
+Wait:   LDA DSP_Flag
+	XOR One
+	SKZ
+	JMP Wait
+
+	LDA DSP_A
+	STA Local_A
+	LDA DSP_B
+	STA Local_B
+	XOR Local_B	// ACC = 0
+	JSR Mult	// A * B
+	STA Real
+	LDA DSP_Ai
+	STA Local_A
+	LDA DSP_Bi
+	STA Local_B
+	XOR Local_B	// ACC = 0
+	JSR Mult	// Ai * Bi
+	STA Imag
+	ADD Real	// (A*B) + (Ai*Bi)
+	STA DSP_Xi
+	LDA Real
+	SUB Imag	// (A*B) - (Ai*Bi)
+	STA DSP_X
+
+	LDA NegOne
+	STA DSP_Flag
+	JMP Wait
+
+Mult:	0		// X = A * B 
+	STA Local_X
+	LDA Local_A
+	SKZ 
+	JMP Continue
+	LDA Local_X	// Done
+	JMI Mult	// Return
+Continue:
+	SUB One
+	STA Local_A
+	LDA Local_X
+	ADD Local_B
+	JMP Mult+1
+
+@0x200
+DSP_Flag:      0
+DSP_A:         0
+DSP_Ai:        0
+DSP_B:         0
+DSP_Bi:        0
+DSP_X:         0
+DSP_Xi:        0
+
+
+
+

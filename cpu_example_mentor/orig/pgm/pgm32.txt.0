@@ -1,0 +1,139 @@
+	JMP Start
+DSP_Begin:	1
+DSP_End:	-1
+A:	4
+Ai:	3
+B:	3
+Bi:	2
+X:	(4*3)-(3*2)
+Xi:	(4*3)+(3*2)
+
+Start:	JSR Test // Do Test 3 times
+	JSR Test
+	JSR Test
+	HLT
+
+Test:	0
+	LDA A	// setup DSP1
+	STA DSP1_A
+	LDA Ai
+	STA DSP1_Ai
+	LDA B
+	STA DSP1_B
+	LDA Bi
+	STA DSP1_Bi
+	LDA DSP_Begin
+	STA DSP1_Flag // Start DSP1
+
+	LDA A	// setup DSP2
+	STA DSP2_A
+	LDA Ai
+	STA DSP2_Ai
+	LDA B
+	STA DSP2_B
+	LDA Bi
+	STA DSP2_Bi
+	LDA DSP_Begin
+	STA DSP2_Flag // Start DSP2
+
+	LDA A	// setup DSP3
+	STA DSP3_A
+	LDA Ai
+	STA DSP3_Ai
+	LDA B
+	STA DSP3_B
+	LDA Bi
+	STA DSP3_Bi
+	LDA DSP_Begin
+	STA DSP3_Flag // Start DSP3
+
+	LDA A	// setup DSP4
+	STA DSP4_A
+	LDA Ai
+	STA DSP4_Ai
+	LDA B
+	STA DSP4_B
+	LDA Bi
+	STA DSP4_Bi
+	LDA DSP_Begin
+	STA DSP4_Flag // Start DSP4
+
+Wait1:	LDA DSP1_Flag
+	XOR DSP_End
+	SKZ	// skip if done
+	JMP Wait1
+	LDA DSP1_X	// check results
+	XOR X
+	SKZ
+	HLT	// Bad result
+	LDA DSP1_Xi	// check results
+	XOR Xi
+	SKZ
+	HLT	// Bad result
+
+
+Wait2:	LDA DSP2_Flag
+	XOR DSP_End
+	SKZ	// skip if done
+	JMP Wait2
+	LDA DSP2_X	// check results
+	XOR X
+	SKZ
+	HLT	// Bad result
+	LDA DSP2_Xi	// check results
+	XOR Xi
+	SKZ
+	HLT	// Bad result
+
+
+Wait3:	LDA DSP3_Flag
+	XOR DSP_End
+	SKZ	// skip if done
+	JMP Wait3
+	LDA DSP3_X	// check results
+	XOR X
+	SKZ
+	HLT	// Bad result
+	LDA DSP3_Xi	// check results
+	XOR Xi
+	SKZ
+	HLT	// Bad result
+	JMI Test // Do it all over again
+	HLT // Should not reach here
+
+@0x200
+DSP1_Flag:	0
+DSP1_A:		0
+DSP1_Ai:	0
+DSP1_B:		0
+DSP1_Bi:	0
+DSP1_X:		0
+DSP1_Xi:	0
+
+@0x210
+DSP2_Flag:	0
+DSP2_A:		0
+DSP2_Ai:	0
+DSP2_B:		0
+DSP2_Bi:	0
+DSP2_X:		0
+DSP2_Xi:	0
+
+@0x220
+DSP3_Flag:	0
+DSP3_A:		0
+DSP3_Ai:	0
+DSP3_B:		0
+DSP3_Bi:	0
+DSP3_X:		0
+DSP3_Xi:	0
+
+@0x230
+DSP4_Flag:	0
+DSP4_A:		0
+DSP4_Ai:	0
+DSP4_B:		0
+DSP4_Bi:	0
+DSP4_X:		0
+DSP4_Xi:	0
+

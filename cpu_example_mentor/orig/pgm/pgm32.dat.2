@@ -1,0 +1,47 @@
+           // // DSP 2 code
+70000007 // 	JMP Start
+1        // One:	1
+ffffffff // NegOne:	-1
+fffffff6 // Timeout:	-10
+         0 // Local_A:	0
+         0 // Local_B:	0
+         0 // Local_X:	0
+           // 
+50000003 // Start:	LDA Timeout
+20000001 // 	ADD One
+10000000 // 	SKZ
+70000008 // 	JMP Start+1
+50000210 // Wait:   LDA DSP_Flag
+40000001 // 	XOR One
+10000000 // 	SKZ
+7000000b // 	JMP Wait
+50000211 // 	LDA DSP_A
+60000004 // 	STA Local_A
+50000212 // 	LDA DSP_B
+60000005 // 	STA Local_B
+40000005 // 	XOR Local_B
+60000006 // Loop:	STA Local_X // Zero
+50000004 // 	LDA Local_A
+10000000 // 	SKZ 
+7000001d // 	JMP Continue
+50000006 // 	LDA Local_X // Done
+60000213 // 	STA DSP_X
+50000002 // 	LDA NegOne
+60000210 // 	STA DSP_Flag
+7000000b // 	JMP Wait
+           // Continue:
+20000002 // 	ADD NegOne
+60000004 // 	STA Local_A
+50000006 // 	LDA Local_X
+20000005 // 	ADD Local_B
+70000014 // 	JMP Loop
+@210            // @0x210
+         0 // DSP_Flag:	0
+         0 // DSP_A:		0
+         0 // DSP_B:		0
+         0 // DSP_X:		0
+           // 
+           // 
+           // 
+           // 
+           // 
