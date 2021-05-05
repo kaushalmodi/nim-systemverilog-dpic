@@ -2,10 +2,10 @@ import std/[strformat, strscans, strutils]
 import svdpi
 
 ## imported procs
-proc V_posedge(): cint {.importc.}
-proc V_init_mem(index, data: cint) {.importc.}
-proc V_read(address: cint; dataPtr: ptr cint): cint {.importc.}
-proc V_write(address: cint; data: cint): cint {.importc.}
+proc V_posedge(): int {.importc.}
+proc V_init_mem(index, data: int) {.importc.}
+proc V_read(address: int; dataPtr: ptr int): int {.importc.}
+proc V_write(address: int; data: int): int {.importc.}
 
 proc io_printf(formatStr: cstring) {.importc, header: "veriuser.h", varargs.}
 
@@ -18,35 +18,35 @@ template withScope(scopeName: untyped, body: untyped) =
   discard svSetScope(oldScope)
 
 ## memory
-proc C_init_mem(index, data: cint) {.exportc, dynlib.} =
+proc C_init_mem(index, data: int) {.exportc, dynlib.} =
   withScope "system.m1":
     V_init_mem(index, data)
 
 ## dsp
 type
-  Complex[T] = object
-    re: T
-    im: T
+  Complex = object
+    re: int
+    im: int
 
 const
-  dspBegin = 1.cint
-  dspEnd = -1.cint
-  dspFlag = 0x210.cint
-  dspA = 0x211.cint
-  dspB = 0x213.cint
-  dspX = 0x215.cint
+  dspBegin = 1
+  dspEnd = -1
+  dspFlag = 0x210
+  dspA = 0x211
+  dspB = 0x213
+  dspX = 0x215
 
-proc C_dsp(id: cint): cint {.exportc, dynlib.} =
+proc C_dsp(id: int): int {.exportc, dynlib.} =
   # Wait for initialization
   for i in 0 ..< 10:
     discard V_posedge()
 
   while true:
     var
-      flag = 0.cint
-      localA = Complex[cint]()
-      localB = Complex[cint]()
-      localX = Complex[cint]()
+      flag = 0
+      localA = Complex()
+      localB = Complex()
+      localX = Complex()
 
     while flag != dspBegin:
       discard V_read(dspFlag, addr flag)
@@ -75,7 +75,7 @@ const
   memSize = 0x100
 
 type
-  Mem = array[memSize, cint]
+  Mem = array[memSize, int]
   OpCode = enum
     opSKZ = (0x1, "SKZ")            # SKZ   SKip  if accumulator is Zero
     opADD = (0x2, "ADD")            # ADD   ADD   m[address] to accumulator
@@ -92,7 +92,7 @@ type
     opReservedD = (0xD, "ILLEGAL")
     opHLT = (0xE, "HLT")            # HLT   HaLT  processor
 
-proc alu[T](a, b: T; op: OpCode): T =
+proc alu(a, b: int; op: OpCode): int =
   case op
   of opADD:
     return a + b
@@ -103,7 +103,7 @@ proc alu[T](a, b: T; op: OpCode): T =
   of opLDA:
     return b
   else:
-    return 0.T
+    return 0
 
 proc initMem(filename: string; mPtr: ptr Mem) =
   ## Initialize the memory (local and/or shared) by reading data from
@@ -117,35 +117,35 @@ proc initMem(filename: string; mPtr: ptr Mem) =
       continue
     elif scanf(line ,"$h", data): # Load address
       if address < memSize:
-        mPtr[][address] = data.cint
+        mPtr[][address] = data
       else:
-        C_init_mem(address.cint, data.cint)
+        C_init_mem(address, data)
       inc address
 
-proc read(memPtr: ptr Mem; index: cint; dataPtr: ptr cint) =
+proc read(memPtr: ptr Mem; index: int; dataPtr: ptr int) =
   if index < memSize:
     discard V_posedge()
     dataPtr[] = memPtr[][index]
   else:
     discard V_read(index, dataPtr)
 
-proc write(memPtr: ptr Mem; index: cint; data: cint) =
+proc write(memPtr: ptr Mem; index: int; data: int) =
   if index < memSize:
     discard V_posedge()
     memPtr[][index] = data
   else:
     discard V_write(index, data)
 
-proc C_risc(id: cint): cint {.exportc, dynlib.} =
+proc C_risc(id: int): int {.exportc, dynlib.} =
   var
     mem: Mem
-    acc = 0.cint # Accumulator
-    pc = 0.cint  # Program Counter
+    acc = 0      # Accumulator
+    pc = 0       # Program Counter
     pcs = pc     # Program Counter Save for debug
-    tmp: cint    # Temporary Memory Data
-    ir: cint
+    tmp: int     # Temporary Memory Data
+    ir: int
     op: OpCode
-    maddr: cint  # Memory address register
+    maddr: int  # Memory address register
 
   let
     memPtr = cast[ptr Mem](addr mem[0])
@@ -185,7 +185,7 @@ proc C_risc(id: cint): cint {.exportc, dynlib.} =
       read(memPtr, maddr, addr maddr)
     of opADD, opSUB, opXOR, opLDA:
       read(memPtr, maddr, addr tmp)
-      acc = alu[cint](acc, tmp, op)
+      acc = alu(acc, tmp, op)
     else:
       io_printf &"CPU {id} bad opcode, PC = {pcs.toHex(8)}, IR = {ir.toHex(8)}\n"
       return 0
