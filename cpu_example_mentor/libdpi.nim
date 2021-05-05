@@ -7,6 +7,8 @@ proc V_init_mem(index, data: cint) {.importc.}
 proc V_read(address: cint; dataPtr: ptr cint): cint {.importc.}
 proc V_write(address: cint; data: cint): cint {.importc.}
 
+proc io_printf(formatStr: cstring) {.importc, header: "veriuser.h", varargs.}
+
 ## templates
 template withScope(scopeName: untyped, body: untyped) =
   let
@@ -163,7 +165,7 @@ proc C_risc(id: cint): cint {.exportc, dynlib.} =
 
     case op
     of opHLT:
-      echo &"CPU {id} Halted at PC = {pcs.toHex(8)}, ACC = {acc.toHex(8)}"
+      io_printf &"CPU {id} Halted at PC = {pcs.toHex(8)}, ACC = {acc.toHex(8)}\n"
       return 0
     of opSKZ:
       if acc == 0:
@@ -185,6 +187,6 @@ proc C_risc(id: cint): cint {.exportc, dynlib.} =
       read(memPtr, maddr, addr tmp)
       acc = alu[cint](acc, tmp, op)
     else:
-      echo &"CPU {id} bad opcode, PC = {pcs.toHex(8)}, IR = {ir.toHex(8)}"
+      io_printf &"CPU {id} bad opcode, PC = {pcs.toHex(8)}, IR = {ir.toHex(8)}\n"
       return 0
-    echo &"CPU: {id} {op:<5} PC:{pcs.toHex(8)} IR:{ir.toHex(8)} ACC:{acc.toHex(8)}"
+    io_printf &"CPU: {id} {op:<5} PC:{pcs.toHex(8)} IR:{ir.toHex(8)} ACC:{acc.toHex(8)}\n"
