@@ -1,4 +1,4 @@
-import std/[strformat, strscans, strutils]
+import std/[strformat, strscans, strutils, math]
 import svdpi
 
 ## imported procs
@@ -78,6 +78,14 @@ proc C_dsp(id: int): int {.exportc, dynlib.} =
 ## risc
 const
   memSize = 0x100
+  # alu output is 32-bits wide. Below create the mask as 0xffffffff.
+  # But we cannot directly set that to 0xffffffff because that's
+  # not an int, but an int64. So it won't be compatible with the
+  # int types.
+  aluMask = when sizeof(int) == 4: # 32-bit compilation
+              -1
+            else:
+              (2^32) - 1
 
 type
   Mem = array[memSize, int]
@@ -101,15 +109,16 @@ type
 proc alu(a, b: int; op: OpCode): int =
   case op
   of opADD:
-    return a + b
+    result = a + b
   of opSUB:
-    return a - b
+    result = a - b
   of opXOR:
-    return a xor b
+    result = a xor b
   of opLDA:
-    return b
+    result = b
   else:
-    return 0
+    result = 0
+  result = result and aluMask
 
 proc initMem(filename: string; mPtr: ptr Mem) =
   ## Initialize the memory (local and/or shared) by reading data from
