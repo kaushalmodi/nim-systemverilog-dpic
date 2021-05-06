@@ -176,22 +176,23 @@ proc C_risc(id: int): int {.exportc, dynlib.} =
       fPtr.log &"CPU {id} Halted at PC = {pcs.toHex(8)} ACC = {acc.toHex(8)}"
       return 0
     of opSKZ:
+      # fPtr.log &"SKZ: ACC = {acc} | {acc.toHex(8)}, PC = {pc.toHex(8)}"
       if acc == 0:
         inc pc
-    of opJMI:
-      read(memPtr, maddr, addr maddr)
-    of opJMP:
+    of opJMI, opJMP:
+      if op in {opJMI}:
+        read(memPtr, maddr, addr maddr)
       pc = maddr
     of opJSR:
       write(memPtr, maddr, pc)
       pc = maddr + 1
-    of opSTI:
-      read(memPtr, maddr, addr maddr)
-    of opSTA:
+    of opSTI, opSTA:
+      if op in {opSTI}:
+        read(memPtr, maddr, addr maddr)
       write(memPtr, maddr, acc)
-    of opLDI:
-      read(memPtr, maddr, addr maddr)
-    of opADD, opSUB, opXOR, opLDA:
+    of opLDI, opADD, opSUB, opXOR, opLDA:
+      if op in {opLDI}:
+        read(memPtr, maddr, addr maddr)
       var
         tmp: int     # Temporary Memory Data
       read(memPtr, maddr, addr tmp)
