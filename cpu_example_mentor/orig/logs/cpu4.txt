@@ -1,0 +1,1 @@
+CPU 4 Halted at PC = 00000000 ACC = 00000000
