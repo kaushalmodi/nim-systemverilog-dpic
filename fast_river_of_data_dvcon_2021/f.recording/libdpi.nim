@@ -1,4 +1,4 @@
-# Time-stamp: <2021-05-04 12:12:59 kmodi>
+# Time-stamp: <2021-05-06 00:42:37 kmodi>
 
 import std/[strformat, random]
 import svdpi
@@ -17,13 +17,6 @@ type
 proc record_an_int(i: cint) {.importc.}
 proc record_my_struct(iPtr: ptr MyObj) {.importc.}
 proc tictoc(times: cint): cint {.importc.}
-
-template withScope(scopeName: untyped, body: untyped) =
-  let
-    newScope = svGetScopeFromName(scopeName.cstring)
-    oldScope = svSetScope(newScope)
-  body
-  discard svSetScope(oldScope)
 
 proc disable_recording() {.exportc, dynlib.} =
   recordingEnabled = false

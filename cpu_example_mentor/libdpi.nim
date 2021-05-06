@@ -9,14 +9,6 @@ proc V_write(address: int; data: int): int {.importc.}
 
 proc io_printf(formatStr: cstring) {.importc, header: "veriuser.h", varargs.}
 
-## templates
-template withScope(scopeName: untyped, body: untyped) =
-  let
-    newScope = svGetScopeFromName(scopeName.cstring)
-    oldScope = svSetScope(newScope)
-  body
-  discard svSetScope(oldScope)
-
 ## procs
 proc log(fPtr: File; msg: string ) =
   io_printf(msg & "\n")
