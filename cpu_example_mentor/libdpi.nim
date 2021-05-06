@@ -65,15 +65,6 @@ proc C_dsp(id: int): int {.exportc, dynlib.} =
 ## risc
 const
   memSize = 0x100
-  # alu output is 32-bits wide. Below create the mask as 0xffffffff.
-  # But we cannot directly set that to 0xffffffff because that's
-  # not an int, but an int64. So it won't be compatible with the
-  # int types.
-  aluMask = when sizeof(int) == 4: # 32-bit compilation
-              -1
-            else:
-              from math import `^`
-              (2^32) - 1
 
 type
   Mem = array[memSize, int]
@@ -95,6 +86,12 @@ type
     opHLT = (0xE, "HLT")            # HLT   HaLT  processor
 
 proc alu(a, b: int; op: OpCode): int =
+  const
+    # alu output is 32-bits wide.  0xffffffff is int64, so it needs to
+    # be cast to int so that we get the intended outcome for both 32-bit
+    # and 64-bit compilations.
+    mask = cast[int](0xffff_ffff)
+
   case op
   of opADD:
     result = a + b
@@ -106,7 +103,7 @@ proc alu(a, b: int; op: OpCode): int =
     result = b
   else:
     result = 0
-  result = result and aluMask
+  result = result and mask
 
 proc initMem(filename: string; mPtr: ptr Mem) =
   ## Initialize the memory (local and/or shared) by reading data from
