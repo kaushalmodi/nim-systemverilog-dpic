@@ -148,7 +148,7 @@ extern int C_risc (int ID) {
 
   sprintf(Filename,"pgm/pgm32.dat.%d",ID);
 
-  sprintf(logFileName,"cpu%0d.txt", ID);
+  sprintf(logFileName,"logs/cpu%0d.txt", ID);
   logPtr = fopen(logFileName,"w");
 
   Init(MEM, Filename);
