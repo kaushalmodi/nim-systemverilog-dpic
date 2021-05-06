@@ -1,1 +1,58 @@
+#+title: CPU and memory model in Nim
+
+* How to run
+Ensure that Cadence Xcelium is installed and ~XCELIUM_ROOT~
+environment variable is set.
+
+Then run:
+#+begin_example
+make
+#+end_example
+* Code
+The below ~200 line Nim code replaces ~300 lines of code in the
+original C and header files.
+
+- Nim: [[./libdpi.nim][libdpi.nim]]
+- Original C code: [[./orig/][orig/*.c]]
+* About this code
+The purpose of this example is to show how Nim code can access
+hardware bus functional models through the use of DPI exported
+SystemVerilog tasks. It also shows how the hierarchal context of
+module scoping in SystemVerilog is used as a context in the DPI.
+
+This example design 8 CPUs communicating in parallel over a PCI-like
+bus to a shared memory.  The CPU, PCI, and memory designs have been
+trivialized to get the point across. The risc CPU has 8
+instructions. Each CPU has local memory below address 'h100. Addresses
+above that are shared and transactions go out to the bus.
+
+The top level system and memory models are written in standard
+Verilog, with the addition of DPI exports.
+
+- CPU0 is an design that shows how to integrate an ISS (instruction
+  set model) written in Nim using the DPI. The Nim model is an
+  imported DPI-C task that calls exported SystemVerilog tasks. The
+  exported tasks are essentially the Bus-Functional Models (BFMs) that
+  drive the memory bus transactions. CPU0 is running a program that
+  sets up shared memory registers for CPU1, CPU2, and CPU3 to read. It
+  then checks the results after each CPU completes.
+- CPU1 is another instance of the same ISS model, except it is running
+  a different program in memory that performs a multiplication of two
+  complex numbers. The DPI context is used to match each called
+  instance of the Nim model with its counterpart exported
+  SystemVerilog task.
+- CPU2 performs the same operation as CPU1. However, instead of
+  running assembly code on an ISS model, it is running a Nim version
+  of the multiplication algorithm on the host platform. It too is an
+  imported DPI-C task that calls the exported SystemVerilog tasks in
+  the same manner that CPU0 and CPU1 do to drive the memory
+  transactions.
+- CPU3 is the same model as CPU2, written in SystemVerilog. (dsp3.v)
+  There is no DPI interaction in this model.
+- CPU4, CPU5, CPU6, and CPU7 are all instances of the same ISS model
+  as CPU0. All CPUs except CPU2 and CPU3 import the same DPI-C task in
+  different contexts. As with CPU0 and CPU1, the DPI context is used
+  to match each called instance of the Nim model with its counterpart
+  exported SystemVerilog task.
+* Reference
 [[https://verificationacademy.com/forums/systemverilog/easy-modelsim-dpi-book#reply-46722][Source]]
