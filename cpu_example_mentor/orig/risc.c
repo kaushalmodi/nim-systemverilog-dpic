@@ -134,6 +134,7 @@ void Write(int *MEM,int index,int data) {
 extern int C_risc (int ID) {
 
   char *Filename = (char *) malloc(20);
+  char *logFileName = (char *) malloc(20);
 
   int ACC = 0; /*  Accumulator */
   int PC = 0;  /*  Program Counter */
@@ -143,7 +144,12 @@ extern int C_risc (int ID) {
   int MADDR; /*  Memory address register */
   int MEM[LMEM];
 
+  FILE *logPtr;
+
   sprintf(Filename,"pgm/pgm32.dat.%d",ID);
+
+  sprintf(logFileName,"cpu%0d.txt", ID);
+  logPtr = fopen(logFileName,"w");
 
   Init(MEM, Filename);
 
@@ -154,6 +160,7 @@ extern int C_risc (int ID) {
     switch (OPCODE) {
     case HLT :
       io_printf("CPU %d Halted at PC = %08x ACC = %08x\n", ID, PCS, ACC);
+      fprintf(logPtr, "CPU %d Halted at PC = %08x ACC = %08x\n", ID, PCS, ACC);
       return 0;
       break;
     case SKZ : 
@@ -184,18 +191,12 @@ extern int C_risc (int ID) {
       ACC = ALU(ACC, TMP, OPCODE);
       break;
     default :
-      io_printf("CPU %d bad opcode PC = %x IR=%x\n", ID,PCS,IR);
+      io_printf("CPU %d bad opcode PC = %X IR=%X\n", ID,PCS,IR);
+      fprintf(logPtr, "CPU %d bad opcode PC = %X IR=%X\n", ID,PCS,IR);
       return 0;
       break;
     }
-    io_printf("CPU: %d %s   PC:%08X IR:%08x ACC:%08X\n", ID,MN[OPCODE],PCS,IR,ACC);
+    io_printf("CPU: %d %s   PC:%08X IR:%08X ACC:%08X\n", ID,MN[OPCODE],PCS,IR,ACC);
+    fprintf(logPtr, "CPU: %d %s   PC:%08X IR:%08X ACC:%08X\n", ID,MN[OPCODE],PCS,IR,ACC);
   }
 }
-
-
-
-
-
-
-
-
