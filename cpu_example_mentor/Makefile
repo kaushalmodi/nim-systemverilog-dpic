@@ -1,9 +1,9 @@
-# Time-stamp: <2021-05-05 23:42:30 kmodi>
+# Time-stamp: <2021-05-06 00:23:50 kmodi>
 
 .DEFAULT_GOAL := default
 
 GIT_ROOT = $(shell git rev-parse --show-toplevel)
-FILES ?= orig/*.sv orig/*.v
+FILES ?= *.v
 NIM_GC ?= arc
 
 # For veriuser.h

@@ -42,7 +42,7 @@ gui:	$(SRC) system
 	vsim -voptargs=+acc system -i
 
 clean:
-	rm -rf *~ *.log work wlf* *wlf *.dll *.o *.out *.so xcelium.d/ xrun.*
+	rm -rf *~ *.log work wlf* *wlf *.dll *.o *.out *.so xcelium.d/ xrun.* *.err .bpad/
 
 xrun:
-	xrun -sv *.v *.sv *.c
+	xrun -sv ../*.v *.c

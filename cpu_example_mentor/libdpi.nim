@@ -164,7 +164,7 @@ proc C_risc(id: int): int {.exportc, dynlib.} =
     logFileName = &"logs/cpu{id}.txt"
     fPtr = open(logFileName, fmWrite)
 
-  initMem(&"orig/pgm/pgm32.dat.{id}", memPtr)
+  initMem(&"pgm/pgm32.dat.{id}", memPtr)
 
   while true:
     let
