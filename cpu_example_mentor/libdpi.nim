@@ -1,11 +1,11 @@
-import std/[strformat, strscans, strutils, math]
+import std/[strformat, strscans, strutils]
 import svdpi
 
 ## imported procs
-proc V_posedge(): int {.importc.}
+proc V_posedge(): int {.importc, discardable.}
 proc V_init_mem(index, data: int) {.importc.}
-proc V_read(address: int; dataPtr: ptr int): int {.importc.}
-proc V_write(address: int; data: int): int {.importc.}
+proc V_read(address: int; dataPtr: ptr int): int {.importc, discardable.}
+proc V_write(address: int; data: int): int {.importc, discardable.}
 
 proc io_printf(formatStr: cstring) {.importc, header: "veriuser.h", varargs.}
 
@@ -31,7 +31,7 @@ const
 proc C_dsp(id: int): int {.exportc, dynlib.} =
   # Wait for initialization
   for i in 0 ..< 10:
-    discard V_posedge()
+    V_posedge()
 
   while true:
     var
@@ -41,13 +41,13 @@ proc C_dsp(id: int): int {.exportc, dynlib.} =
       localX = Complex()
 
     while flag != dspBegin:
-      discard V_read(dspFlag, addr flag)
+      V_read(dspFlag, addr flag)
 
     # Get A and B operands
-    discard V_read(dspA, addr localA.re)
-    discard V_read(dspA+1, addr localA.im)
-    discard V_read(dspB, addr localB.re)
-    discard V_read(dspB+1, addr localB.im)
+    V_read(dspA, addr localA.re)
+    V_read(dspA+1, addr localA.im)
+    V_read(dspB, addr localB.re)
+    V_read(dspB+1, addr localB.im)
 
     # Your algorithm here
     localX.re = (localA.re * localB.re) - (localA.im * localB.im)
@@ -55,12 +55,12 @@ proc C_dsp(id: int): int {.exportc, dynlib.} =
 
     # Delay result by expected number of instructions
     for i in 0 ..< 2*localA.re:
-      discard V_posedge()
+      V_posedge()
 
     # Save result
-    discard V_write(dspX, localX.re)
-    discard V_write(dspX+1, localX.im)
-    discard V_write(dspFlag, dspEnd)
+    V_write(dspX, localX.re)
+    V_write(dspX+1, localX.im)
+    V_write(dspFlag, dspEnd)
 
 ## risc
 const
@@ -72,6 +72,7 @@ const
   aluMask = when sizeof(int) == 4: # 32-bit compilation
               -1
             else:
+              from math import `^`
               (2^32) - 1
 
 type
@@ -127,17 +128,17 @@ proc initMem(filename: string; mPtr: ptr Mem) =
 
 proc read(memPtr: ptr Mem; index: int; dataPtr: ptr int) =
   if index < memSize:
-    discard V_posedge()
+    V_posedge()
     dataPtr[] = memPtr[][index]
   else:
-    discard V_read(index, dataPtr)
+    V_read(index, dataPtr)
 
 proc write(memPtr: ptr Mem; index: int; data: int) =
   if index < memSize:
-    discard V_posedge()
+    V_posedge()
     memPtr[][index] = data
   else:
-    discard V_write(index, data)
+    V_write(index, data)
 
 proc C_risc(id: int): int {.exportc, dynlib.} =
   var
