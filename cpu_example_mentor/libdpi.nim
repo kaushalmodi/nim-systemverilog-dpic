@@ -17,6 +17,11 @@ template withScope(scopeName: untyped, body: untyped) =
   body
   discard svSetScope(oldScope)
 
+## procs
+proc log(fPtr: File; msg: string ) =
+  io_printf(msg & "\n")
+  fPtr.writeLine(msg)
+
 ## memory
 proc C_init_mem(index, data: int) {.exportc, dynlib.} =
   withScope "system.m1":
@@ -147,6 +152,8 @@ proc C_risc(id: int): int {.exportc, dynlib.} =
 
   let
     memPtr = cast[ptr Mem](addr mem[0])
+    logFileName = &"cpu{id}.txt"
+    fPtr = open(logFileName, fmWrite)
 
   initMem(&"orig/pgm/pgm32.dat.{id}", memPtr)
 
@@ -166,7 +173,7 @@ proc C_risc(id: int): int {.exportc, dynlib.} =
 
     case op
     of opHLT:
-      io_printf &"CPU {id} Halted at PC = {pcs.toHex(8)}, ACC = {acc.toHex(8)}\n"
+      fPtr.log &"CPU {id} Halted at PC = {pcs.toHex(8)} ACC = {acc.toHex(8)}"
       return 0
     of opSKZ:
       if acc == 0:
@@ -190,6 +197,6 @@ proc C_risc(id: int): int {.exportc, dynlib.} =
       read(memPtr, maddr, addr tmp)
       acc = alu(acc, tmp, op)
     else:
-      io_printf &"CPU {id} bad opcode ({op.int}), PC = {pcs.toHex(8)}, IR = {ir.toHex(8)}\n"
+      fPtr.log &"CPU {id} bad opcode ({op.int}) PC = {pcs.toHex(8)} IR = {ir.toHex(8)}"
       return 0
-    io_printf &"CPU: {id} {op:<5} PC:{pcs.toHex(8)} IR:{ir.toHex(8)} ACC:{acc.toHex(8)}\n"
+    fPtr.log &"CPU: {id} {op:<5} PC:{pcs.toHex(8)} IR:{ir.toHex(8)} ACC:{acc.toHex(8)}"
