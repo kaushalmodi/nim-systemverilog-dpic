@@ -14,11 +14,6 @@ proc log(fPtr: File; msg: string ) =
   io_printf(msg & "\n")
   fPtr.writeLine(msg)
 
-## memory
-proc C_init_mem(index, data: int) {.exportc, dynlib.} =
-  withScope "system.m1":
-    V_init_mem(index, data)
-
 ## dsp
 type
   Complex = object
@@ -126,7 +121,8 @@ proc initMem(filename: string; mPtr: ptr Mem) =
       if address < memSize:
         mPtr[][address] = data
       else:
-        C_init_mem(address, data)
+        withScope "system.m1":
+          V_init_mem(address, data)
       inc address
 
 proc read(memPtr: ptr Mem; index: int; dataPtr: ptr int) =
