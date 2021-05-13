@@ -1,0 +1,3 @@
+[submodule "svvpi"]
+	path = svvpi
+	url = https://github.com/kaushalmodi/nim-svvpi
