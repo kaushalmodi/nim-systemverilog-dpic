@@ -1,0 +1,6 @@
+#+title: Introspection into SystemVerilog without Turning it Inside Out
+#+author: Dave Rich
+
+* References
+- [[https://s3.amazonaws.com/verificationacademy-news/DVCon2016/Posters/dvcon-2016_introspection-into-systemverilog-without-turning-it-inside-out_poster_paper.pdf][Introspection into SystemVerilog without Turning it Inside Out -- DVCon 2016]]
+- [[https://blog.verificationgentleman.com/2016/04/systemverilog-reflection-api.html][The Humble Beginnings of a SystemVerilog Reflection API]]
