@@ -12,7 +12,7 @@ repo.*
 I have take liberty to write my own ~vpi_pkg.sv~ SystemVerilog package
 in that repo. It has the defines from the C header ~vpi_user.h~
 translated to enums. So better type checking! The latest source that
-SV package can be found [[https://github.com/kaushalmodi/nim-svvpi/tree/main/svvpi/sv/vpi_pkg.sv][here]].
+SV package can be found [[https://github.com/kaushalmodi/nim-svvpi/tree/main/sv/vpi_pkg.sv][here]].
 
 * Running Nim example
 #+begin_example
