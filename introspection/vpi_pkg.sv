@@ -1,1 +1,0 @@
-../svvpi/sv/vpi_pkg.sv
