@@ -14,7 +14,7 @@ C/C++ examples to Nim:
 - [[amiq_dpi_c_examples/README.org][DPI-C examples from a blog post by Amiq]]
 * Limitations of types in DPI-C
 - Use ~real~ (~double~ in C) instead of ~shortreal~ (~float~ in
-  C). DPI-C (or Xcelium) does have a good support for ~shortreal~ with
+  C). DPI-C (or Xcelium) does not have a good support for ~shortreal~ with
   DPI-C (not allowed as function return type, not allowed in structs,
   etc.).
 * Presentation (CDNLive Silicon Valley 2019)
