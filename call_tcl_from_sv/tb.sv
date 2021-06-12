@@ -5,6 +5,7 @@
 module test;
 
   import "DPI-C" function void call_tcl(string s);
+  import "DPI-C" function void get_tcl_output(string cmd, output string out[]);
 
   parameter WIDTH = 8;
 
@@ -41,8 +42,17 @@ module test;
   initial begin
     logic somevar;
 
-    // print_all_instances_in_scope
-    call_tcl($sformatf("find -scope %s -instances -recursive *", `TOP_NAME));
+    begin : print_all_instances_in_scope
+      string tcl_cmd;
+      string tcl_outputs[];
+
+      tcl_outputs = new[4]; // Assume that the tcl call returns 4 elements
+      tcl_cmd = $sformatf("find -scope %s -instances -recursive *", `TOP_NAME);
+
+      $display("Calling `%s' ..", tcl_cmd);
+      get_tcl_output(tcl_cmd, tcl_outputs);
+      $display("output: %p", tcl_outputs);
+    end : print_all_instances_in_scope
 
     $display("%0t ns: Opening database ", $realtime);
     call_tcl("database -open -default -shm waves.shm");
@@ -64,4 +74,4 @@ module test;
     somevar = 1'bz;
   end
 
-endmodule // test
+endmodule : test
