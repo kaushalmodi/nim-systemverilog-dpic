@@ -1,0 +1,6 @@
+#+title: Calling Tcl procs from SystemVerilog via DPI-C
+
+* References from Cadence Support
+/You need a Cadence Support account to access the below./
+- [[https://support.cadence.com/apex/techpubDocViewerPage?xmlName=vhdlcuser.xml&title=VHDL%20Simulation%20C%20Interface%20User%20Guide%20--%202%20-%20%202.6.11%20%20char%20*%20cfcGetOutput()%20&hash=936044&c_version=18.03&path=vhdlcuser/vhdlcuser18.03/chap2.html#936044][Examples of using ~cfcCaptureOutput()~ and ~cfcGetOutput()~]]
+- [[https://support.cadence.com/apex/ArticleAttachmentPortal?id=a1Od0000000nT4aEAE&pageName=ArticleContent][How to access the TCL command line from HDL using calls to C code through DPI or VPI]]
