@@ -1,0 +1,10 @@
+#+title: Async socket communication via DPI-C
+
+1. Start the server in a different terminal
+   #+begin_src shell
+   nim cpp -r server.nim
+   #+end_src
+2. Compile Nim code and run SV simulation in the current terminal
+   #+begin_example
+   make
+   #+end_example

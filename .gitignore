@@ -44,3 +44,4 @@ waves.shm/
 stdlib_*nim.c
 stdlib_*nim.cpp
 *.nimble@spkgs@*
+.mypy_cache/
