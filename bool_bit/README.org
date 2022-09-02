@@ -1,0 +1,4 @@
+#+title: Mapping C bool to SV bit
+
+This test shows that the memory footprints of C bool type and SV bit
+type is the same; 8 bits.
