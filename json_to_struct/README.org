@@ -1,8 +1,13 @@
 #+title: Read JSON content into SV structs
 
-Before running ~make~ in this directory, do ~nimble install jsony~.
+This example can be built with Nim's built-in ~json~ and ~jsonutils~
+libraries or using a nimble-installable library ~jsony~.
 
-Expected output:
+- To build using to built-in json libraries, run ~make~.
+- To build using ~jsony~, first do ~nimble install jsony~ and then
+  ~make jsony~.
+
+Expected output is the same in either case:
 
 #+begin_example
 xcelium> run

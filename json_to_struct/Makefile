@@ -1,4 +1,4 @@
-# Time-stamp: <2022-09-05 14:24:29 kmodi>
+# Time-stamp: <2022-09-05 14:43:34 kmodi>
 
 .DEFAULT_GOAL := default
 
@@ -8,3 +8,6 @@ NIM_GC ?= arc
 include $(GIT_ROOT)/makefile
 
 default: nimcpp nc
+
+jsony:
+	$(MAKE) nimcpp nc NIM_DEFINES+="-d:jsony -d:release"
