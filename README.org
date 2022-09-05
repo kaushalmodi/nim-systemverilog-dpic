@@ -4,6 +4,24 @@
 This repo contains SystemVerilog DPI-C examples that I found in the
 wild, translated to Nim, and then many examples of my own that show
 the Nim/SystemVerilog interface via DPI-C.
+* Environment setup
+All the examples in this repo have been tested with:
+- Nim *1.6.2*
+- gcc *9.3.0*
+- Cadence Xcelium *21.x*
+** svdpi
+Many examples will require the Nim [[https://github.com/kaushalmodi/nim-svdpi][svdpi]] package. This package
+provides the bindings for the SystemVerilog DPI-C header file
+~svdpi.h~.
+
+To install it, run ~nimble install svdpi~.
+
+If you don't have this package installed, you'll see this error:
+#+begin_quote
+Error: cannot open file: svdpi
+#+end_quote
+* How to run the examples in this repo
+cd to any example directory and run ~make~.
 * Translations of C/C++ to Nim that interfaces with SystemVerilog
 Jump to these sub-directories to see how I translated the existing
 C/C++ examples to Nim:
