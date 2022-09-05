@@ -3,7 +3,7 @@
 .DEFAULT_GOAL := default
 
 GIT_ROOT = $(shell git rev-parse --show-toplevel)
-NIM_GC ?= arc
+NIM_MM ?= arc
 NC_SWITCHES ?= -access +rwc # for probing for waves
 
 include $(GIT_ROOT)/makefile

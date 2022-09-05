@@ -3,7 +3,7 @@
 .DEFAULT_GOAL := default
 
 GIT_ROOT = $(shell git rev-parse --show-toplevel)
-NIM_GC = regions
+NIM_MM = regions
 # Thu Nov 07 16:23:47 EST 2019 - kmodi
 # default, boehm, destructors GC do not work
 

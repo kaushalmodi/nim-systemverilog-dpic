@@ -14,5 +14,5 @@ default:
 # running. This will be effectively the same as running with
 # --gc:none.
 gctoggle:
-	$(MAKE) nim NIM_GC= NIM_DEFINES+=-d:gcToggle
+	$(MAKE) nim NIM_MM= NIM_DEFINES+=-d:gcToggle
 	$(MAKE) nc

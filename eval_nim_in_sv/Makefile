@@ -4,7 +4,7 @@
 
 GIT_ROOT = $(shell git rev-parse --show-toplevel)
 
-NIM_GC=boehm
+NIM_MM=boehm
 include $(GIT_ROOT)/makefile
 
 default: nim nc

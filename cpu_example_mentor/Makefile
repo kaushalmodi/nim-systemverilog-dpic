@@ -4,7 +4,7 @@
 
 GIT_ROOT = $(shell git rev-parse --show-toplevel)
 FILES ?= *.v
-NIM_GC ?= arc
+NIM_MM ?= arc
 
 # For veriuser.h
 NIM_SWITCHES += --passC="-I$(XCELIUM_ROOT)/../include"

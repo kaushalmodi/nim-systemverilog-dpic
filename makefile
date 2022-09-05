@@ -1,4 +1,4 @@
-# Time-stamp: <2020-03-13 00:02:37 kmodi>
+# Time-stamp: <2022-09-05 17:07:11 kmodi>
 # Author    : Kaushal Modi
 
 UVM ?= 0
@@ -36,8 +36,8 @@ endif
 DEFAULT_SV_LIB ?= libdpi.so
 # Possible values of NIM_COMPILES_TO: c, cpp
 NIM_COMPILES_TO ?= c
-# See ./gc_crash_debug/README.org on why --gc:none is the default.
-NIM_GC ?= none
+# See ./gc_crash_debug/README.org on why --mm:none is the default.
+NIM_MM ?= none
 NIM_RELEASE ?= 1
 NIM_DEFINES ?=
 NIM_SWITCHES ?=
@@ -53,7 +53,7 @@ clean:
 	  .bpad/ bpad*.err
 
 # libdpi.nim -> libdpi.c -> $(DEFAULT_SV_LIB)
-# --gc:none is needed else Nim tries to free memory allocated for
+# --mm:none is needed else Nim tries to free memory allocated for
 # arrays and stuff by the simulator on SV side.
 # https://irclogs.nim-lang.org/21-01-2019.html#17:16:39
 # Thanks to https://stackoverflow.com/a/15561911/1219634 for the trick to
@@ -78,8 +78,8 @@ endif
 ifeq ($(VALG), 1)
 	$(eval NIM_DEFINES += -d:useSysAssert -d:useGcAssert)
 endif
-ifneq ($(NIM_GC),)
-	$(eval NIM_SWITCHES += --gc:$(NIM_GC))
+ifneq ($(NIM_MM),)
+	$(eval NIM_SWITCHES += --mm:$(NIM_MM))
 endif
 	$(NIM) $(NIM_COMPILES_TO) --out:$(NIM_SO) --app:lib \
 	  --nimcache:./.nimcache \

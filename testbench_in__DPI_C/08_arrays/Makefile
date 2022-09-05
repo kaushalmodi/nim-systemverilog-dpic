@@ -3,7 +3,7 @@
 .DEFAULT_GOAL := default
 
 GIT_ROOT = $(shell git rev-parse --show-toplevel)
-NIM_GC = regions
+NIM_MM = regions
 
 include $(GIT_ROOT)/makefile
 

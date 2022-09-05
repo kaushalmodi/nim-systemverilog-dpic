@@ -13,19 +13,19 @@ rely on the stack.
 
 * Run with no GC
 #+begin_example
-make NIM_GC=none
+make NIM_MM=none
 #+end_example
 * Run with default GC
 #+begin_example
-make NIM_GC=
+make NIM_MM=
 #+end_example
 * Run with Boehm GC
 #+begin_example
-make NIM_GC=boehm
+make NIM_MM=boehm
 #+end_example
 * Run with Destructors GC
 #+begin_example
-make NIM_GC=destructors
+make NIM_MM=destructors
 #+end_example
 * Discussions
 - https://gitter.im/nim-lang/Nim?at=5dc437b67477946bad45d5aa.
