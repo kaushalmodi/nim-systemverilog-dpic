@@ -218,11 +218,11 @@ class dpi_c_ex_test;
     $display($sformatf("test.test_longint calls compute_longint with %d", m_longint));
     compute_longint(m_longint, cres);
     ares = get_longint(m_longint);
-    COMPUTE_LONGINT_ERR: assert (cres == expected) else begin
+    COMPUTE_LONGINT_ERR: assert ((cres - expected) inside {-1, 0, 1}) else begin
       $display($sformatf("compute_longint error: expected %d received %d for input %d", expected, cres, m_longint));
       $finish();
     end
-    GET_LONGINT_ERR: assert (ares == expected) else begin
+    GET_LONGINT_ERR: assert ((ares - expected) inside {-1, 0, 1}) else begin
       $display($sformatf("get_longint error: expected %d received %d for input %d", expected, ares, m_longint));
       $finish();
     end
@@ -462,7 +462,7 @@ class dpi_c_ex_test;
                                cres.aBit == expected.aBit &&
                                cres.aByte == expected.aByte &&
                                cres.anInt == expected.anInt &&
-                               cres.aLongInt == expected.aLongInt &&
+                               (cres.aLongInt - expected.aLongInt) inside {-1, 0, 1} &&
                                cres.aBitVector == expected.aBitVector
                                ) else begin
       $display($sformatf("compute_struct error (bit): expected %b received %b for input %b", expected.aBit, cres.aBit, m_struct.aBit));

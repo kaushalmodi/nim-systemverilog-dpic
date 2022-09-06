@@ -1,9 +1,9 @@
-# Time-stamp: <2019-11-07 16:19:54 kmodi>
+# Time-stamp: <2022-09-05 23:12:31 kmodi>
 
 .DEFAULT_GOAL := default
 
 GIT_ROOT = $(shell git rev-parse --show-toplevel)
-NIM_MM = boehm
+NIM_MM = arc
 
 include $(GIT_ROOT)/makefile
 
