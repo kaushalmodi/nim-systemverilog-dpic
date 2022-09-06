@@ -1,4 +1,4 @@
-// Time-stamp: <2019-03-18 22:50:11 kmodi>
+// Time-stamp: <2022-09-05 18:34:31 kmodi>
 // http://www.testbench.in/DP_08_ARRAYS.html
 
 program main;
@@ -60,7 +60,8 @@ program main;
     end
     // Note: calling get_nums_var_arg multiple times or even its
     // variants that update nums2, nums3, etc. causes SIGSEGV fault,
-    // unless nim is compiled with --gc:none or --gc:regions.
+    // unless nim is compiled with --mm:arc or --mm:none *or*
+    // --mm:regions.
     get_nums_ref_arg1(nums2);
     foreach (nums2[i]) begin
       $display("  SV: nums2[%0d] = %0d", i, nums2[i]);

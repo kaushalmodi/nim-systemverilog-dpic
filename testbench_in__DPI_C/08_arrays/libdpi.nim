@@ -1,5 +1,5 @@
 import svdpi
-import strformat
+import std/[strformat]
 
 # Open array example
 proc pass_int_array(dyn_arr: svOpenArrayHandle) {.exportc, dynlib.} =
@@ -58,7 +58,8 @@ proc get_nums_var_arg(nums: var array[10, svLogicVecVal]) {.exportc, dynlib.} =
     nums[i].aval = uint32(i+10)
     nums[i].bval = 0
     # The echoing of the array elements causes crash if nim
-    # compilation is done without --gc:none *or* --gc:regions.
+    # compilation is done without --mm:arc *or* --mm:none *or*
+    # --mm:regions.
     echo fmt"Nim: nums[{i}] = {nums[i]}"
 
 # Even though not recommended, the "ref array" approach works:
