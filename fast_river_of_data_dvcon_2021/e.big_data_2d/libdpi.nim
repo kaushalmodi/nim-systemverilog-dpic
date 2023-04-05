@@ -1,9 +1,10 @@
-# Time-stamp: <2021-05-04 08:40:02 kmodi>
+# Time-stamp: <2023-04-05 10:30:56 kmodi>
 
 import std/[strformat]
 
-proc f_big_data_2d_nim(size: cint; iPtr, ioPtr: pointer): cint {.exportc, dynlib.} =
+proc f_big_data_2d_nim(sizeX, sizeY: cint; iPtr, ioPtr: pointer): cint {.exportc, dynlib.} =
   let
+    size = sizeX * sizeY
     iIntArrPtr = cast[ptr UncheckedArray[cint]](iPtr)
     ioIntArrPtr = cast[ptr UncheckedArray[cint]](ioPtr)
   for idx in 0 ..< size:
