@@ -1,0 +1,4 @@
+scalar_bit = true
+scalar_real = 1.23
+scalar_int = 456
+arr_int = [10, 100, 1000]
